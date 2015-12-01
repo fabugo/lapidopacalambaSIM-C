@@ -1,0 +1,5 @@
+{
+    "cmd":"gcc",
+    "args":["{FILE_ACTIVE}","-o","{FILE_ACTIVE_NAME_BASE}"],
+    "sh":false
+}
