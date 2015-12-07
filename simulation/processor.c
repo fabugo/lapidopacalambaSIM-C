@@ -25,7 +25,7 @@ int main(int argc,char const *argv[]) {
     RB.r1 = "00000000000000000000000000000001";
     RB.r1 = "00000000000000000000000000000010";
 
-    signed char byte1
+    signed char byte1;
 
     FILE *file;
     file = fopen("program", "r");
@@ -33,8 +33,6 @@ int main(int argc,char const *argv[]) {
     if(!strcmp(op5,"0001")){
 
     }
-
-
 
     fclose(file);
 }
