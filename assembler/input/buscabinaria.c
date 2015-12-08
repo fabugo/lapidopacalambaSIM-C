@@ -13,20 +13,20 @@ void main() {
         ,6735,6748,6757,6766,6778,6852,6856,6910,6916,6946,6965,6981,6991,7038
         ,7078,7219,7273,7288,7350,7371,7455,7467,7470,7587,7605,7768,7786,7791
         ,7806,7819,7861,7885,7937,7943,7975,8041,8082,8116,8176,8188,8296};
-    int inf = 0,
-        sup = 199,
-        meio,
-        chave;
-    scanf(" %d", &chave);
-    while (inf <= sup)
+    int min = 0,
+        max = 199,
+        mid,
+        index;
+    scanf(" %d", &index);
+    while (min <= max)
     {
-         meio = (inf + sup)/2;
-         if (chave == v[meio])
+         mid = (min + max)/2;
+         if (index == v[mid])
               break;
-         if (chave < v[meio])
-              sup = meio-1;
+         if (index < v[mid])
+              max = mid-1;
          else
-              inf = meio+1;
+              min = mid+1;
     }
-    printf("%d\n",meio);
+    printf("%d\n",mid);
 }
