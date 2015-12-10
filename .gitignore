@@ -1,0 +1,8 @@
+/*.o
+/*.exe
+assembler/*.o
+assembler/*.exe
+simulator/*.o
+simulator/*.exe
+assembler/input/[C]/*.o
+assembler/input/[C]/*.exe
