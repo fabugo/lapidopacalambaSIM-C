@@ -1,13 +1,11 @@
-#include "stdio.h"
-#include "stdlib.h"
+#include <stdio.h>
 #include "reader.h"
 
 int main(int argc, char const *argv[]) {
-    int x;
-    for(x = 1; x<argc; x++) {
-        //*char[] file = readFile(argv[x]);
-        printf("%s: %s", argv[x], readFile(argv[x]) == 0
-               ? "Success\n------------------------------------------------------------\n\n"
-               : "Fail\n------------------------------------------------------------\n\n");
+    Line *line = readFile("input/teste1.asm");
+
+    while(line != NULL) {
+        printf("%s", line->text);
+        line = line->next;
     }
 }
