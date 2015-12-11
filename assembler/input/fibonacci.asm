@@ -4,7 +4,6 @@
 	loadlit r1, 0 		;Primeiro valor da sequencia
 	loadlit r2, 1		;Segundo valor da sequencia
 	loadlit r5, 1023	;Registrador de saída
-	loadlit r6, 6		;???
 	nop
 LOOP: add r4,r2,r1		;Armazena em r4 a soma dos dois ultimos elementos
 	passa r1,r2
