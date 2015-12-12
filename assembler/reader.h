@@ -13,10 +13,34 @@ typedef struct LINE Line;
 
 FILE *inputFile;
 
-//Função para ler a próxima linha do arquivo indicado por 'inputFile'
+//Função para ler uma linha do arquivo desconsiderando espacos excessivos e comentários de codigo
 char *nextLine() {
-    char *line = malloc(200 * sizeof(char));
-    fgets(line, 200, inputFile);
+    char *line = malloc(100 * sizeof(char));
+
+    int x = 0;
+    char c;
+    while(!feof(inputFile)) { //Caso chegue ao fim do arquivo, a leitura e encerrada
+        c = fgetc(inputFile);
+        if(c=='\n') { //Se 'c' for o fim da linha, encerra a leitura dessa linha
+            break;
+        } else if(c==';') { //Se 'c' iniciar um comentario
+            do { //Consome todos os caracteres seguintes a ";" ate o final do arquivo ou linha
+                c = fgetc(inputFile);
+            } while(feof(inputFile) == 0 && c != '\n');
+            break; //Finaliza a leitura da linha
+        } else if((c==' ' || c=='\t') ) { //Se 'c' for um espaco ou caractere de tabulacao.
+            if((x==0 || (line[x-1]==' ')))
+                //Caso seja o inicio da linha ou o ultimo caractere dela ja tenha sido um espaco, c sera ignorado
+                continue;
+            else //Tab ou espaco sera representado com espaco
+                line[x++] = ' ';
+        } else {
+            line[x++] = c;
+        }
+    }
+    if(x>0 && (line[x-1]==' ' || line[x-1]=='\t')) //Se o ultimo caractere for um espaco, ele sera removido
+        x--;
+    line[x] = '\0'; //Finaliza a linha
     return line;
 }
 
