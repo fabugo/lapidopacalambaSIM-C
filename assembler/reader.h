@@ -51,17 +51,19 @@ Line *readFile(char path[]) {
     if(inputFile != NULL) { //Se o arquivo foi aberto com sucesso.
         Line *first = malloc(sizeof(Line)), *current = NULL;
 
+        int lineCount = 0;
         while(!feof(inputFile)) { //Enquanto não chegar ao fim do arquivo
             char *text = nextLine();
+            lineCount++;
 
             if(strlen(text) > 0) {
                 if(current == NULL) { //Se for a primeira linha
-                    first->number = 1;
+                    first->number = lineCount;
                     first->text = text;
                     current = first; //'current' aponta para o mesmo Line de 'first'
                 } else {
                     current->next = malloc(sizeof(Line)); //Aloca um novo espaço para o próximo Line
-                    current->next->number = current->number+1; //Atualiza o valor da linha com o incremento do valor corrente
+                    current->next->number = lineCount; //Atualiza o valor da linha com o incremento do valor corrente
                     current->next->text = text;
                     current->next->previous = current; //O ponteiro 'previous' do próximo Line aponta para o Line corrente
                     current = current->next; //o Line corrente passa a ser o próximo

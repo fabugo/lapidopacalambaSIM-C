@@ -4,8 +4,9 @@
 int main(int argc, char const *argv[]) {
     Line *line = readFile("input/teste1.asm");
 
+    //Analyzer
     while(line != NULL) {
-        printf("%s\n", line->text);
+        printf("%d -   %s\n", line->number, line->text);
         line = line->next;
     }
 }
