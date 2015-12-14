@@ -32,10 +32,12 @@
 			;nop
 			jt.neg LEFT			;Se o valor corrente for maior que o buscado
 			;nop
+			inca r6,r6			;Posicao corrente descartada
 			passa r1,r6			;O inicio passa a ser a posicao corrente
 			j MAIN
 
-	LEFT:	passa r2,r6			;O fim passa a ser a posicao corrente
+	LEFT:	deca r6,r6			;Posicao corrente descartada
+			passa r2,r6			;O fim passa a ser a posicao corrente
 			sub r0,r0,r6		;Move o ponteiro do vetor para o inicio dele
 			j MAIN
 
