@@ -45,7 +45,7 @@ char *nextLine() {
 }
 
 //Função para ler linha a linha do arquivo de caminho 'path' e armazenalas em estruturas do tipo Line
-Line *readFile(char path[]) {
+Line *read(char path[]) {
     inputFile = fopen(path, "r"); //Abre o arquivo 'path' apenas para leitura
 
     if(inputFile != NULL) { //Se o arquivo foi aberto com sucesso.
@@ -72,7 +72,7 @@ Line *readFile(char path[]) {
         }
         return first;
     } else {
-        printf("ERRO! Arquivo nao encontrado\n");
+        printf("+++ RAPAAAZ, achei esse arquivo aqui n, reveja isso ai\n");
         return NULL;
     }
 }

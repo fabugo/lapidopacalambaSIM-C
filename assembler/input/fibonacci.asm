@@ -3,7 +3,7 @@
 	loadlit r0, 10 		;Armazena no r0 a posição desejada
 	loadlit r1, 0 		;Primeiro valor da sequencia
 	loadlit r2, 1		;Segundo valor da sequencia
-	loadlit r5, 1023	;Ponteiro da memoria onde sera armazenado o resultado
+	loadlit r5, 1		;Ponteiro da memoria onde sera armazenado o resultado
 	nop
 LOOP: add r4,r2,r1		;Armazena em r4 a soma dos dois ultimos elementos
 	passa r1,r2			;Copia valor
