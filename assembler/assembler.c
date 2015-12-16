@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "substring.h"
+#include "../substring.h"
 #include "reader.h"
 #include "analyzer.h"
 
