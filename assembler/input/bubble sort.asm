@@ -10,14 +10,12 @@
 
 ;r4 tamanho do vetor, r0 == i e r1 == j
 
+.module bubble
+
 .pseg
-
-main:   
-
 		lcl r0,LOWBYTE ARR1
         lch r0,HIGHBYTE ARR1
         load r4,r0           ;r4 tem o numero de elementos que constituem o array
-
 
 		zeros r0 		     ;i=0
 
@@ -62,5 +60,3 @@ ARR1:
             .word   2
 STACK:
 .end
-
-

@@ -1,0 +1,4 @@
+.module  ''
+.pseg
+.dseg
+.end
