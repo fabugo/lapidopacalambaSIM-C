@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define LINE_SIZE    100 //Tamanho máximo da linha ignorando espaços e comentários
+
+
 //Estrutura usada para armazenar uma linha do arquivo, numerando-a e dando referencia para a linha anterior e a proxima.
 struct LINE {
     int number;
@@ -15,7 +18,7 @@ FILE *inputFile;
 
 //Função para ler uma linha do arquivo desconsiderando espacos excessivos e comentários de codigo
 char *nextLine() {
-    char *line = malloc(100 * sizeof(char));
+    char *line = malloc(LINE_SIZE * sizeof(char));
 
     int x = 0;
     char c;

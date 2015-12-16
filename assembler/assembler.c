@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "../substring.h"
+#include "../string.h"
 #include "reader.h"
 #include "analyzer.h"
 
@@ -9,7 +9,7 @@ void mount(char *input) {
     Line *line = read(input);
     if(line != NULL) {
         printf("[INFO] Analisando o conteudo lido\n", input);
-        if(analyzer(line) == 1)
+        if(getInstructions(line) == 1)
             printf("\n[INFO] Montagem concluida com sucesso\n");
     }
     printf("----------------------------------------\n\n\n");
