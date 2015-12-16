@@ -4,11 +4,13 @@
 #include "analyzer.h"
 
 void mount(char *input) {
-    printf("--> Lendo o arquivo \"%s\"\n", input);
+    printf("[INFO] Lendo o arquivo \"%s\"\n", input);
     Line *line = read(input);
-    printf("--> Analisando o conteudo lido\n", input);
-    if(analyzer(line) == 1)
-        printf("\n--> Montagem concluida com sucesso\n");
+    if(line != NULL) {
+        printf("[INFO] Analisando o conteudo lido\n", input);
+        if(analyzer(line) == 1)
+            printf("\n[INFO] Montagem concluida com sucesso\n");
+    }
     printf("----------------------------------------\n\n\n");
 }
 

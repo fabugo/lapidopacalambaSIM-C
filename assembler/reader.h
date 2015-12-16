@@ -48,7 +48,7 @@ char *nextLine() {
 Line *read(char path[]) {
     inputFile = fopen(path, "r"); //Abre o arquivo 'path' apenas para leitura
 
-    if(inputFile != NULL) { //Se o arquivo foi aberto com sucesso.
+    if(inputFile != NULL && !feof(inputFile)) { //Se o arquivo foi aberto com sucesso.
         Line *first = malloc(sizeof(Line)), *current = NULL;
 
         int lineCount = 0;
@@ -70,9 +70,17 @@ Line *read(char path[]) {
                 }
             }
         }
+
+        if(first->text == NULL) {
+            printf("[ERRO] Arquivo vazio ou invalido.\n");
+            return NULL;
+        }
+
         return first;
+    } else if(inputFile == NULL) {
+        printf("[ERRO] Arquivo nao encontrado.\n");
     } else {
-        printf("+++ RAPAAAZ, achei esse arquivo aqui n, reveja isso ai\n");
-        return NULL;
+        printf("[ERRO] Arquivo vazio ou invalido.\n");
     }
+    return NULL;
 }
