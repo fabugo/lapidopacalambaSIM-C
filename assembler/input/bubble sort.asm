@@ -10,6 +10,8 @@
 
 ;r4 tamanho do vetor, r0 == i e r1 == j
 
+.pseg
+
 main:   
 
 		lcl r0,LOWBYTE ARR1
@@ -26,8 +28,7 @@ LOOP1:	sub r5,r0,r4         ;i<=n r5 nâo é utilizado apenas interessa o result
 		deca r3, r4 		 ;j=r4-1
 
 LOOP2:  sub r5,r1,r3 		 ;j<=n-1 r5 nâo é utilizado apenas interessa o resultado presente à saida da ALU para as flags ()
-		jf.negzero EXITLOOP2  	 ;r0>=r4
-
+		jf.negzero EXITLOOP2 ;r0>=r4
 		inca r6, r1			 ;guardo em r6 j+1
 		load r7, r1			 ;guardo v[j]
 		load r8, r6			 ;guardo v[j+1]
@@ -36,7 +37,6 @@ LOOP2:  sub r5,r1,r3 		 ;j<=n-1 r5 nâo é utilizado apenas interessa o resultad
 		passa r9, r7         ;aux = vet[j];
 		passa r7, r8         ;vet[j] = vet[j+1]
 		passa r8, r9		 ;vet[j+1] = aux;
-
 		inca r1, r1 		 ;j+=1
 		j LOOP2              ;salta para o loop interno
 		
@@ -46,6 +46,7 @@ EXITLOOP2: 	inca r0, r0 	 ; i+=1
 
 EXIT:   	j EXIT
 
+.dseg
 
 ARR1:
       .word   10
