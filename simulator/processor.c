@@ -2,33 +2,83 @@
 #include <string.h>
 
 #include "reader.h"
+#include "ALU.h"
+#include "string.h"
 
 #define	INSTRUCTION_SIZE	33  //32 + 1 para o \0
 
-struct {
-    signed char r0[INSTRUCTION_SIZE];
-    signed char r1[INSTRUCTION_SIZE];
-    signed char r2[INSTRUCTION_SIZE];
-    signed char r3[INSTRUCTION_SIZE];
-    signed char r4[INSTRUCTION_SIZE];
-    signed char r5[INSTRUCTION_SIZE];
-    signed char r6[INSTRUCTION_SIZE];
-    signed char r7[INSTRUCTION_SIZE];
-    signed char r8[INSTRUCTION_SIZE];
-    signed char r9[INSTRUCTION_SIZE];
-    signed char r10[INSTRUCTION_SIZE];
-    signed char r11[INSTRUCTION_SIZE];
-    signed char r12[INSTRUCTION_SIZE];
-    signed char r13[INSTRUCTION_SIZE];
-    signed char r14[INSTRUCTION_SIZE];
-    signed char r15[INSTRUCTION_SIZE];
-} RB;
-
 int main(int argc, char const *argv[]) {
-    Instr *pc = read("input");
-
+    Instr *MI = read("input");
+    Instr *pc = MI;
+    
     while(pc != NULL) {
-        printf("%4.d  -  %s\n", pc->address, pc->content);
+    	int type, OP;
+    	char *tempBin = substring(pc-content,0,2);
+    	itoa(type,tempBin,2);
+    	tempBin = substring(pc-content,3,8);
+		itoa(OP,tempBin,2);
+
+		if(type == 1){
+			printf("LOGICA ARITIMETICA\n");
+			switch (OP){
+				case 0: break
+				case 1: break
+				case 3: break
+				case 4: break
+				case 5: break
+				case 6: break
+				case 8: break
+				case 9: break
+				case 16: break
+				case 17: break
+				case 18: break
+				case 19: break
+				case 20: break
+				case 21: break
+				case 22: break
+				case 23: break
+				case 24: break
+				case 25: break
+				case 26: break
+				case 27: break
+				case 28: break
+				case 29: break
+				case 30: break
+				case 31: break
+			}
+		}else if(type == 2){
+			printf("CONSTANTE\n");
+			switch (OP){
+				case 2: break
+				case 1: break
+				case 3: break
+			}
+		}else if(type == 4){
+			printf("MEMORIA\n");
+			switch (OP){
+				case 0: break
+				case 1: break
+			}
+		}else if(type == 5){
+			printf("DESVIO\n");
+			switch (OP){
+				case 0: break
+				case 1: break
+				case 2: break
+			}
+		}else if(type == 6){
+			printf("DESVIO POR REGISTRADOR\n");
+			switch (OP){
+				case 0: break
+				case 1: break
+			}
+		}else if(type == 0){
+			printf("NOP\n");
+		}else {
+			printf("a casa caiu que esse 'itoa()' nao ta funcionando\n");
+		}
+
+
         pc = pc->next;
     }
 }
