@@ -41,8 +41,9 @@ char *nextLine() {
             line[x++] = c;
         }
     }
-    if(x>0 && (line[x-1]==' ' || line[x-1]=='\t')) //Se o ultimo caractere for um espaco, ele sera removido
-        x--;
+    
+    //Se o ultimo caractere for um espaco, ele sera removido
+    if(x>0 && (line[x-1]==' ' || line[x-1]=='\t' || line[x-1]==-1)) x--;
     line[x] = '\0'; //Finaliza a linha
     return line;
 }

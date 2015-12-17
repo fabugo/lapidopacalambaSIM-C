@@ -22,11 +22,11 @@ int main(int argc, char const *argv[]) {
         line = line->next;
     }*/
 
-    mount("input/teste.asm");
-    mount("input/binary search.asm");
+    //mount("input/teste.asm");
+    //mount("input/binary search.asm");
     mount("input/bubble sort.asm");
-    mount("input/fibonacci.asm");
-    mount("input/teste1.asm");
-    mount("input/teste2.asm");
-    mount("input/teste3.asm");
+    //mount("input/fibonacci.asm");
+    //mount("input/teste1.asm");
+    //mount("input/teste2.asm");
+    //mount("input/teste3.asm");
 }
