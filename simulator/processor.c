@@ -27,8 +27,8 @@ struct {
 int main(int argc, char const *argv[]) {
     Instr *pc = read("input");
 
-    while(instrs != NULL) {
-        printf("%4.d  -  %s\n", instrs->address, instrs->content);
-        instrs = instrs->next;
+    while(pc != NULL) {
+        printf("%4.d  -  %s\n", pc->address, pc->content);
+        pc = pc->next;
     }
 }
