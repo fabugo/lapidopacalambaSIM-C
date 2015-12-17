@@ -18,7 +18,7 @@ FILE *inputFile;
 
 //Função para ler uma linha do arquivo desconsiderando espacos excessivos e comentários de codigo
 char *nextLine() {
-    char *line = malloc(LINE_SIZE * sizeof(char));
+    char *line = malloc(LINE_SIZE);
 
     int x = 0;
     char c;
