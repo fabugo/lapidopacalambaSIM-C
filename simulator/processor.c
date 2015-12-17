@@ -25,7 +25,7 @@ struct {
 } RB;
 
 int main(int argc, char const *argv[]) {
-    Instr *instrs = read("input");
+    Instr *pc = read("input");
 
     while(instrs != NULL) {
         printf("%4.d  -  %s\n", instrs->address, instrs->content);
