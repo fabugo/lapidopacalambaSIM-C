@@ -7,15 +7,15 @@
 .pseg
 
 main:		;Implementacao do algoritmo selection sort aplicado a um array
-                ;r2 elemento a ordenar ficando na sua posicao final
-                ;r3 para varrer todos os elementos do array
+            ;r2 elemento a ordenar ficando na sua posicao final
+            ;r3 para varrer todos os elementos do array
 
         lcl r0,LOWBYTE ARR1
         lch r0,HIGHBYTE ARR1
         load r4,r0	;r4 tem o numero de elementos que constituem o array
         add r4,r0,r4	;r4 tem o endereco final,aponta para a ultima posicao do array a ordenar
         inca r0,r0	;r0 aponta para o primeiro elemento do array a ordenar
-        passa r1,r0	;r1	"	"	"		"	"	"
+        passa r1,r0	;r1	"	"	"	"	"	"
         load r2,r0	;r2 contem primeiro elemento do array
 
 LOOP:   inca r1,r1	;
