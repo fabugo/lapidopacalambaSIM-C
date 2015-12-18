@@ -12,7 +12,7 @@ char *create(char *source, int size, int offset) {
 	return output;
 }
 
-char *stringOffset(char *str, int start) {
+char *strOffset(char *str, int start) {
 	int lenght = strlen(str);
 	int size = (lenght-start) > 0 ? lenght-start : 0;
 
@@ -62,7 +62,7 @@ int isAlphanumeric(char *str) {
 	int x;
 
 	for(x = 0; x < lenght; x++) {
-        if((str[lenght] >= '0' || str[lenght] <= '9') && (str[lenght] >= 'A' && str[lenght] <= 'Z') || (str[lenght] >= 'a' && str[lenght] <= 'z')) {
+        if(!isalnum(str[x])) {
             return 0;
         }
     }
@@ -70,7 +70,7 @@ int isAlphanumeric(char *str) {
     return 1;
 }
 
-int stringEquals(char *str1, char* str2) {
+int strEquals(char *str1, char* str2) {
     int lenght1 = strlen(str1);
     int lenght2 = strlen(str2);
 
@@ -81,26 +81,19 @@ int startWith(char *str, char *start) {
 	return (memcmp(str, start, strlen(start)) == 0) ? 1 : 0;
 }
 
-char *removeAll(char *str, char c) {
-	int lenght = strlen(str);
-	int count = 0;
-	int x;
-
-	//Conta quantas ocorrencias de 'c' há na string 'str'
-	for(x = 0; x < lenght; x++)
-		if(str[x] == c)
-			count++;
-
-	char *replaced = malloc(lenght - count + 1);
-	int a;
-	for(x = 0, a = 0; a <= (lenght - count); x++) {
-		if(str[x] == c) {
-			continue;
-		}
-		replaced[a] = str[x];
-		a++;
-	}
-	replaced[a] == '\0';
-
-	return replaced;
+void removeAll(char *str, int start, int end, char c) {
+    int lenght = strlen(str);
+    if(start >= 0 && start < lenght && end <= lenght && start < end) {
+    	int x, y;
+	    for(x = start; x < end; x++) {
+	        if(str[x] == c) {
+	            for(y = x; y < lenght-1; y++) {
+	                str[y] = str[y+1];
+	            }
+	            str[y] = '\0';
+	            lenght--;
+	            end--;
+	        }
+	    }
+    }
 }
