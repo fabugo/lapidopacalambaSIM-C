@@ -1,8 +1,7 @@
 .module teste7
 .pseg
-main:
      ; r0 points to the stack pointer
-     lcl r0, LOWBYTE STACK
+main: lcl r0, LOWBYTE STACK
      lch r0, HIGHBYTE STACK
      lcl r6, LOWBYTE DIV
      lch r6, HIGHBYTE DIV
@@ -24,8 +23,7 @@ L2:  passa r1,r4
      ;;  Doesn't divide any number
      store r0,r4
      inca r0,r0
-SKIP:
-     inca r4,r4
+SKIP: inca r4,r4
      sub r3,r4,r5
      jf.zero L1
      nop   
