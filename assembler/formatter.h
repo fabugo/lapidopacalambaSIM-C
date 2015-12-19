@@ -89,12 +89,13 @@ int isValidInstruction(char *instruction) {
         char *params = removeAll(stringOffset(instruction, space), ' ');
         int lenght = strlen(params);
 
-        return ((lenght == 2 || lenght == 3) && isRegistrator(stringOffset(params, 1))) ? 1 : 0;
+        return ((lenght == 2 || lenght == 3) && isRegistrator(params)) ? 1 : 0;
     } else if(stringEquals(instr, "loadlit") || stringEquals(instr, "lcl")
             || stringEquals(instr, "lch")) {
         return 1;
-    } else if(stringEquals(instr, "j") || startWith(instr, "jt.")
-            || startWith(instr, "jf.")) {
+    } else if(stringEquals(instr, "j")) {
+        return 1;
+    } else if(startWith(instr, "jt.") || startWith(instr, "jf.")) {
         return 1;
     } else {
         return 0;
@@ -105,8 +106,8 @@ int isValidInstruction(char *instruction) {
 int isValidLabeled(char *instruction) {
     int twoPoints = indexOf(instruction, ':');
     //Se após os dois pontos há um espaço e ao menos um caractere
-    if(strlen(instruction) > twoPoints+1+2 && instruction[twoPoints+1] == ' ')
-        return isLabel(substring(instruction, 0, twoPoints-1)) && isValidInstruction(stringOffset(instruction, twoPoints+2));
+    if(strlen(instruction) > twoPoints+1+2 && instruction[twoPoints+1] == ' ') {
+        return isLabel(substring(instruction, 0, twoPoints-1)) && isValidInstruction(stringOffset(instruction, twoPoints+2));}
     else return 0;
 }
 
