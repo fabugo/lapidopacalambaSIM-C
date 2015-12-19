@@ -9,9 +9,9 @@ O assembler é composto pelo arquivo principal "assembler.c" e algumas bibliotec
 Compilando:
 Para compilar o projeto use o comando "gcc -o" da seguinte forma:
 
-	gcc -o OUTPUT assemlber.c string.c reader.c formatter.c
+	gcc -o assembler assembler.c string.c reader.c formatter.c
 
 Executando:
 Para executar o projeto apenas chame o arquivo resultante da compilação passando como parâmetro o(s) programas de entrada, por exemplo:
 
-	OUTPUT input/teste1.asm input/teste2.asm
+	assembler input/teste1.asm input/teste2.asm
