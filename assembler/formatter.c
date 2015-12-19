@@ -39,7 +39,7 @@ int formatInstructions(Line *first) {
             while(aux != NULL) {
                 int twoPoints = indexOf(aux->text, ':');
                 if(twoPoints > -1) {
-                    if(isLabel(substring(aux->text, 0, twoPoints))) {
+                    if(isLabel(substring(aux->text, 0, twoPoints - 1))) {
                         int lenght = strlen(aux->text);
                         if(lenght > twoPoints+1 && aux->text[twoPoints+1] == ' ' && lenght > twoPoints+2) {
                             Line *temp = malloc(sizeof(Line));
@@ -173,12 +173,14 @@ int validateClean(char *instr) {
         
         if(lenght >= 4) {
             int index = indexOf(params, ',');
-            if(index != -1) {
-                removeAll(params, 0, index+2, ' ');
-                index = indexOf(params, ',');
+            if(index != -1 && (index == 2 || index == 3)) {
+                if(index+1 < lenght && params[index+1] == ' ') {
+                    removeAll(params, 0, index+2, ' ');
+                    index = indexOf(params, ',');
+                }
 
                 return (isRegistrator(substring(params, 0, index - 1))
-                && isConstant(substring(params, index + 1, lenght), 16));
+                    && isConstant(substring(params, index + 1, lenght), 16));
             }
         }
 
@@ -215,7 +217,7 @@ int isRegistrator(char *str) {
 
 int isConstant(char *str, int size) {
     if(startWith(str, "LOWBYTE ") || startWith(str, "HIGHBYTE ")) {
-        return isLabel(strOffset(str, indexOf(str, ' ')));
+        return isLabel(strOffset(str, indexOf(str, ' ') + 1));
     } else {
         int lenght = strlen(str);
         int x;
