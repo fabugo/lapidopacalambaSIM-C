@@ -62,12 +62,28 @@ int isAlphanumeric(char *str) {
 	int x;
 
 	for(x = 0; x < lenght; x++) {
-        if(!isalnum(str[x])) {
+        if(!isalnum(str[x]))
             return 0;
-        }
     }
 
     return 1;
+}
+
+int isNumber(char *str) {
+	int lenght = strlen(str);
+	if((lenght > 1 && (str[0] == '-' || str[0] == '+')) || lenght > 0) {
+		int x;
+		x = (str[0] == '-' || str[0] == '+') ? 1 : 0;
+
+		for(; x < lenght; x++) {
+			if(!isdigit(str[x]))
+				return 0;
+		}
+
+		return 1;
+	}
+
+	return 0;
 }
 
 int strEquals(char *str1, char* str2) {
@@ -87,9 +103,8 @@ void removeAll(char *str, int start, int end, char c) {
     	int x, y;
 	    for(x = start; x < end; x++) {
 	        if(str[x] == c) {
-	            for(y = x; y < lenght-1; y++) {
+	            for(y = x; y < lenght-1; y++)
 	                str[y] = str[y+1];
-	            }
 	            str[y] = '\0';
 	            lenght--;
 	            end--;

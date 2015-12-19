@@ -8,7 +8,7 @@ int validateClean(char *instr);
 
 int isRegistrator(char *str);
 
-int isConstant(char *str, int size);
+int isConstant(char *str);
 
 int isLabel(char *str);
 
@@ -67,7 +67,7 @@ int formatInstructions(Line *line) {
 
                         aux = aux->next;
                         while(startWith(aux->text, ".word ")) {
-                            if(!isConstant(strOffset(aux->text, 7), 32)) {
+                            if(!isConstant(strOffset(aux->text, 6))) {
                                 printf("[F][ERRO] Erro encontrado na linha %d. Instrucao invalida: \"%s\"\n", aux->number, aux->text);
                                 return 0;
                             }
@@ -196,7 +196,7 @@ int validateClean(char *instr) {
                 }
 
                 return (isRegistrator(substring(params, 0, index - 1))
-                    && isConstant(strOffset(params, index + 1), 16));
+                    && isConstant(strOffset(params, index + 1)));
             }
         }
 
@@ -231,22 +231,11 @@ int isRegistrator(char *str) {
     ? 1 : 0;
 }
 
-int isConstant(char *str, int size) {
+int isConstant(char *str) {
     if(startWith(str, "LOWBYTE ") || startWith(str, "HIGHBYTE ")) {
         return isLabel(strOffset(str, indexOf(str, ' ') + 1));
     } else {
-        int lenght = strlen(str);
-        int x;
-
-        return 1;
-
-        for(x = 0; x < lenght; x++) {
-            if(str[lenght] < '0' || str[lenght] > '9') {
-                return 0;
-            }
-        }
-
-        return 1;
+        return isNumber(str);
     }
 }
 

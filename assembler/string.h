@@ -17,6 +17,9 @@ int lastIndexOf(char *str, char c);
 //Retorna 1 se a string 'str' possui apenas caracteres de A-Z, a-z ou 0-9, ou 0, caso contrário.
 int isAlphanumeric(char *str);
 
+//Retorna 1 se a string 'str' representar um número inteiro, ou 0, caso contrário.
+int isNumber(char *str);
+
 //Retorna 1 se as strings 'str1' e 'str2' forem iguais ou 0, caso contrário.
 int strEquals(char *str1, char* str2);
 
