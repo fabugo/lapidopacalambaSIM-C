@@ -23,5 +23,5 @@ int strEquals(char *str1, char* str2);
 //Retorna 1 se a string 'str' iniciar com a string 'start' ou 0, caso contrário.
 int startWith(char *str, char *start);
 
-//Remove todos os caracteres 'c' da string 'str' no intervalo entre as posições 'start' e 'end'.
+//Remove todos as ocorrencias de 'toRemove' na string 'str' no intervalo entre as posições 'start' e 'end'.
 void removeAll(char *str, int start, int end, char c);

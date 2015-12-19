@@ -8,6 +8,6 @@
 
 /*  Percorre todas as linhas verificando se as diretivas e instruções são válidas. E removendo
     espaços desnecessários. Retorna uma 'lista' de instruções validadas, sem as diretivas.*/
-int formatInstructions(Line *first);
+int formatInstructions(Line *line);
 
 #endif

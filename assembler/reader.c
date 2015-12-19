@@ -22,16 +22,14 @@ Line *read(char path[]) {
                     first->number = lineCount;
                     first->text = text;
                     first->next = NULL;
-                    first->previous = NULL;
                     current = first;
                 } else {
                      //A partir da linha corrente, é criada a próxima linha, que passará a ser a atual
                     current->next = malloc(sizeof(Line)); //Aloca um novo espaço para o próximo Line
-                    current->next->number = lineCount; //Atualiza o valor da linha com o incremento do valor corrente
-                    current->next->text = text;
-                    current->next->next = NULL;
-                    current->next->previous = current; //O ponteiro 'previous' do próximo Line aponta para o Line corrente
                     current = current->next; //o Line corrente passa a ser o próximo
+                    current->number = lineCount; //Atualiza o valor da linha com o incremento do valor corrente
+                    current->text = text;
+                    current->next = NULL;
                 }
             }
         }
@@ -39,16 +37,16 @@ Line *read(char path[]) {
         fclose(inputFile);
 
         if(first->text == NULL) {
-            printf("[ERRO] Arquivo vazio ou invalido.\n");
+            printf("[R][ERRO] Arquivo vazio ou invalido\n");
             return NULL;
         }
 
         return first;
     } else if(inputFile == NULL) {
-        printf("[ERRO] Arquivo nao encontrado.\n");
+        printf("[R][ERRO] Arquivo nao encontrado\n");
     } else {
         fclose(inputFile);
-        printf("[ERRO] Arquivo vazio ou invalido.\n");
+        printf("[R][ERRO] Arquivo vazio ou invalido\n");
     }
     return NULL;
 }
@@ -68,8 +66,8 @@ char *nextLine() {
             } while(feof(inputFile) == 0 && c != '\n');
             break; //Finaliza a leitura da linha
         } else if((c==' ' || c=='\t') ) { //Se 'c' for um espaço ou caractere de tabulação
-            if((x==0 || (line[x-1]==' ')))
-                //Caso seja o inicio da linha ou o último caractere dela já tenha sido um espaço, c será ignorado
+            if(x==0 || line[x-1]==' ' || line[x-1]==',')
+                //Caso seja o inicio da linha ou o último caractere tenha sido um espaço ou uma virgula, c será ignorado
                 continue;
             else //Tabulação ou espaço será representado com espaço
                 line[x++] = ' ';

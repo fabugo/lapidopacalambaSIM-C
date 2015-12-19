@@ -8,11 +8,10 @@
 #define LINE_SIZE    100 //Tamanho máximo da linha ignorando espaços e comentários
 
 /*	Estrutura usada para armazenar uma linha do arquivo, numerando-a e dando referencia
-	para a linha anterior e a proxima.*/
+	para a proxima linha.*/
 struct LINE {
     int number;
     char *text;
-    struct LINE *previous;
     struct LINE *next;
 };
 typedef struct LINE Line;

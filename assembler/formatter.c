@@ -12,29 +12,45 @@ int isConstant(char *str, int size);
 
 int isLabel(char *str);
 
-int formatInstructions(Line *first) {
-    if(!startWith(first->text, ".module ") || strlen(first->text) < 9) {
-        printf("[ERRO] Um programa deve iniciar com \".module <NOME_DO_PROGRAMA>\"\n");
+int formatInstructions(Line *line) {
+    if(!startWith(line->text, ".module ") || strlen(line->text) < 9) {
+        printf("[F][ERRO] Um programa deve iniciar com \".module <NOME_DO_PROGRAMA>\"\n");
         return 0;
     } else {
-        printf("[INFO] \".module\" encontrado: %s\n", strOffset(first->text, 8));
+        printf("[F][INFO] \".module\" encontrado: %s\n", strOffset(line->text, 8));
     }
 
-    Line *aux = first->next;
+    Line *aux = line->next;
+
+    int pseg = 0, dseg = 0;
 
     while(aux != NULL) {
         if(strEquals(aux->text, ".pseg")) {
-            printf("[INFO] \".pseg\" encontrado.\n");
+            if(pseg) {
+                printf("[F][ERRO] Repeticao da diretiva \".pseg\"\n");
+                return 0;
+            } else {
+                printf("[F][INFO] \".pseg\" encontrado\n");
+                pseg = 1;
+            }
+            
             aux = aux->next;
             while(aux != NULL && aux->text[0] != '.') {
                 if(!validate(aux->text)) {
-                    printf("[ERRO] Erro encontrado na linha %d. Instrucao invalida: \"%s\"\n", aux->number, aux->text);
+                    printf("[F][ERRO] Erro encontrado na linha %d. Instrucao invalida: \"%s\"\n", aux->number, aux->text);
                     return 0;
                 }
                 aux = aux->next;
             }
         } else if(strEquals(aux->text, ".dseg")) {
-            printf("[INFO] \".dseg\" encontrado.\n");
+            if(dseg) {
+                printf("[F][ERRO] Repeticao da diretiva \".dseg\"\n");
+                return 0;
+            } else {
+                printf("[F][INFO] \".dseg\" encontrado\n");
+                dseg = 1;
+            }
+            
             aux = aux->next;
             while(aux != NULL) {
                 int twoPoints = indexOf(aux->text, ':');
@@ -46,27 +62,25 @@ int formatInstructions(Line *first) {
                             temp->number = aux->number;
                             temp->text = strOffset(aux->text, twoPoints+2);
                             temp->next = aux->next;
-                            temp->previous = aux;
-                            aux->next->previous = temp;
                             aux->next = temp;
                         }
 
                         aux = aux->next;
                         while(startWith(aux->text, ".word ")) {
                             if(!isConstant(strOffset(aux->text, 7), 32)) {
-                                printf("[ERRO] Erro encontrado na linha %d. Instrucao invalida: \"%s\"\n", aux->number, aux->text);
+                                printf("[F][ERRO] Erro encontrado na linha %d. Instrucao invalida: \"%s\"\n", aux->number, aux->text);
                                 return 0;
                             }
                             aux = aux->next;
                         }
                     } else {
-                        printf("[ERRO] Erro encontrado na linha %d. Instrucao invalida: \"%s\"\n", aux->number, aux->text);
+                        printf("[F][ERRO] Erro encontrado na linha %d. Instrucao invalida: \"%s\"\n", aux->number, aux->text);
                         return 0;
                     }
                 } else if(strEquals(aux->text, ".end")) {
                     break;
                 } else {
-                    printf("[ERRO] Erro encontrado na linha %d. Instrucao invalida: \"%s\"\n", aux->number, aux->text);
+                    printf("[F][ERRO] Erro encontrado na linha %d. Instrucao invalida: \"%s\"\n", aux->number, aux->text);
                     return 0;
                 }
             }
@@ -79,9 +93,9 @@ int formatInstructions(Line *first) {
                 aux = aux->next;
             } while(aux != NULL);
             if(lineCount > 0) {
-                printf("[WARN] \".end\" encontrado na linha %d, %d linha(s) ignorada(s) apos esta diretiva.\n", lineNumber, lineCount);
+                printf("[F][WARN] \".end\" encontrado na linha %d, %d linha(s) ignorada(s) apos esta diretiva\n", lineNumber, lineCount);
             } else {
-                printf("[INFO] \".end\" encontrado.", lineNumber, lineCount);
+                printf("[F][INFO] \".end\" encontrado\n", lineNumber, lineCount);
             }
             aux = aux2;
             break;
@@ -89,8 +103,10 @@ int formatInstructions(Line *first) {
     }
 
     if(aux == NULL) {
-        printf("[ERRO] A diretiva \".end\" nao foi encontrada. Ela deve estar no fim do programa.\n");
+        printf("[F][ERRO] A diretiva \".end\" nao foi encontrada. Ela deve estar no fim do programa\n");
         return 0;
+    } else if(!pseg) {
+        printf("[F][ERRO] A diretiva \".pseg\" nao foi encontrada. Ela é obrigatória\n");
     }
 
     return 1;
@@ -180,7 +196,7 @@ int validateClean(char *instr) {
                 }
 
                 return (isRegistrator(substring(params, 0, index - 1))
-                    && isConstant(substring(params, index + 1, lenght), 16));
+                    && isConstant(strOffset(params, index + 1), 16));
             }
         }
 
