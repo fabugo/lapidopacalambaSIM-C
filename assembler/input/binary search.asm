@@ -3,12 +3,19 @@
 ;Algoritmo de busca binária
 
 .pseg
-	lcl	r0, LOWBYTE VET
-	lch	r0, HIGHBYTE VET
-	loadlit r1,0
-	loadlit r2,10
-	loadlit r3,5
-	loadlit r4, 1				;Ponteiro para o endereço de memória para a saida
+	lcl	r0, LOWBYTE VET 		;Carrega os bites menos significativos do endereço do
+								;vetor nos bits menos significativos de r0
+	lch	r0, HIGHBYTE VET 		;Carrega os bites mais significativos do endereço do
+								;vetor nos bits mais significativos de r0
+	loadlit r1,0				;posicao inicial do vetor
+	
+	load r3, r0					;Carrega o elemento buscado
+	inca r0, r0 				;Incrementa o vetor
+		
+	load r2, r0					;Carrega a quantidade de elementos do vetor
+	inca r0, r0 				;Incrementa o vetor para o primeiro elemento a ser ordenado
+	
+	loadlit r4, 100				;Ponteiro para o endereço de memória para a saida
 	;r5 registrador temporario
 	;r6 registrador da posicao corrente
 
@@ -41,16 +48,19 @@
 			sub r0,r0,r6		;Move o ponteiro do vetor para o inicio dele
 			j MAIN
 
-	ENDS:	passa r5,r1
+	ENDS:	passa r5,r1			;Armazena o valor da posicao no registrador r5
 			j END
 
-	ENDC:	passa r5,r6
+	ENDC:	passa r5,r6			;Armazena o valor da posicao no registrador r5
 			j END
 
-	END:	store r4,r5
+	END:	store r4,r5			;Armazena na memória o valor da posicao do elemento
 
 .dseg
-	VET:	.word 1
+	VET:	
+			.word 7
+			.word 10
+			.word 1
 			.word 2
 			.word 3
 			.word 4

@@ -1,6 +1,9 @@
 #LAPI DOPACA LAMBA
 
-O assembler é composto pelo arquivo principal "assembler.c" e algumas bibliotecas auxiliares, são elas:
+##Estrutura da Pasta
+Nesta pasta contém o código fonte do montador e uma subpasta (input) contendo alguns programas teste.
+
+O código fonte do assembler é composto pelo arquivo principal "assembler.c" e algumas bibliotecas auxiliares, são elas:
 
 * **String.h** 		- Contém métodos para manipulação de strings. 
 * **Reader.h** 		- Utilizado para ler um arquivo de entrada e separá-lo em linhas.
