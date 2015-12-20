@@ -4,4 +4,3 @@ assembler/*.o
 assembler/*.exe
 simulator/*.o
 simulator/*.exe
-assembler/output/*.*
