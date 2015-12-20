@@ -45,8 +45,7 @@ FIM: j FIM
      nop
 .dseg
 
-ARR1:
-        .word   10
+ARR1: .word   10
                 .word   -1
                 .word   6
                 .word   3

@@ -27,7 +27,7 @@ int check(Line *line) {
 			Label *temp = jumper;
 			int exist = 0;
 			while(temp != NULL) {
-				if(strEquals(temp->text, label)) {
+				if(strEquals(temp->name, label)) {
 					exist = 1;
 					break;
 				}
@@ -46,7 +46,7 @@ int check(Line *line) {
 				Label *temp = jumper;
 				int exist = 0;
 				while(temp != NULL) {
-					if(strEquals(temp->text, label)) {
+					if(strEquals(temp->name, label)) {
 						exist = 1;
 						break;
 					}
@@ -54,7 +54,7 @@ int check(Line *line) {
 				}
 				temp = variable;
 				while(temp != NULL && !exist) {
-					if(strEquals(temp->text, label)) {
+					if(strEquals(temp->name, label)) {
 						exist = 1;
 						break;
 					}
@@ -80,16 +80,16 @@ void getJumpers(Line *line) {
 	while((line = line->next) != NULL && line->text[0] != '.') {
 		int index = indexOf(line->text, ':');
 		if(index > -1) {
-			char *text = substring(line->text, 0, index - 1);
+			char *name = substring(line->text, 0, index - 1);
 			if(current == NULL) {
 				jumper = malloc(sizeof(Label));
-                jumper->text = text;
+                jumper->name = name;
                 jumper->next = NULL;
                 current = jumper;
             } else {
                 current->next = malloc(sizeof(Label));
                 current = current->next;
-                current->text = text;
+                current->name = name;
                 current->next = NULL;
             }
 		}
@@ -104,16 +104,16 @@ void getVariables(Line *line) {
 	while((line = line->next) != NULL && (line->text[0] != '.' || startWith(line->text, ".word"))) {
 		int index = indexOf(line->text, ':');
 		if(index > -1) {
-			char *text = substring(line->text, 0, index - 1);
+			char *name = substring(line->text, 0, index - 1);
 			if(current == NULL) {
 				variable = malloc(sizeof(Label));
-                variable->text = text;
+                variable->name = name;
                 variable->next = NULL;
                 current = variable;
             } else {
                 current->next = malloc(sizeof(Label));
                 current = current->next;
-                current->text = text;
+                current->name = name;
                 current->next = NULL;
             }
 		}

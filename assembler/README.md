@@ -18,4 +18,6 @@ Para compilar o projeto use o seguinte comando:
 ##Executando
 Para executar o projeto apenas chame o arquivo resultante da compilação passando como parâmetro o(s) programa(s) de entrada, por exemplo:
 
-	assembler input/teste1.asm input/teste2.asm
+	assembler input/teste1.asm input/teste2.asm...
+
+A saída do programa será dada na pasta output, presente na mesma pasta do assembler (se ela não existir, deve ser criada manualmente) numerando os programas de acordo com a entrada (teste1.asm = program_1; teste2.asm = program_2...)

@@ -8,7 +8,7 @@
 
 struct LABEL {
 	int address;
-    char *text;
+    char *name;
     struct LABEL *next;
 };
 typedef struct LABEL Label;

@@ -55,11 +55,13 @@ int formatInstructions(Line *line) {
                 if(twoPoints > -1) {
                     if(isLabel(substring(aux->text, 0, twoPoints - 1))) {
                         int lenght = strlen(aux->text);
-                        if(lenght > twoPoints+1 && aux->text[twoPoints+1] == ' ' && lenght > twoPoints+2) {
+
+                        if(aux->text[twoPoints+1] == ' ' && lenght > twoPoints+2) {
                             Line *temp = malloc(sizeof(Line));
                             temp->number = aux->number;
                             temp->text = strOffset(aux->text, twoPoints+2);
                             temp->next = aux->next;
+                            aux->text = substring(aux->text, 0, twoPoints);
                             aux->next = temp;
                         }
 
