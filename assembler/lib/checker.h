@@ -7,7 +7,7 @@
 #include "string.h"
 
 struct LABEL {
-	int address;
+	long long int address;
     char *name;
     struct LABEL *next;
 };

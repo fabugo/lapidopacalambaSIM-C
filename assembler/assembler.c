@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "string.h"
-#include "reader.h"
-#include "formatter.h"
-#include "checker.h"
+#include "lib/string.h"
+#include "lib/reader.h"
+#include "lib/formatter.h"
+#include "lib/checker.h"
 
 struct INSTRUCTION {
-    int address;
+    long long int address;
     char *content;
     struct INSTRUCTION *next;
 };
@@ -27,8 +27,6 @@ void replaceLabelsAndVariables();
 
 int writeBits(char *outputPath);
 
-int decimalToBinary(char *value);
-
 Label *jumpers = NULL, *variables = NULL;
 Instruction *psegInstr = NULL, *dsegInstr = NULL;
 
@@ -40,6 +38,9 @@ int main(int argc, char *argv[]) {
         sprintf(outputPath, "output/program_%d", x);
         start(argv[x], outputPath);
     }
+
+    printf("\nExecucao finalizada, pressione qualquer tecla para fechar\n");
+    getch(); //Pausa o terminal
 }
 
 void start(char *input, char *outputPath) {
@@ -79,7 +80,7 @@ int mount(Line *line, char *outputPath) {
 }
 
 void createPseg(Line *line) {
-    int addressCount = 0;
+    long long int addressCount = 0;
     Instruction *instr = NULL;
     Label *jumper = NULL;
 
@@ -123,7 +124,7 @@ void createPseg(Line *line) {
 }
 
 void createDseg(Line *line) {
-    int instructionAddress = 0, memoryAddress = 0;
+    long long int instructionAddress = 0, memoryAddress = 0;
     Instruction *instr = NULL;
     Label *variable = NULL;
 
@@ -154,7 +155,7 @@ void createDseg(Line *line) {
                 dsegInstr = malloc(sizeof(Instruction));
                 dsegInstr->address = instructionAddress++;
                 temp = malloc(100);
-                sprintf(temp, "loadlit r0,LOWBYTE %s", param);
+                sprintf(temp, "lcl r0,LOWBYTE %s", param);
                 dsegInstr->content = temp;
                 instr = dsegInstr;
             } else {
@@ -162,7 +163,7 @@ void createDseg(Line *line) {
                 instr = instr->next;
                 instr->address = instructionAddress++;
                 temp = malloc(100);
-                sprintf(temp, "loadlit r0,LOWBYTE %s", param);
+                sprintf(temp, "lcl r0,LOWBYTE %s", param);
                 instr->content = temp;
             }
 
@@ -170,21 +171,21 @@ void createDseg(Line *line) {
             instr = instr->next;
             instr->address = instructionAddress++;
             temp = malloc(100);
-            sprintf(temp, "loadlit r0,HIGHBYTE %s", param);
+            sprintf(temp, "lch r0,HIGHBYTE %s", param);
             instr->content = temp;
 
             instr->next = malloc(sizeof(Instruction));
             instr = instr->next;
             instr->address = instructionAddress++;
             temp = malloc(100);
-            sprintf(temp, "loadlit r1,LOWBYTE %d", memoryAddress);
+            sprintf(temp, "lcl r1,LOWBYTE %d", memoryAddress);
             instr->content = temp;
 
             instr->next = malloc(sizeof(Instruction));
             instr = instr->next;
             instr->address = instructionAddress++;
             temp = malloc(100);
-            sprintf(temp, "loadlit r1,HIGHBYTE %d", memoryAddress);
+            sprintf(temp, "lch r1,HIGHBYTE %d", memoryAddress);
             instr->content = temp;
 
             instr->next = malloc(sizeof(Instruction));
@@ -212,7 +213,7 @@ void joinSegs() {
             instr = instr->next;
         }
         instr->next = psegInstr;
-        int increment = instr->address;
+        long long int increment = instr->address;
 
         Label *jumper = jumpers;
         while(jumper != NULL) {
@@ -223,6 +224,8 @@ void joinSegs() {
         while((instr = instr->next) != NULL) {
             instr->address += increment;
         }
+    } else {
+        dsegInstr = psegInstr;
     }
 }
 
@@ -231,16 +234,17 @@ void replaceLabelsAndVariables() {
     Label *jumper = jumpers, *variable = variables;
 
     printf("[A][INFO] Substituindo labels de desvios\n");
-    instr = psegInstr;
+    
     while(jumper != NULL) {
+        instr = psegInstr;
         while(instr != NULL) {
             if((startWith(instr->content, "lcl ") || startWith(instr->content, "lch ") || startWith(instr->content, "loadlit ")
                 || startWith(instr->content, "j ") || startWith(instr->content, "jt.") || startWith(instr->content, "jf."))
-                /*&& contains(instr->content, jumper->name)*/) {
+                && contains(instr->content, jumper->name)) {
 
                 char *temp = malloc(11);
                 sprintf(temp, "%d", jumper->address);
-                //replaceAll(instr->content, jumper->name, temp);
+                instr->content = replaceAll(instr->content, jumper->name, temp);
             }
             instr = instr->next;
         }
@@ -248,15 +252,15 @@ void replaceLabelsAndVariables() {
     }
 
     printf("[A][INFO] Substituindo labels de variaveis\n");
-    instr = psegInstr;
     while(variable != NULL) {
+        instr = psegInstr;
         while(instr != NULL) {
             if((startWith(instr->content, "lcl ") || startWith(instr->content, "lch ") || startWith(instr->content, "loadlit "))
-                /*&& contains(instr->content, variable->name)*/) {
+                && contains(instr->content, variable->name)) {
 
                 char *temp = malloc(10);
                 sprintf(temp, "%d", variable->address);
-                //replaceAll(instr->content, variable->name, temp);
+                instr->content = replaceAll(instr->content, variable->name, temp);
             }
             instr = instr->next;
         }
@@ -264,25 +268,36 @@ void replaceLabelsAndVariables() {
     }
 }
 
-int decimalToBinary(char *value) {
-    int v = atoi(value);
+char *decimalToBinary(char *value, int size) {
+    long long int v = atoll(value);
     char *temp = malloc(33);
     int x;
 
-    for(x=0; x<8; x++) {
-        if((v & 0x80) !=0) {
-            temp[x] = '1';
-        } else {
-            temp[x] = '0';
+    if(size == 4) {
+        for(x=0; x<size; x++) {
+            if((v & 0x8) !=0) temp[x] = '1';
+            else temp[x] = '0';
+            v = v<<1;
         }
-        v = v<<1;
+    } else if(size == 16) {
+        for(x=0; x<size; x++) {
+            if((v & 0x8000) !=0) temp[x] = '1';
+            else temp[x] = '0';
+            v = v<<1;
+        }
+    } else {
+        for(x=0; x<size; x++) {
+            if((v & 0x80000000) !=0) temp[x] = '1';
+            else temp[x] = '0';
+            v = v<<1;
+        }
     }
     temp[x] = '\0';
 
-    return atoi(temp);
+    return temp;
 }
 
-int getParam(char *instr, int param) {
+char *getParam(char *instr, int param) {
     int first = indexOf(instr, ','), last = lastIndexOf(instr, ','), space = indexOf(instr, ' ');
     char *temp;
     if(param == 1) {
@@ -295,8 +310,20 @@ int getParam(char *instr, int param) {
         temp = strOffset(instr, space+1);
     }
 
-    removeAll(temp, 0, strlen(temp), 'r');
-    return decimalToBinary(temp);
+    if(startWith(temp, "LOWBYTE ")) {
+        temp = strOffset(temp, indexOf(temp, ' ') + 1);
+        char *bin = decimalToBinary(temp, 32);
+        return strOffset(bin, 16);
+    } else if(startWith(temp, "HIGHBYTE ")) {
+        temp = strOffset(temp, indexOf(temp, ' ') + 1);
+        char *bin = decimalToBinary(temp, 32);
+        return substring(bin, 0, 15);
+    } else if(startWith(temp, "r")) {
+        removeAll(temp, 0, strlen(temp), 'r');
+        return decimalToBinary(temp, 4);
+    } else {
+        return decimalToBinary(temp, 16);
+    }
 }
 
 char *getInstrBits(char *instr) {
@@ -304,71 +331,71 @@ char *getInstrBits(char *instr) {
 
     //Instruções Lógicas e Aritméticas
     if(startWith(instr, "add ")) {
-        sprintf(temp, "00100000%04d%04d%04d000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
+        sprintf(temp, "00100000%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "addinc ")) {
-        sprintf(temp, "00100001%04d%04d%04d000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
+        sprintf(temp, "00100001%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "inca ")) {
-        sprintf(temp, "00100011%04d%04d0000000000000000", getParam(instr, 1), getParam(instr, 3));
+        sprintf(temp, "00100011%s%s0000000000000000", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "subdec ")) {
-        sprintf(temp, "00100100%04d%04d%04d000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
+        sprintf(temp, "00100100%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "sub ")) {
-        sprintf(temp, "00100101%04d%04d%04d000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
+        sprintf(temp, "00100101%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "deca ")) {
-        sprintf(temp, "00100110%04d%04d0000000000000000", getParam(instr, 1), getParam(instr, 3));
+        sprintf(temp, "00100110%s%s0000000000000000", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "lsl ")) {
-        sprintf(temp, "00101000%04d%04d0000000000000000", getParam(instr, 1), getParam(instr, 3));
+        sprintf(temp, "00101000%s%s0000000000000000", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "asr ")) {
-        sprintf(temp, "00101001%04d%04d0000000000000000", getParam(instr, 1), getParam(instr, 3));
+        sprintf(temp, "00101001%s%s0000000000000000", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "zeros ")) {
-        sprintf(temp, "00110000%04d00000000000000000000", getParam(instr, 0));
+        sprintf(temp, "00110000%s00000000000000000000", getParam(instr, 0));
     } else if(startWith(instr, "and ")) {
-        sprintf(temp, "00110001%04d%04d%04d000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
+        sprintf(temp, "00110001%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "andnota ")) {
-        sprintf(temp, "00110010%04d%04d%04d000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
+        sprintf(temp, "00110010%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "passb ")) {
-        sprintf(temp, "00110011%04d0000%04d000000000000", getParam(instr, 1), getParam(instr, 3));
+        sprintf(temp, "00110011%s0000%s000000000000", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "andnotb ")) {
-        sprintf(temp, "00110100%04d%04d%04d000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
+        sprintf(temp, "00110100%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "passa ")) {
-        sprintf(temp, "00110101%04d%04d0000000000000000", getParam(instr, 1), getParam(instr, 3));
+        sprintf(temp, "00110101%s%s0000000000000000", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "xor ")) {
-        sprintf(temp, "00110110%04d%04d%04d000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
+        sprintf(temp, "00110110%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "or ")) {
-        sprintf(temp, "00110111%04d%04d%04d000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
+        sprintf(temp, "00110111%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "nand ")) {
-        sprintf(temp, "00111000%04d%04d%04d000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
+        sprintf(temp, "00111000%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "xnor ")) {
-        sprintf(temp, "00111001%04d%04d%04d000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
+        sprintf(temp, "00111001%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "passnota ")) {
-        sprintf(temp, "00111010%04d%04d0000000000000000", getParam(instr, 1), getParam(instr, 3));
+        sprintf(temp, "00111010%s%s0000000000000000", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "ornota ")) {
-        sprintf(temp, "00111011%04d%04d%04d000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
+        sprintf(temp, "00111011%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "passnotb ")) {
-        sprintf(temp, "00111100%04d0000%04d000000000000", getParam(instr, 1), getParam(instr, 3));
+        sprintf(temp, "00111100%s0000%s000000000000", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "ornotb ")) {
-        sprintf(temp, "00111101%04d%04d%04d000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
+        sprintf(temp, "00111101%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "nor ")) {
-        sprintf(temp, "00111110%04d%04d%04d000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
+        sprintf(temp, "00111110%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "ones ")) {
-        sprintf(temp, "00111111%04d00000000000000000000", getParam(instr, 0));
+        sprintf(temp, "00111111%s00000000000000000000", getParam(instr, 0));
     
     //Instruções com Constante
     } else if(startWith(instr, "loadlit ")) {
-        sprintf(temp, "01000010%04d0000%016d", getParam(instr, 1), getParam(instr, 3));
+        sprintf(temp, "01000010%s0000%s", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "lcl ")) {
-        sprintf(temp, "01000001%04d0000%016d", getParam(instr, 1), getParam(instr, 3));
+        sprintf(temp, "01000001%s0000%s", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "lch ")) {
-        sprintf(temp, "01000011%04d0000%016d", getParam(instr, 1), getParam(instr, 3));
+        sprintf(temp, "01000011%s0000%s", getParam(instr, 1), getParam(instr, 3));
 
     //Instruções de Memória
     } else if(startWith(instr, "load ")) {
-        sprintf(temp, "10000000%04d%04d0000000000000000", getParam(instr, 1), getParam(instr, 3));
+        sprintf(temp, "10000000%s%s0000000000000000", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "store ")) {
-        sprintf(temp, "100000010000%04d%04d000000000000", getParam(instr, 1), getParam(instr, 3));
+        sprintf(temp, "100000010000%s%s000000000000", getParam(instr, 1), getParam(instr, 3));
 
     //Instruções de Desvio
     } else if(startWith(instr, "j ")) {
-        sprintf(temp, "10100000000000000000%012d", getParam(instr, 0));
+        sprintf(temp, "10100000000000000000%s", strOffset(getParam(instr, 0), 4));
     } else if(startWith(instr, "jt.")) {
         char *cond = substring(instr, 3, indexOf(instr, ' ') - 1);
         int c;
@@ -385,7 +412,7 @@ char *getInstrBits(char *instr) {
         } else if(strEquals(cond, "overflow")) {
             c = 111;
         }
-        sprintf(temp, "1010001000000000%04d%012d", c, getParam(instr, 0));
+        sprintf(temp, "10100010000000000%03d%s", c, strOffset(getParam(instr, 0), 4));
     } else if(startWith(instr, "jf.")) {
         char *cond = substring(instr, 3, indexOf(instr, ' ') - 1);
         int c;
@@ -402,13 +429,13 @@ char *getInstrBits(char *instr) {
         } else if(strEquals(cond, "overflow")) {
             c = 111;
         }
-        sprintf(temp, "1010010000000000%04d%012d", c, getParam(instr, 0));
+        sprintf(temp, "10100100000000000%03d%s", c, strOffset(getParam(instr, 0), 4));
     
     //Instruções de Desvio por Registrador
     } else if(startWith(instr, "jal ")) {
-        sprintf(temp, "1100000000000000%04d000000000000", getParam(instr, 0));
+        sprintf(temp, "1100000000000000%s000000000000", getParam(instr, 0));
     } else if(startWith(instr, "jr ")) {
-        sprintf(temp, "1100000100000000%04d000000000000", getParam(instr, 0));
+        sprintf(temp, "1100000100000000%s000000000000", getParam(instr, 0));
 
     //Instrução nop
     } else if(strEquals(instr, "nop")) {
@@ -433,6 +460,7 @@ int writeBits(char *outputPath) {
 
             if(temp != NULL) {
                 fprintf(outputFile, "%s\n", temp);
+                //printf("%s   -    %s\n", temp, instr->content);//DEBUG
                 instr = instr->next;
             } else {
                 printf("[A][ERRO] Erro ao codificar instrucao: %s\n", instr->content);
@@ -446,10 +474,3 @@ int writeBits(char *outputPath) {
     printf("[A][ERRO] Erro ao abrir arquivo de saida\n");
     return 0;
 }
-
-//SUBSTITUICAO DOS LABELS DE DESVIO E VARIAVEIS
-//LOWBYTE e HIGHBYTE NA CODIFICACAO
-//FORMATO DO JUMPER - TAMANHO MALUCO
-//TAMANHO DO ENDEREÇO DA MEMÓRIA DE INSTRUÇÕES 32 - JA QUE USA LOW E HIGH P CARREGA-LOS
-//TAMANHO DO ENDEREÇO DA MEMÓRIA DE DADOS 32 - JA QUE USA LOW E HIGH P CARREGA-LOS
-//NUMEROS NEGATIVOS - O QUE FAZER?

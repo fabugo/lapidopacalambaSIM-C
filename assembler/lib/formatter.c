@@ -83,7 +83,7 @@ int formatInstructions(Line *line) {
                 }
             }
         } else if(strEquals(aux->text, ".end")) {
-            int lineNumber = aux->number;
+            long long int lineNumber = aux->number;
             int lineCount = -1;
             Line *aux2 = aux;
             do {

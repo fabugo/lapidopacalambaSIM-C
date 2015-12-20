@@ -10,7 +10,7 @@
 /*	Estrutura usada para armazenar uma linha do arquivo, numerando-a e dando referencia
 	para a proxima linha.*/
 struct LINE {
-    int number;
+    long long int number;
     char *text;
     struct LINE *next;
 };

@@ -112,3 +112,54 @@ void removeAll(char *str, int start, int end, char c) {
 	    }
     }
 }
+char *replaceAll(char *str, char *replaced, char *toReplace) {
+	int lenght = strlen(str);
+	int rLenght = strlen(replaced);
+	int tLenght = strlen(toReplace);
+	int x, y, z;
+	char *newStr = malloc(lenght+1);
+	strcpy(newStr, str);
+
+    for(x = 0; x <= lenght-rLenght; x++) {
+    	if(startWith(strOffset(newStr, x), replaced)) {
+    		if(tLenght == rLenght) {
+				for(y = x, z = 0; z < tLenght; z++, y++)
+					newStr[y] = toReplace[z];
+			} else if(tLenght > rLenght) {
+    			int nlenght = lenght + (tLenght - rLenght);
+    			newStr = realloc(newStr, nlenght+1);
+        		for(y = lenght-1, z = nlenght-1; y >= (x+rLenght); y--, z--) {
+        			newStr[z] = newStr[y];
+        		}
+
+            	for(y = x, z = 0; z < tLenght; z++, y++) {
+					newStr[y] = toReplace[z];
+            	}
+        		
+        		newStr[nlenght] = '\0';
+			} else {
+				for(y = x, z = 0; z < tLenght; z++, y++)
+					newStr[y] = toReplace[z];
+				for(;y < lenght; y++)
+					newStr[y] = newStr[y+ rLenght - tLenght];
+				for(; y < lenght; y++)
+					newStr[y] = toReplace[y+1];
+				lenght -= rLenght - tLenght;
+				newStr[y] = '\0';
+			}
+        }
+    }
+
+    return newStr;
+}
+
+int contains(char *str1, char *str2) {
+	int lenght = strlen(str1);
+	int rLenght = strlen(str2);
+	int x;
+    for(x = 0; x <= lenght-rLenght; x++) {
+    	if(startWith(strOffset(str1, x), str2))
+    		return 1;
+    }
+    return 0;
+}

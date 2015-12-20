@@ -11,7 +11,7 @@ Line *read(char path[]) {
     if(inputFile != NULL && !feof(inputFile)) { //Se o arquivo foi aberto com sucesso
         Line *first = malloc(sizeof(Line)), *current = NULL;
 
-        int lineCount = 0;
+        long long int lineCount = 0;
         while(!feof(inputFile)) { //Enquanto não chegar ao fim do arquivo
             char *text = nextLine();
             lineCount++;
