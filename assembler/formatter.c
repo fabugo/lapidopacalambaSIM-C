@@ -34,13 +34,11 @@ int formatInstructions(Line *line) {
                 pseg = 1;
             }
             
-            aux = aux->next;
-            while(aux != NULL && aux->text[0] != '.') {
+            while((aux = aux->next) != NULL && aux->text[0] != '.') {
                 if(!validate(aux->text)) {
                     printf("[F][ERRO] Erro encontrado na linha %d. Instrucao invalida: \"%s\"\n", aux->number, aux->text);
                     return 0;
                 }
-                aux = aux->next;
             }
         } else if(strEquals(aux->text, ".dseg")) {
             if(dseg) {
@@ -65,13 +63,11 @@ int formatInstructions(Line *line) {
                             aux->next = temp;
                         }
 
-                        aux = aux->next;
-                        while(startWith(aux->text, ".word ")) {
+                        while(startWith((aux = aux->next)->text, ".word ")) {
                             if(!isConstant(strOffset(aux->text, 6))) {
                                 printf("[F][ERRO] Erro encontrado na linha %d. Instrucao invalida: \"%s\"\n", aux->number, aux->text);
                                 return 0;
                             }
-                            aux = aux->next;
                         }
                     } else {
                         printf("[F][ERRO] Erro encontrado na linha %d. Instrucao invalida: \"%s\"\n", aux->number, aux->text);

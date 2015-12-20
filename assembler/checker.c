@@ -13,13 +13,11 @@ int check(Line *line) {
 	aux = line;
 	getVariables(aux);
 
-
 	aux = line;
 	while(aux != NULL && !strEquals(aux->text, ".pseg"))
 		aux = aux->next;
 
-	aux = aux->next;
-	while(aux != NULL && aux->text[0] != '.') {
+	while((aux = aux->next) != NULL && aux->text[0] != '.') {
 		int index = indexOf(aux->text, ':');
 		char *instr = strOffset(aux->text, (index > -1) ? index+2 : 0);
 
@@ -69,7 +67,6 @@ int check(Line *line) {
 				}
 		    }
 		}
-		aux = aux->next;
 	}
 
 	return 1;
@@ -79,8 +76,8 @@ void getJumpers(Line *line) {
 	Label *current = NULL;
 	while(line != NULL && !strEquals(line->text, ".pseg"))
 		line = line->next;
-	line = line->next;
-	while(line != NULL && line->text[0] != '.') {
+
+	while((line = line->next) != NULL && line->text[0] != '.') {
 		int index = indexOf(line->text, ':');
 		if(index > -1) {
 			char *text = substring(line->text, 0, index - 1);
@@ -96,7 +93,6 @@ void getJumpers(Line *line) {
                 current->next = NULL;
             }
 		}
-		line = line->next;
 	}
 }
 
@@ -105,8 +101,7 @@ void getVariables(Line *line) {
 	while(line != NULL && !strEquals(line->text, ".dseg"))
 		line = line->next;
 
-	line = line->next;
-	while(line != NULL && (line->text[0] != '.' || startWith(line->text, ".word"))) {
+	while((line = line->next) != NULL && (line->text[0] != '.' || startWith(line->text, ".word"))) {
 		int index = indexOf(line->text, ':');
 		if(index > -1) {
 			char *text = substring(line->text, 0, index - 1);
@@ -122,6 +117,5 @@ void getVariables(Line *line) {
                 current->next = NULL;
             }
 		}
-		line = line->next;
 	}
 }
