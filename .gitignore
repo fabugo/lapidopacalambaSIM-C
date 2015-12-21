@@ -7,3 +7,4 @@ simulator/*.exe
 .atom-build.json
 *.layout
 *.cbp
+try/
