@@ -4,3 +4,6 @@ assembler/*.o
 assembler/*.exe
 simulator/*.o
 simulator/*.exe
+.atom-build.json
+*.layout
+*.cbp
