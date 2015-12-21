@@ -29,5 +29,7 @@ A saída do programa será dada na pasta output, presente na mesma pasta do asse
 
 ##Compilar e Executar (Windows)
 Caso queria compilar e executar o montador de forma mais rápida, execute o arquvio Executar.bat que contém as instruções que compila o arquivo .c e o executa chamando todos os programas teste da pasta input:
+
 	gcc -o assembler assembler.c ../lib/string.c lib/reader.c lib/formatter.c lib/checker.c
+	
 	assembler "input/teste1.asm" "input/teste2.asm" "input/teste3.asm" "input/fibonacci.asm" "input/binary search.asm" "input/bubble sort.asm"
