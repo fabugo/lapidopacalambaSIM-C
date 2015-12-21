@@ -10,12 +10,12 @@ void RB_start() {
 }
 
 void W_RB(int value){	
-	/*if(value) {
-		rbank.registers[rbank.input_WC] = input_WPC;
+	if(value) {
+		strcpy(rbank.registers[binaryToDecimal(substring(rbank.input_WC, 0, 4), 0)], rbank.input_WPC);
 	} else {
-		rbank.output_PRA = rbank.registers[rbank.input_RA];
-		rbank.output_PRB = rbank.registers[rbank.input_RB];
-	}*/
+		strcpy(rbank.output_PRA, rbank.registers[binaryToDecimal(substring(rbank.input_RA, 0, 4), 0)]);
+		strcpy(rbank.output_PRA, rbank.registers[binaryToDecimal(substring(rbank.input_RB, 0, 4), 0)]);
+	}
 }
 
 void RST_RB(int value){
