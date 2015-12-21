@@ -40,4 +40,4 @@ int contains(char *str1, char *str2);
 char *decimalToBinary(char *value, int size);
 
 //Retorna uma string contendo a representação decimal dos bits informado na string 'bits'.
-long long int binaryToDecimal(char *bits, int a2);
+long long int binaryToDecimal(char *bits, int width);

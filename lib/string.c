@@ -23,11 +23,11 @@ char *substring(char *str, int start, int end) {
 	int lenght = strlen(str);
 	//Se o intervalo 'end'-'start' for inválido, o 'size' será 0
 	int size = (start >= 0 && (end - start) < lenght) ? end - start + 1 : 0;
-	
+
 	if(start >= 0 && start < lenght) {
 		if((end - start) < lenght)
 			size = end - start + 1;
-		else 
+		else
 			size = lenght - start;
 	} else {
 		size = 0;
@@ -135,7 +135,7 @@ char *replaceAll(char *str, char *replaced, char *toReplace) {
             	for(y = x, z = 0; z < tLenght; z++, y++) {
 					newStr[y] = toReplace[z];
             	}
-        		
+
         		newStr[nlenght] = '\0';
 			} else {
 				for(y = x, z = 0; z < tLenght; z++, y++)
@@ -193,18 +193,18 @@ char *decimalToBinary(char *value, int size) {
     return temp;
 }
 
-long long int binaryToDecimal(char *bits, int a2) {
-	if(!a2) {
-		int length = strlen(bits);
-
-		int x;
-		long long int result = 0;
-		for(x = 0; (length - x) >= 0; x++) {
-			if(bits[x] == '1') {
-				result += (long long int) pow(2, x);
-			}
-		}
-
-		return result;
+int ctoi(char c){
+    if(c == 49)
+        return 1;
+    if(c == 48)
+        return 0;
+}
+long long int binaryToDecimal(char *bits, int width) {
+	long long int   dec,        mult;
+					dec = 0;    mult = 1;
+	for(width;width>=0;width--){
+		dec += (ctoi(bin[width]) * mult);
+		mult = mult * 2;
 	}
+	return dec;
 }
