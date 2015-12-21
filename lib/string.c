@@ -163,3 +163,32 @@ int contains(char *str1, char *str2) {
     }
     return 0;
 }
+
+char *decimalToBinary(char *value, int size) {
+    long long int v = atoll(value);
+    char *temp = malloc(size+1);
+    int x;
+
+    if(size == 4) {
+        for(x=0; x<size; x++) {
+            if((v & 0x8) !=0) temp[x] = '1';
+            else temp[x] = '0';
+            v = v<<1;
+        }
+    } else if(size == 16) {
+        for(x=0; x<size; x++) {
+            if((v & 0x8000) !=0) temp[x] = '1';
+            else temp[x] = '0';
+            v = v<<1;
+        }
+    } else {
+        for(x=0; x<size; x++) {
+            if((v & 0x80000000) !=0) temp[x] = '1';
+            else temp[x] = '0';
+            v = v<<1;
+        }
+    }
+    temp[x] = '\0';
+
+    return temp;
+}
