@@ -2,7 +2,6 @@
 #define PROGRAM_COUNTER_H
 
 #include <string.h>
-
 #include "../defs.h"
 
 struct PROGRAM_COUNTER {
