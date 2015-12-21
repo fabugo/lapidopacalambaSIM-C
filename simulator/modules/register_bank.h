@@ -8,4 +8,11 @@ typedef struct REGISTER_BANK RB;
 
 extern RB register_bank;
 
+char *readA();
+char *readB();
+int writec();
+int setA();
+int setB();
+int setC();
+
 #endif
