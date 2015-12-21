@@ -34,3 +34,6 @@ char *replaceAll(char *str, char *replaced, char *toReplace);
 
 //Retorna 1 se a string 'str1' conter 'str2' ou 0, caso contrário.
 int contains(char *str1, char *str2);
+
+//Retorna uma string contendo a representação binária do valor 'value' com 'size' bits. Size pode ser 4, 16 ou 32.
+char *decimalToBinary(char *value, int size);
