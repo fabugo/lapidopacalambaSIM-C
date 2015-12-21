@@ -1,5 +1,5 @@
 void ExAlu(){
-	switch(controlAlu){
+	switch(opcodeAlu){
 		case  1: add();      break;
 		case  2: addinc();   break;
 		case  3: inca();     break;
