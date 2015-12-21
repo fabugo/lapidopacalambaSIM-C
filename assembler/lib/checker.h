@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "reader.h"
-#include "string.h"
+#include "../../lib/string.h"
 
 struct LABEL {
 	long long int address;
