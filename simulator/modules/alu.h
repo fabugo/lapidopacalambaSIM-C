@@ -2,7 +2,12 @@
 #define ALU_H
 
 struct ALU {
-    int a;
+	char[6] operation;
+    char[33] input_A;
+    char[33] input_B;
+    char[33] output;
+
+    int[4] flags;
 };
 typedef struct ALU ALU;
 

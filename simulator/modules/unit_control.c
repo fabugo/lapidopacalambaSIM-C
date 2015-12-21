@@ -1,3 +1,3 @@
 #include "unit_control.h"
 
-UC unit_control;
+UC uc;

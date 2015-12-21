@@ -259,11 +259,11 @@ void loadlit(){
 }
 
 void lcl(){
-	ALUOut = B | (ALUOut & 0xff00);
+	ALUOut = B | (B & 0xffff0000);
 }
 
 void lch(){
-	ALUOut = (B << 16) | (ALUOut & 0x00ff);
+	ALUOut = (B << 16) | (B & 0x0000ffff);
 }
 
 void load(){

@@ -2,10 +2,12 @@
 #define SIGNAL_EXTENDER_H
 
 struct SIGNAL_EXTENDER {
-    int a;
+    char input[17];
+    char output[33];
+    int OP_SE;
 };
 typedef struct SIGNAL_EXTENDER SE;
 
-extern SE signal_extender;
+extern SE se;
 
 #endif

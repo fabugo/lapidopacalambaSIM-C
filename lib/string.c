@@ -192,3 +192,19 @@ char *decimalToBinary(char *value, int size) {
 
     return temp;
 }
+
+long long int binaryToDecimal(char *bits, int a2) {
+	if(!a2) {
+		int length = strlen(bits);
+
+		int x;
+		long long int result = 0;
+		for(x = 0; (length - x) >= 0; x++) {
+			if(bits[x] == '1') {
+				result += (long long int) pow(2, x);
+			}
+		}
+
+		return result;
+	}
+}
