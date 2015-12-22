@@ -1,7 +1,7 @@
 %
 % Portuguese-BR vertion
 % 
-\documentclass{article}
+\documentclass{report}
 
 \usepackage{ipprocess}
 % Use longtable if you want big tables to split over multiple pages.
@@ -15,34 +15,29 @@
 \makeindex
 \begin{document}
 
-\DocumentTitle{Documento de Requisitos}
-\Project{Título do Projeto}
-\Organization{Título da Instituição}
-\Version{Build 2.0a}
+\DocumentTitle{Especificação de Requisitos}
+\Project{Processador Lapidopacalamba}
+\Organization{Universidade Estadual de Feira de Santana}
+\Version{Build 1}
 
 \capa
+\newpage
 \newpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Revision History
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{\center Histórico de Revisões}
+\chapter*{Histórico de Revisões}
   \vspace*{1cm}
   \begin{table}[ht]
     \centering
-    \begin{tabular}[pos]{|m{2cm} | m{7.2cm} | m{3.8cm}|} 
+    \begin{tabular}[pos]{|m{2cm} | m{6cm} | m{3cm}|} 
       \hline
-      \cellcolor[gray]{0.9}
-      \textbf{Date} & \cellcolor[gray]{0.9}\textbf{Descrição} & \cellcolor[gray]{0.9}\textbf{Autor(s)}\\ \hline
+      \cellcolor[gray]{0.9}\textbf{Date} & \cellcolor[gray]{0.9}\textbf{Descrição} & \cellcolor[gray]{0.9}\textbf{Autor(s)}\\
       \hline
-      \small xx/xx/xxxx & \small <Descrição> & \small <Autor(es)> \\ \hline      
-      \small xx/xx/xxxx &
-      \begin{small}
-        \begin{itemize}
-          \item Exemplo de;
-          \item Revisões em lista;
-        \end{itemize}
-      \end{small} & \small <Autor(es)> \\ \hline 
+      21/12/2015 & Concepção e estruturação do Documento & Patricia Gomes \\ \hline      
+      21/12/2015 & Finalização do Documento & Patricia Gomes \\ \hline      
+      21/12/2015 & Revisão do Documento & Fábio Barros \\ \hline   
     \end{tabular}
   \end{table}
 
@@ -56,14 +51,15 @@
 %% Document main content
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introdução}
+ \subsection{Propósito do Documento}
+  O projeto consiste no desenvolvimento um processador capaz de executar 42 instruções. O processador desenvolvido possui 16 registradores de propósito geral, sendo que cada registrador possui a capacidade de armazenamento de 32 bits.
+  
+  Este documento descreve a lógica de implementação de todos os requisitos do processador.
 
 \subsection{Visão Geral do Documento}
   \begin{itemize}
    \item \textbf{Requisitos funcionais -} lista de todos os requisitos funcionais.
    \item \textbf{Requisitos não funcionais -} lista de todos os requisitos não funcionais.
-   \item \textbf{Dependências -} conjunto de dependências de IP-cores previstos.
-   \item \textbf{Notas -} apresenta a lista de notas apresentadas ao longo do documento.
-   \item \textbf{Referências -} lista de todos os textos referenciados nesse documento.
   \end{itemize}
 
   % inicio das definições do documento
@@ -74,9 +70,8 @@
         \begin{tabular}[pos]{|m{5cm} | m{9cm}|} 
           \hline
           \cellcolor[gray]{0.9}\textbf{Termo} & \cellcolor[gray]{0.9}\textbf{Descrição} \\ \hline
-          Requisitos Funcionais & Requisitos de hardware que compõem os módulos, descrevendo as ações que o mesmo deve estar apto a executar. Estas informações são capturadas a partir do desenvolvimento dos casos de uso, que documentam as entradas, os processos e as saídas geradas.  \\ \hline
+          Requisitos Funcionais & Requisitos de hardware que compõem os módulos, descrevendo as ações que o mesmo deve estar apto a executar.   \\ \hline
           Requisitos Não Funcionais & Requisitos de hardware que compõem os módulos, representando as características que o mesmo deve ter, ou restrições que o mesmo deve operar. Estas características referem-se técnicas, algoritmos, tecnologias e especificidades do Sistema como um todo.  \\ \hline
-          Dependências & Requisitos de reuso de IP-cores, descrevendo as funções que cada um deve exercer. \\ \hline
         \end{tabular}
       \end{center}
     \end{table}  
@@ -92,23 +87,7 @@
           \cellcolor[gray]{0.9}\textbf{Sigla} & \cellcolor[gray]{0.9}\textbf{Descrição} \\ \hline
           FR      & Requisito Funcional  \\ \hline
           NFR     & Requisito Não Funcional  \\ \hline
-          D       & Dependência  \\ \hline
-        \end{tabular}
-      \end{center}
-    \end{table}  
-  % fim
-
-  % inicio da descriao de prioridades de requisitos
-  \subsection{Prioridades dos Requisitos}
-    \FloatBarrier
-    \begin{table}[H]
-      \begin{center}
-        \begin{tabular}[pos]{|m{2cm} | m{12cm}|} 
-          \hline
-          \cellcolor[gray]{0.9}\textbf{Prioridade} & \cellcolor[gray]{0.9}\textbf{Característica} \\ \hline
-          Importante      & Requisito sem o qual o sistema funciona, porém não como deveria.  \\ \hline
-          Essencial       & Requisito que deve ser implementado para que o sistema funcione.  \\ \hline
-          Desejável       & Requisito que não compromete o funcionamento do sistema.  \\ \hline
+          ULA     & Unidade de Lógica e Aritmética  \\ \hline
         \end{tabular}
       \end{center}
     \end{table}  
@@ -116,55 +95,251 @@
 
   % inicio dos requisitos funcionais
   \section{Requisitos Funcionais}
-    \subsection{Grupo Funcional de Requisitos}
+    \subsection{Requisitos dos módulos}
     \begin{functional}
-     % \requirement{name}{description}{priority}
-     \requirement
-      {Nome do Requisito}
-      {Descrição breve e objetiva.}
+     % \requirement{name}{description}
+      \requirement
+      {Criação de uma Unidade de Lógica e Aritmética}
+      {Para que o processador atenda ao requisito de ser capaz de executar 42 instruções, é necessário construir uma unidade responsável por executar as operações de lógica e aritmética(ULA). A ULA deve ser capaz de realizar as operações com dois dois operandos de 32 bits. A mesma deve possuir duas saídas, uma para apresentar o resultado que também será de 32 bits, e outra para apresentar as flags atualizadas de acordo com a operação realizada. Além disso, a ULA deve possuir um sinal de controle responsável por indicar a mesma o código da operação, ou seja, qual operação ela deverá executar no momento.}
+      {Importante}
+      
+       \requirement
+      {Criação de um Extensor de sinais}
+      {Para viabilizar as operações com constantes deve ser implementado um extensor de sinais. O mesmo deve possuir entrada de 16 bits e saída de 32 bits. Para realizar a extensão dos sinais, o extensor deve inserir zeros à esquerda do sinal.}
+      {Importante}
+      
+       \requirement
+      {Criação de um registrador de flags}
+      {Deve ser criado um registrador de flags de forma a armazenar as flags atualizadas de acordo com a operação da ULA.}
+      {Importante}
+      
+    \requirement
+      {Atualizar Flags}
+      {A medida que uma operação é realizada algumas flags deverão ser atualizadas. A atualização dessas flags se dará de acordo com a operação realizada pela ULA. As Flags a serem atualizadas são: Overflow, Sinal, Carry e Zero.}
+      {Importante}
+   
+      \requirement
+      {Criação de um testador de flags}
+      {Para ser possível a realização de desvios condicionais deve ser implementado um módulo testador de flags que terá como função analisar uma condição e decidir se um jump condicional será ou não realizado.}
+      {Importante}
+      
+       \requirement
+      {Criação de uma memória de dados}
+      {Deverá ser desenvolvida uma memória responsável por salvar/ler dados proveniente das instruções de acesso à memória.}
+      {Importante}
+      
+       \requirement
+      {Criação de um banco de registradores}
+      {O banco de registradores deve possuir como entrada os endereços dos registradores fonte o endereço do registrador de destino, uma entrada para o dado a ser armazenado. Deve possuir como saída os dados contidos nos registradores fonte.}
+      {Importante}
+      
+       \requirement
+      {Criação de uma memória de instrução}
+      {Todas as instruções devem ser armazenadas na memória de instrução. Esse módulo deve possuir como entrada o valor da saída do contador de programas (PC).}
       {Importante}
     
+      \end{functional}
+      
+     \subsection{Requisitos das operações}
+      \begin{functional}
+
      \requirement
-      {Nome do Requisito}
-      {Descrição breve e objetiva.}
+      {Operação de adição}
+      {A Unidade Lógica e Aritmética recebe dois operandos inicialmente armazenados no banco de registradores e soma os dois operandos bit a bit. A operação de soma deve atualizar todas as flags.}
       {Importante}
+
+     \requirement
+      {Operação de adição com incremento}
+      {A Unidade Lógica e Aritmética recebe dois operandos inicialmente armazenados no banco de registradores executa a soma dos dois operandos bit a bit e em seguida soma  ao número 1. Esta operação deve atualizar todas as flags.}
+      {Importante}
+      
+      \requirement
+      {Operação de incremento}
+      {A Unidade Lógica e Aritmética recebe um operando inicialmente armazenado no banco de registradores e soma ao número 1. Esta operação deve atualizar todas as flags.}
+      {Importante}
+      
+      \requirement
+      {Operação de subtração com decremento}
+      {A Unidade Lógica e Aritmética recebe dois operandos inicialmente armazenados no banco de registradores e executa a subtração fazendo uma soma  bit a bit com o segundo operando em complemento a 2 e em seguida subtrai o número 1. Essa operação deve atualizar todas as flags.}
+      {Importante}
+      
+      \requirement
+      {Operação de subtração}
+      {A Unidade Lógica e Aritmética recebe dois operandos inicialmente armazenados no banco de registradores e executa a subtração fazendo uma soma  bit a bit com o segundo operando em complemento a 2. Esta operação deve atualizar todas as flags.}
+      {Importante}
+      
+      \requirement
+      {Operação de decremento}
+      {A Unidade Lógica e Aritmética recebe um operando inicialmente armazenado no banco de registradores e subtrai o número 1. Esta operação deve atualizar todas as flags.}
+      {Importante}
+      
+       \requirement
+      {Operação de deslocamento lógico}
+      {A Unidade Lógica e Aritmética recebe um operando inicialmente armazenado no banco de registradores e desloca seus bits à esquerda. Esta operação deve atualizar as flags de sinal, carry e zero.}
+      {Importante}
+      
+       \requirement
+      {Operação de deslocamento aritmético}
+      {A Unidade Lógica e Aritmética recebe um operando inicialmente armazenado no banco de registradores e desloca seus bits à direita. Esta operação deve atualizar as flags de sinal, carry e zero.}
+      {Importante}
+      
+       \requirement
+      {Operação zeros}
+      {A Unidade Lógica e Aritmética envia zero para saída. Esta operação deve atualizar apenas a flag de zero.}
+      {Importante}
+      
+      \requirement
+      {Operação and}
+      {A Unidade Lógica e Aritmética recebe dois operandos inicialmente armazenados no banco de registradores e executa uma and entre os dois operandos. Esta operação deve atualizar as flags de sinal e zero.}
+      {Importante}
+      
+      \requirement
+      {Operação and com o primeiro operando negado}
+      {A Unidade Lógica e Aritmética recebe dois operandos inicialmente armazenados no banco de registradores e faz o complemento a 2 do primeiro operando, em seguida executa uma and entre os dois operandos. Esta operação deve atualizar as flags de sinal e zero.}
+      {Importante}
+      
+      \requirement
+      {Operação que passa o operando B}
+      {A Unidade Lógica e Aritmética recebe um operando inicialmente armazenado no banco de registradores e o envia para saída. Esta operação não deve atualizar nenhuma flag.}
+      {Importante}
+      
+      \requirement
+      {Operação and com o segundo operando negado}
+      {A Unidade Lógica e Aritmética recebe dois operandos inicialmente armazenados no banco de registradores e faz o complemento a 2 do segundo operando, em seguida executa uma and entre os dois operandos. Esta operação deve atualizar as flags de sinal e zero.}
+      {Importante}
+      
+      \requirement
+      {Operação que passa o operando A}
+      {A Unidade Lógica e Aritmética recebe um operando inicialmente armazenado no banco de registradores e o envia para saída. Esta operação deve atualizar as flags de sinal e zero.}
+      {Importante}
+      
+      \requirement
+      {Operação xor}
+      {A Unidade Lógica e Aritmética recebe dois operandos inicialmente armazenados no banco de registradores e executa uma xor entre os dois operandos. Esta operação deve atualizar as flags de sinal e zero.}
+      {Importante}
+      
+      \requirement
+      {Operação or}
+      {A Unidade Lógica e Aritmética recebe dois operandos inicialmente armazenados no banco de registradores e executa uma or entre os dois operandos. Esta operação deve atualizar as flags de sinal e zero.}
+      {Importante}
+      
+      \requirement
+      {Operação nand}
+      {A Unidade Lógica e Aritmética recebe dois operandos inicialmente armazenados no banco de registradores, transforma os dois em negativos usando o complemento a 2 e sem seguida executa uma and entre os  operandos. Esta operação deve atualizar as flags de sinal e zero.}
+      {Importante}
+      
+       \requirement
+      {Operação xnor}
+      {A Unidade Lógica e Aritmética recebe dois operandos inicialmente armazenados no banco de registradores e executa uma xor entre os dois operandos, em seguida transforma o valor obtido em negativo fazendo o complemento a 2. Esta operação deve atualizar as flags de sinal e zero.}
+      {Importante}
+      
+      \requirement
+      {Operação que passa o operando A negativo}
+      {A Unidade Lógica e Aritmética recebe um operando inicialmente armazenado no banco de registradores o transforma em negativo fazendo o complemento a 2 e o envia para saída. Esta operação deve atualizar as flags de sinal e zero.}
+      {Importante}
+      
+       \requirement
+      {Operação or com o primeiro operando negado}
+      {A Unidade Lógica e Aritmética recebe dois operandos inicialmente armazenados no banco de registradores, transforma o primeiro operando em negativo usando o complemento a 2 e sem seguida executa uma or entre os  operandos. Esta operação deve atualizar as flags de sinal e zero.}
+      {Importante}
+      
+       \requirement
+      {Operação que passa o operando B negativo}
+      {A Unidade Lógica e Aritmética recebe um operando inicialmente armazenado no banco de registradores o transforma em negativo fazendo o complemento a 2 e o envia para saída. Esta operação deve atualizar as flags de sinal e zero.}
+      {Importante}
+      
+       \requirement
+      {Operação or com o segundo operando negado}
+      {A Unidade Lógica e Aritmética recebe dois operandos inicialmente armazenados no banco de registradores, transforma o segundo operando em negativo usando o complemento a 2 e sem seguida executa uma or entre os operandos. Esta operação deve atualizar as flags de sinal e zero.}
+      {Importante}
+      
+      \requirement
+      {Operação nor}
+      {A Unidade Lógica e Aritmética recebe dois operandos inicialmente armazenados no banco de registradores, transforma os dois em negativos usando o complemento a 2 e sem seguida executa uma or entre os  operandos. Esta operação deve atualizar as flags de sinal e zero.}
+      {Importante}
+      
+      \requirement
+      {Operação ones}
+      {A Unidade Lógica e Aritmética envia 1 para saída. Esta operação não deve atualizar nenhuma flag.}
+      {Importante}
+      
+      \requirement
+      {Operação loadlit}
+      {A Unidade Lógica e Aritmética recebe o valor contido em um registrador do banco de registradores e o envia para saída.}
+      {Importante}
+      
+      \requirement
+      {Operação loadlit}
+      {Esta operação carrega uma constante de até 16 bits no registrador de destino.}
+      {Importante}
+      
+       \requirement
+      {Operação lcl}
+      {Inicialmente é realizada uma operação and entre uma constante de 16 bits e o valor contido no endereço 0xffff0000 da memória, em seguida é feita uma or entre o resultado dessa and e a constante de 16 bits.}
+      {Importante}
+      
+       \requirement
+      {Operação lch}
+      {Inicialmente a constante é deslocada em 16 bits e é realizada uma operação and entre a constante e o valor contido no endereço 0x0000ffff da memória, em seguida é feita uma or entre o resultado dessa and e a constante deslocada.}
+      {Importante}
+      
+       \requirement
+      {Operação load}
+      {o endereço presente no registrador B do banco de registradores deve ser lido da memória, e a saída é escrita no banco de registradores no endereço especificado na pelo registrador A.}
+      {Importante}
+      
+      \requirement
+      {Operação store}
+      {Na instrução Store os dados devem ser lidos do banco de registradores e escritos na memória, sendo registrador A o dado a ser escrito e o registrador B endereço onde será armazenado.}
+      {Importante}
+      
+       \requirement
+      {Operação de desvio incondicional}
+      {Deve realizar um salto para um endereço absoluto da memória de instruções, informado pelo campo DESTINO.}
+      {Importante}
+      
+       \requirement
+      {Operação de desvios condicionais}
+      {Deve realizar um salto para um endereço absoluto da memória de instruções, informado pelo campo DESTINO a partir de sinais que indicam se o jump é true ou false e dos testes de condições de flags. Tais condições podem ser observadas no documento de arquitetura.}
+      {Importante}
+      
+      \requirement
+      {Operação de desvios tipo and link}
+      {O valor de PC+1 deve ser armazenado no registrador r7 (definido pela unidade de controle) e o conteúdo do registrador RB armazenado em PC.}
+      {Importante}
+      
+       \requirement
+      {Operação de jump register}
+      {Deve armazenar o conteúdo do registrador RB no PC.}
+      {Importante}
+      
+      \requirement
+      {Halt}
+      {Deve realizar um salto incondicional para o endereço atual.}
+      {Importante}
+      
+      \requirement
+      {Nop}
+      {Nessa instrução todos os sinais de controle devem ser zerados, de forma que nada seja registrado na memória ou no banco de registradores.}
+      {Importante}
+      
     \end{functional}
 
-  \subsection{Outro Grupo de Requisitos}
-  
-    \begin{functional}
-      \requirement{Nome do Requisito}{Descrição breve e objetiva.}{Importante}
-
-      \requirement
-      {Nome do Requisito}
-      {Descrição breve e objetiva.}
-      {Importante}
-
-    \end{functional}    
- 
 \section{Requisitos não Funcionais}
 % Esta seção apresenta a lista de Requisitos não Funcionais do projeto.
 
   \begin{nonfunctional}
     \requirement
-    {Nome do Requisito}
-    {Descrição breve e objetiva.}
+    {Armazenamento em memória de forma big-endian}
+    {O armazenamento na memória deve ser feito de forma big-endian, logo, o bit mais significativo do dado deve ser armazenado na posição menos significativa da memória.}
     {Importante}
 
     \requirement
-    {Nome do Requisito}
-    {Descrição breve e objetiva.}
+    {Unidade de controle hardwired}
+    {A unidade de controle deve ser hardwire, logo, sinais de controle devemm ser gerados com o uso de técnicas de circuitos lógicos convencionais.}
     {Importante}
   \end{nonfunctional}
 
-\section{Dependências}
-  % Esta seção apresenta uma lista dos IP-cores disponíveis % para reuso e que devem ser adotados no desenvolvimento % deste projeto.
-
-  \begin{dependencies}
-    \dependency{Nome do IP-\textit{core}}{Descrição breve e objetiva do IP-\textit{core} e referência à documentação.}
-
-    \dependency{Nome do IP-\textit{core}}{Descrição breve e objetiva do IP-\textit{core} e referência à documentação.}
-\end{dependencies}  
 
 % Optional bibliography section
 % To use bibliograpy, first provide the ipprocess.bib file on the root folder.
