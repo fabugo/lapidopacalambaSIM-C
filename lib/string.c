@@ -208,32 +208,35 @@ char *decimalToBinary(char *value, int size) {
 
 //conversor binario para decimal lli
 int ctoi(char c){
-    if(c == 49)
+    if(c == '1')
         return 1;
-    if(c == 48)
+    if(c == '0')
         return 0;
 }
 int ctoia(char c){
-    if(c == 49)
+    if(c == '1')
         return 0;
-    if(c == 48)
+    if(c == '0')
         return 1;
 }
+
 long long int binaryToDecimal(char *bin, int singned) {
-	long long int 	dec,		mult;
-    				dec = 0;    mult = 1;
+	long long int dec = 0, mult = 1;
     int width = strlen(bin)-1;
+
     for(width;width>=0;width--){
-		if(singned)//se quiser retornar valor tanto negativo quanto positivo
+		if(singned) //se quiser retornar valor com sinal
 	        if(ctoi(bin[0]))
 	            dec +=(ctoia(bin[width])*mult);
 	        else
 	            dec +=(ctoi(bin[width])*mult);
-		else//se quiser retornar apenas valores positivos
+		else //se quiser retornar apenas valores positivos
 			dec +=(ctoi(bin[width])*mult);
         mult = mult * 2;
     }
+
     if(ctoi(bin[0]))
         dec = ~dec;
+
 	return dec;
 }
