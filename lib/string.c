@@ -199,13 +199,26 @@ int ctoi(char c){
     if(c == 48)
         return 0;
 }
+
+int ctoia(char c){
+    if(c == 49)
+        return 0;
+    if(c == 48)
+        return 1;
+}
+
 long long int binaryToDecimal(char *bin) {
-	long long int   dec,        mult;
-					dec = 0;    mult = 1;
-	int width = strlen(bits) - 1;
-	for(width;width>=0;width--){
-		dec += (ctoi(bin[width]) * mult);
-		mult = mult * 2;
-	}
+	long long int 	dec,		mult;
+    				dec = 0;    mult = 1;
+    int width = strlen(bin)-1;
+    for(width;width>=0;width--){
+        if(ctoi(bin[0]))
+            dec +=(ctoia(bin[width])*mult);
+        else
+            dec +=(ctoi(bin[width])*mult);
+        mult = mult * 2;
+    }
+    if(ctoi(bin[0]))
+        dec = ~dec;
 	return dec;
 }
