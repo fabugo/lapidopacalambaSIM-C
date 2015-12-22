@@ -12,7 +12,6 @@
 #include "signal_extender.h"
 #include "tester_flags.h"
 
-
 struct UNIT_CONTROL {
     char *TYPE_OP;
     char[6] OP_ALU;
