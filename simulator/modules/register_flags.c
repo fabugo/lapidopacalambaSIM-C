@@ -4,6 +4,8 @@ RF rf;
 
 void RF_start(){
 	rf.input_flags = (int*) &alu.flags;
+	
+	RST_RF(1);
 }
 
 void W_RF(int value) {

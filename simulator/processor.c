@@ -6,17 +6,16 @@
 #include "modules/data_memory.h"
 #include "modules/alu.h"
 #include "modules/register_flags.h"
+#include "modules/signal_extender.h"
+#include "modules/tester_flags.h"
 
-//#include "modules/signal_extender.h"
-//#include "modules/tester_flags.h"
 //#include "modules/unit_control.h"
 
 #include "defs.h"
 #include "../lib/string.h"
+#include <string.h>
 
 int main(int argc, char *argv[]) {
-	//printf(">%lld<\n", binaryToDecimal("1000", 0));
-
 	PC_start();
 	MI_start();
 	SE_start();
@@ -25,4 +24,5 @@ int main(int argc, char *argv[]) {
 	
 	ALU_start();
 	RF_start();
+	TF_start();
 }

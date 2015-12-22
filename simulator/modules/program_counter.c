@@ -4,6 +4,8 @@ PC pc;
 
 void PC_start() {
 	strcpy(pc.output, ZERO);
+
+	RST_PC(1);
 }
 
 void W_PC(int value) {

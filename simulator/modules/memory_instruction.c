@@ -4,6 +4,8 @@ MI mi;
 
 void MI_start() {
 	mi.input = (char*) &pc.output;
+
+	RST_MI(1);
 }
 
 void W_MI(int value) {
@@ -14,7 +16,6 @@ void W_MI(int value) {
 
 void RST_MI(int value) {
 	if(value) {
-		strcpy(mi.input, ZERO);
 		strcpy(mi.output, ZERO);
 
 		int x;
