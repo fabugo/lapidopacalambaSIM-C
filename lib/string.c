@@ -164,6 +164,19 @@ int contains(char *str1, char *str2) {
     return 0;
 }
 
+char *invert(char *str) {
+	int lenght = strlen(str);
+	char *out = malloc(lenght+1);
+	int x;
+	
+	for(x = 0; x < lenght-1; x++) {
+		out[x] = str[lenght-x-1];
+	}
+	out[x] = '\0';
+
+	return out;
+}
+
 char *decimalToBinary(char *value, int size) {
     long long int v = atoll(value);
     char *temp = malloc(size+1);
