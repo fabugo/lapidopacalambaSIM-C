@@ -430,7 +430,7 @@ int writeBits(char *outputPath) {
             temp = getInstrBits(instr->content);
 
             if(temp != NULL) {
-                fprintf(outputFile, "%s\n", invert(temp));
+                fprintf(outputFile, "%s\n", temp);
                 //printf("%s   -    %s\n", temp, instr->content);//DEBUG
                 instr = instr->next;
             } else {
