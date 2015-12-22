@@ -207,15 +207,18 @@ int ctoia(char c){
         return 1;
 }
 
-long long int binaryToDecimal(char *bin) {
+long long int binaryToDecimal(char *bin, int singned) {
 	long long int 	dec,		mult;
     				dec = 0;    mult = 1;
     int width = strlen(bin)-1;
     for(width;width>=0;width--){
-        if(ctoi(bin[0]))
-            dec +=(ctoia(bin[width])*mult);
-        else
-            dec +=(ctoi(bin[width])*mult);
+		if(singned)//se quiser retornar valor tanto negativo quanto positivo
+	        if(ctoi(bin[0]))
+	            dec +=(ctoia(bin[width])*mult);
+	        else
+	            dec +=(ctoi(bin[width])*mult);
+		else//se quiser retornar apenas valores positivos
+			dec +=(ctoi(bin[width])*mult);
         mult = mult * 2;
     }
     if(ctoi(bin[0]))
