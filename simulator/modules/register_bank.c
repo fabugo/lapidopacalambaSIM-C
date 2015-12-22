@@ -7,6 +7,8 @@ void RB_start() {
     rbank.input_RB = (char*) mi.output;
     rbank.input_WC = (char*) mi.output;
     rbank.input_WPC = (char*) mi.output;
+
+    RST_RB(1);
 }
 
 void W_RB(int value){	

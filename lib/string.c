@@ -203,7 +203,7 @@ long long int binaryToDecimal(char *bits, int width) {
 	long long int   dec,        mult;
 					dec = 0;    mult = 1;
 	for(width;width>=0;width--){
-		dec += (ctoi(bin[width]) * mult);
+		dec += (ctoi(bits[width]) * mult);
 		mult = mult * 2;
 	}
 	return dec;

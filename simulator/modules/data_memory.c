@@ -5,6 +5,8 @@ DM dm;
 void DM_start() {
 	dm.input = (char*) &rbank.output_PRA;
 	dm.address = (char*) &rbank.output_PRB;
+
+	RST_DM(1);
 }
 
 void W_DM(int value) {
