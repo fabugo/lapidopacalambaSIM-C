@@ -1,8 +1,6 @@
 #ifndef TESTER_FLAGS_H
 #define TESTER_FLAGS_H
 
-#include <string.h>
-#include "../defs.h"
 #include "../../lib/string.h"
 
 #include "register_flags.h"

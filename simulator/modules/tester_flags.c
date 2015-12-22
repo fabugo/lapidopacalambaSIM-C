@@ -3,7 +3,7 @@
 TF tf;
 
 void TF_start() {
-	tf.input_flags = rf.output_flags;
+	tf.input_flags = (int*) &rf.output_flags;
 	tf.cond = (char*) &mi.output;
 
 	tf.output = 0;
@@ -11,7 +11,7 @@ void TF_start() {
 
 void OP_TF(int value) {
 	//value - jt ou jf
-	char *flags = substring(tf.cond, 0, 2);
+	char *flags = substring(tf.cond, 17, 19); //bits 14:12
 	if(strEquals(flags, "001")) //neg = flag S
 		tf.output = (value)
 				? tf.input_flags[1]

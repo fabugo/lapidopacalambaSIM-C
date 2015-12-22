@@ -13,10 +13,10 @@ void RB_start() {
 
 void W_RB(int value){	
 	if(value) {
-		strcpy(rbank.registers[binaryToDecimal(substring(rbank.input_WC, 0, 4), 0)], rbank.input_WPC);
+		strcpy(rbank.registers[binaryToDecimal(substring(rbank.input_WC, 8, 11), 0)], rbank.input_WPC);//bits 23:20
 	} else {
-		strcpy(rbank.output_PRA, rbank.registers[binaryToDecimal(substring(rbank.input_RA, 0, 4), 0)]);
-		strcpy(rbank.output_PRA, rbank.registers[binaryToDecimal(substring(rbank.input_RB, 0, 4), 0)]);
+		strcpy(rbank.output_PRA, rbank.registers[binaryToDecimal(substring(rbank.input_RA, 12, 15), 0)]);//bits 19:16
+		strcpy(rbank.output_PRA, rbank.registers[binaryToDecimal(substring(rbank.input_RB, 16, 19), 0)]);//bits 15:12
 	}
 }
 
