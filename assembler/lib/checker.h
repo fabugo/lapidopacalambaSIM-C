@@ -13,6 +13,10 @@ struct LABEL {
 };
 typedef struct LABEL Label;
 
+/*
+	Percorre as linhas de instruções verificando se os Labels de jumpers e variáveis utilizados em
+	instruções foram declarados corretamente.
+*/
 int check(Line *line);
 
 #endif

@@ -10,7 +10,8 @@ void TF_start() {
 }
 
 void OP_TF(int value) {
-	//value - jt ou jf
+	//value 1 - jt
+	//value 0 - jf
 	char *flags = substring(tf.cond, 17, 19); //bits 14:12
 	if(strEquals(flags, "001")) //neg = flag S
 		tf.output = (value)

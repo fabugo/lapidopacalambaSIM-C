@@ -7,7 +7,8 @@
 #include "../../lib/string.h"
 
 /*  Percorre todas as linhas verificando se as diretivas e instruções são válidas. E removendo
-    espaços desnecessários. Retorna uma 'lista' de instruções validadas, sem as diretivas.*/
+    espaços desnecessários. Retorna uma 'lista' de instruções validadas, sem as diretivas
+*/
 int formatInstructions(Line *line);
 
 #endif
