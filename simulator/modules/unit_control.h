@@ -14,14 +14,11 @@
 
 struct UNIT_CONTROL {
     char *TYPE_OP;
-    char[6] OP_ALU;
-    char[3] OP_SE;
-    char[4] OP_TF;
-    int W_PC;
+    char OP_ALU[6];
+    char OP_TF[4];
     int W_RB;
     int W_DM;
     int W_RF;
-    int W_MI;
 };
 typedef struct UNIT_CONTROL UC;
 
@@ -29,9 +26,5 @@ extern UC uc;
 
 void UC_run();
 void UC_start();
-void IF();
-void ID();
-void EX();
-void WB();
 
 #endif

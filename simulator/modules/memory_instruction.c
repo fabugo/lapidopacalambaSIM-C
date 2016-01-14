@@ -4,7 +4,6 @@ MI mi;
 
 void MI_start() {
 	mi.input = (char*) &pc.output;
-
 	RST_MI(1);
 }
 

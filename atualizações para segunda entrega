@@ -1,0 +1,15 @@
+Refatoração do nop
+Alterar os codigos das instruções de salto para que o jf.TRUE fique no
+seguinte formato 00000000000000000000000000000000
+
+Corrigir o extensor de sinal para replicar o bit mais significativo em vez
+de preenche-lo com zeros.
+
+Alterar o formato da operação com constantes e de desvios
+
+Alterar o registrador de jal para o r15 e informar no documento
+
+Montador deve colocar o r15 na instrução jal na posicao WC
+
+=============================================================
+Fazer multiplexadores e adicionar os sinais na unidade de controle
