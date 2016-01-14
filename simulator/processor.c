@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
 	ALU_start();
 	RF_start();
 	TF_start();
+	UC_start();
 	/*********************************************************/
 
 	/******Carrega as instruções na memória de instrução******/
@@ -38,4 +39,6 @@ int main(int argc, char *argv[]) {
 		instr = instr->next;
 	}
 	/*********************************************************/
+
+	UC_run();
 }

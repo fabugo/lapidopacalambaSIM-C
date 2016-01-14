@@ -1,6 +1,9 @@
 #ifndef UNIT_CONTROL_H
 #define UNIT_CONTROL_H
 
+#include <stdlib.h>
+#include <stdio.h>
+
 #include "../defs.h"
 #include "../../lib/string.h"
 
@@ -14,9 +17,9 @@
 
 struct UNIT_CONTROL {
     char *TYPE_OP;
-    char[6] OP_ALU;
-    char[3] OP_SE;
-    char[4] OP_TF;
+    char OP_ALU[6];
+    char OP_SE[3];
+    char OP_TF[4];
     int W_PC;
     int W_RB;
     int W_DM;
@@ -27,8 +30,8 @@ typedef struct UNIT_CONTROL UC;
 
 extern UC uc;
 
-void UC_run();
 void UC_start();
+void UC_run();
 void IF();
 void ID();
 void EX();
