@@ -13,7 +13,9 @@
 
 struct MEMORY_INSTRUCTION {
 	char *input; //Endereço da instrução que será lida
+
 	char output[33]; //Instrução lida
+	
     char instruction[MI_SIZE][33]; //Matriz contendo até 'MI_SIZE' instruções de 32 bits
 };
 typedef struct MEMORY_INSTRUCTION MI;

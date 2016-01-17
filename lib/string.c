@@ -234,9 +234,8 @@ long long int binaryToDecimal(char *bin, int singned) {
 			dec +=(ctoi(bin[width])*mult);
         mult = mult * 2;
     }
-
-    if(ctoi(bin[0]))
-        dec = ~dec;
-
+	if(singned)
+    	if(ctoi(bin[0]))
+        	dec = ~dec;
 	return dec;
 }
