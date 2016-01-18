@@ -23,11 +23,11 @@ char *substring(char *str, int start, int end) {
 	int lenght = strlen(str);
 	//Se o intervalo 'end'-'start' for inválido, o 'size' será 0
 	int size = (start >= 0 && (end - start) < lenght) ? end - start + 1 : 0;
-	
+
 	if(start >= 0 && start < lenght) {
 		if((end - start) < lenght)
 			size = end - start + 1;
-		else 
+		else
 			size = lenght - start;
 	} else {
 		size = 0;
@@ -135,7 +135,7 @@ char *replaceAll(char *str, char *replaced, char *toReplace) {
             	for(y = x, z = 0; z < tLenght; z++, y++) {
 					newStr[y] = toReplace[z];
             	}
-        		
+
         		newStr[nlenght] = '\0';
 			} else {
 				for(y = x, z = 0; z < tLenght; z++, y++)
@@ -162,4 +162,80 @@ int contains(char *str1, char *str2) {
     		return 1;
     }
     return 0;
+}
+
+char *invert(char *str) {
+	int lenght = strlen(str);
+	char *out = malloc(lenght+1);
+	int x;
+
+	for(x = 0; x < lenght-1; x++) {
+		out[x] = str[lenght-x-1];
+	}
+	out[x] = '\0';
+
+	return out;
+}
+
+char *decimalToBinary(char *value, int size) {
+    long long int v = atoll(value);
+    char *temp = malloc(size+1);
+    int x;
+
+    if(size == 4) {
+        for(x=0; x<size; x++) {
+            if((v & 0x8) !=0) temp[x] = '1';
+            else temp[x] = '0';
+            v = v<<1;
+        }
+    } else if(size == 16) {
+        for(x=0; x<size; x++) {
+            if((v & 0x8000) !=0) temp[x] = '1';
+            else temp[x] = '0';
+            v = v<<1;
+        }
+    } else {
+        for(x=0; x<size; x++) {
+            if((v & 0x80000000) !=0) temp[x] = '1';
+            else temp[x] = '0';
+            v = v<<1;
+        }
+    }
+    temp[x] = '\0';
+
+    return temp;
+}
+
+//conversor binario para decimal lli
+int ctoi(char c){
+    if(c == '1')
+        return 1;
+    if(c == '0')
+        return 0;
+}
+int ctoia(char c){
+    if(c == '1')
+        return 0;
+    if(c == '0')
+        return 1;
+}
+
+long long int binaryToDecimal(char *bin, int singned) {
+	long long int dec = 0, mult = 1;
+    int width = strlen(bin)-1;
+
+    for(width;width>=0;width--){
+		if(singned) //se quiser retornar valor com sinal
+	        if(ctoi(bin[0]))
+	            dec +=(ctoia(bin[width])*mult);
+	        else
+	            dec +=(ctoi(bin[width])*mult);
+		else //se quiser retornar apenas valores positivos
+			dec +=(ctoi(bin[width])*mult);
+        mult = mult * 2;
+    }
+	if(singned)
+    	if(ctoi(bin[0]))
+        	dec = ~dec;
+	return dec;
 }

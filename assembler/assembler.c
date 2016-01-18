@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "lib/string.h"
+#include "../lib/string.h"
 #include "lib/reader.h"
 #include "lib/formatter.h"
 #include "lib/checker.h"
@@ -266,35 +266,6 @@ void replaceLabelsAndVariables() {
         }
         variable = variable->next;
     }
-}
-
-char *decimalToBinary(char *value, int size) {
-    long long int v = atoll(value);
-    char *temp = malloc(33);
-    int x;
-
-    if(size == 4) {
-        for(x=0; x<size; x++) {
-            if((v & 0x8) !=0) temp[x] = '1';
-            else temp[x] = '0';
-            v = v<<1;
-        }
-    } else if(size == 16) {
-        for(x=0; x<size; x++) {
-            if((v & 0x8000) !=0) temp[x] = '1';
-            else temp[x] = '0';
-            v = v<<1;
-        }
-    } else {
-        for(x=0; x<size; x++) {
-            if((v & 0x80000000) !=0) temp[x] = '1';
-            else temp[x] = '0';
-            v = v<<1;
-        }
-    }
-    temp[x] = '\0';
-
-    return temp;
 }
 
 char *getParam(char *instr, int param) {

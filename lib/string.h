@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <math.h>
 
 //Retorna uma substring de 'str' a partir da posição 'start'.
 char *strOffset(char *str, int start);
@@ -34,3 +35,12 @@ char *replaceAll(char *str, char *replaced, char *toReplace);
 
 //Retorna 1 se a string 'str1' conter 'str2' ou 0, caso contrário.
 int contains(char *str1, char *str2);
+
+//Retorna a string 'str' escrita na ordem inversa.
+char *invert(char *str);
+
+//Retorna uma string contendo a representação binária do valor 'value' com 'size' bits. Size pode ser 4, 16 ou 32.
+char *decimalToBinary(char *value, int size);
+
+//Retorna uma string contendo a representação decimal dos bits informado na string 'bits'.
+long long int binaryToDecimal(char *bin, int singned);
