@@ -9,12 +9,11 @@
 \usepackage{tikz}
 \usepackage[utf8]{inputenc} 
 \usepackage[portuguese]{babel} % Uncomment for portuguese
-\usepackage{siunitx}
+\usepackage{siunitx
 \usepackage{pdflscape}
 \usepackage{verbatim}
 
 \newcommand{\tab}[1]{\hspace{.2\textwidth}\rlap{#1}}
-\sisetup{math-micro=\text{µ},text-micro=µ}
 
 
 \sloppy
@@ -53,7 +52,8 @@
   19/12/2015 &  Preenchimento da tabela da tabela de sinais da unidade de controle &  Fábio Barros\\ \hline 
   19/12/2015 &  Criação do capítulo Requisitos do Processador  & Patricia Gomes \\ \hline 
   20/12/2015 &  Finalização do documento & Fábio Barros, Matheus Borges e Patricia Gomes\\ \hline
-  20/12/2015 &  Revisão do documento & Fábio Barros e Matheus Borges \\ \hline 
+  20/12/2015 &  Revisão do documento & Fábio Barros e Matheus Borges \\ \hline
+  15/01/2016 &  Correções do documento & Patricia Gomes \\ \hline 
   
 
 \end{longtable}
@@ -68,10 +68,10 @@ O processador pode ser definido como o cérebro do computador, é ele o respons�
 O objetivo deste documento é definir as especificações do processador desenvolvido. As seções a seguir definem os parâmetros de implementação que compõem os requisitos gerais do processador. Tais requisitos incluem: arquitetura do conjunto de instruções, definições de entrada e saída e a arquitetura geral do processador. 
 
 \subsection{Organização do Documento} 
-\textbf{Sessão 2:} Apresenta os requisitos funcionais e não funcionais do processador. \newline
-\textbf{Sessão 3:} Apresenta uma visão geral da arquitetura e dos principais requisitos. \newline
-\textbf{Sessão 4:} Especifica o conjunto de instruções do processador. \newline
-\textbf{Sessão 5:} Especifica os elementos que compõem o sistema.\newline
+\textbf{Sessão 2:} Apresenta uma visão geral da arquitetura e dos principais requisitos. \newline
+\textbf{Sessão 3:} Especifica o conjunto de instruções do processador. \newline
+\textbf{Sessão 4:} Especifica os elementos que compõem o sistema.\newline
+\textbf{Sessão 5:} Descreve o montador. \newline
 
 % inicio da tabela de acronimos e abreviacoes do documento
 \subsection{Acrônimos e Abreviações}
@@ -84,7 +84,7 @@ O objetivo deste documento é definir as especificações do processador desenvo
 	\multicolumn{2}{|c|}{{\textbf{continua na próxima página}}} \\ \hline \endfoot
 	\hline \endlastfoot
 	
-    GPR     & Registrador de Propósito Geral\\ \hline
+	GPR     & Registrador de Propósito Geral\\ \hline
     ISA     & Instruction Set Architecture - Conjunto de Instruções da Arquitetura\\ \hline
     IF      & Instruction Fetch - Busca da Instrução  \\ \hline
     ID      & Instruction Decode - Decoficação da Instrução \\ \hline
@@ -96,18 +96,20 @@ O objetivo deste documento é definir as especificações do processador desenvo
     RA      & Read A - Ler A\\ \hline
     RB      & Read B - Ler B\\ \hline
     WC      & Write C - Escreve C\\ \hline
-    CP      & Contador de Programa\\ \hline
-    UC      & Unidade de Controle\\ \hline
-    MI      & Memória de Instrução\\ \hline
-    ES      & Extensor de Sinal\\ \hline
-    ULA     & Unidade Lógica Aritmética\\ \hline
-    MD      & Memória de Dados\\ \hline
-    RF      & Registrador de Flags\\ \hline
-    TF      & Testador de Flags\\ \hline
+    CONTROL & Unidade de Controle\\ \hline
     COND    & Condição\\ \hline
     Const16 & Constante de 16 bits \\ \hline
-    BR      & Banco de Registradores\\ \hline
-    MX      & Multiplexador\\ \hline
+    MI     & Memory Instruction (Memória de Instruções)\\ \hline
+	PC     & Program Counter (Contador de Programa)\\ \hline
+	RB     & Banco de Registradores\\ \hline
+	UC     & Unit Control (Unidade de Controle)\\ \hline
+	ALU    & Arithmetic Logic Unit (Unidade Lógica Aritmética)\\ \hline
+	RF     & Register Flag (Registrador de Flags)\\ \hline
+	TF     & Tests Flag (Testador de Flags)\\ \hline
+	MX     & Multiplexer (Multiplexador)\\ \hline
+	DM     & Data Memory (Memória de Dados)\\ \hline
+	SE     & Signal Extender (Extensor de Sinal)\\ \hline
+	RISC   & Reduced Instruction Set Computer (Computador com um Conjunto Reduzido de Instruções)\\ \hline
 
 \caption{Tabela de acrônimos e abreviações}
 \end{longtable}
@@ -158,7 +160,7 @@ Os requisitos funcionais e não-funcionais são listados nas tabelas abaixo resp
            Possuir 16 GPR de 32 bits de largura   & O processador deve possuir 15 registradores de propósito geral, sendo que cada registrador deve ser capaz de armazenar uma palavra de 32 bits. \\ \hline
            Arquitetura de 32 bits   & O processador deve suportar operações com operandos que possuam 32 bits. \\ \hline
         \end{tabular}
-        \caption{Tabela de requisitos Não-Funcionais}
+        \caption{Tabela de Requisitos Não-Funcionais}
     \end{center}
 \end{table}  
 
@@ -181,7 +183,7 @@ Para uma instrução ser executada são necessários quatro ciclos. Esses ciclos
     \item \textbf {16 GPR de 32 bits de largura (r0 ... r15);}
     \item \textbf {ISA composta por 42 instruções;}
     \item \textbf {Instruções de até 3 operandos;}
-    \item \textbf {Simulador e Montador descrito em C;}
+    \item \textbf {Simulador e Montador desenvolvido na linguagem C;}
     \item \textbf {Armazenamento em memória de forma big-endian;}
     \item \textbf {Unidade de controle hardwired;}
     \item \textbf {Endereçamento por registrador e imediato;}
@@ -206,6 +208,7 @@ O conjunto de instruções do processador foi dividido nos seguintes grupos:\new
 \includegraphics[width=\textwidth]{./pictures/DatapathLA.pdf}
 \caption{Datapath de Lógicas Aritméticas}
 \end{figure}
+
 
 A Figura 2 apresenta o caminho de dados específico de instruções lógicas e aritméticas, nela é possível observar quais elementos participam da realização destas operações.\newline
 
@@ -234,9 +237,9 @@ As instruções de lógica e aritmética possuem o seguinte formato:
 % inicio da tabela de operações das instruções de lógica e aritmética
 \begin{center}
 \begin{longtable}[pos]{|>{\centering\arraybackslash}m{50pt}|>{\raggedright\arraybackslash}m{80pt}|>{\raggedright\arraybackslash}m{147pt}|>{\raggedleft\arraybackslash}m{100pt}|} \hline
-	\cellcolor[gray]{0.9}\textbf{OPULA} & \centering \cellcolor[gray]{0.9}\textbf{Mnemônico} & \centering \cellcolor[gray]{0.9}\textbf{Operação} & \centering \cellcolor[gray]{0.9}\textbf{Flags Atualizadas}\tabularnewline \hline \endfirsthead \hline
+	\cellcolor[gray]{0.9}\textbf{OPALU} & \centering \cellcolor[gray]{0.9}\textbf{Mnemônico} & \centering \cellcolor[gray]{0.9}\textbf{Operação} & \centering \cellcolor[gray]{0.9}\textbf{Flags Atualizadas}\tabularnewline \hline \endfirsthead \hline
 	\multicolumn{4}{|c|}{{\bfseries \textbf{continuação da tabela anterior}}} \\ \hline
-	\cellcolor[gray]{0.9}\textbf{OPULA} & \centering \cellcolor[gray]{0.9}\textbf{Mnemônico} & \centering \cellcolor[gray]{0.9}\textbf{Operação} & \centering \cellcolor[gray]{0.9}\textbf{Flags Atualizadas}\tabularnewline \hline \endhead
+	\cellcolor[gray]{0.9}\textbf{OPALU} & \centering \cellcolor[gray]{0.9}\textbf{Mnemônico} & \centering \cellcolor[gray]{0.9}\textbf{Operação} & \centering \cellcolor[gray]{0.9}\textbf{Flags Atualizadas}\tabularnewline \hline \endhead
 	\multicolumn{4}{|c|}{{\textbf{continua na próxima página}}} \\ \hline \endfoot
 	\hline \endlastfoot
         00000   & add c,a,b         & C = A + B                             & O S C Z \\ \hline
@@ -244,7 +247,7 @@ As instruções de lógica e aritmética possuem o seguinte formato:
         00011   & inca c,a          & C = A + 1                             & O S C Z \\ \hline
         00100   & subdec c,a,b      & C = A – B – 1                         & O S C Z \\ \hline
         00101   & sub c, a, b       & C = A – B                             & O S C Z \\ \hline
-        00111   & deca c, a         & C = A – 1                             & O S C Z \\ \hline
+        00110   & deca c, a         & C = A – 1                             & O S C Z \\ \hline
         01000   & lsl c, a          &  C = Deslocamento Lógico Esq. (A)     & S C Z \\ \hline
         01001   & asr c, a          & C = Deslocamento Aritmético Dir. (A)  & S C Z \\ \hline
         10000   & zeros c           & C = 0                                 & Z \\ \hline
@@ -274,32 +277,33 @@ As instruções de lógica e aritmética possuem o seguinte formato:
 \end{figure}
 A Figura 3 apresenta o caminho de dados específico de instruções com constantes, nela é possível observar quais elementos participam da realização destas operações.\newline
 
-O elemento que caracteriza esse tipo de instrução é o extensor de sinal responsável por transformar uma constante de 16 ou 12 bits em 32 bits, assim é garantido que o restante dos bits não tenha informações erradas. Vale ressaltar que apesar da unidade logica aritmética ser utilizada nenhuma flag é sinalizada pois a operação realizada na ilustração nela é a 'passb'.
+O elemento que caracteriza esse tipo de instrução é o extensor de sinal responsável por transformar uma constante de 16 ou 12 bits em 32 bits. O nível lógico do sinal OP\_SE que define se a constante a ser extendida é de tamanho 12 ou 16. Assim é garantido que o restante dos bits não tenha informações erradas que irão ser operadas na unidade lógica e aritimetica (ALU).
 
 % inicio da tabela de formato de instruções com constante
 \FloatBarrier
 \begin{table}[H]
   \begin{center}
-  \renewcommand{\arraystretch}{1.39}
-    \begin{tabular}[pos]{|>{\centering\arraybackslash}m{33pt}|>{\centering\arraybackslash}m{33pt}|>{\centering\arraybackslash}m{28pt}|>{\centering\arraybackslash}m{38pt}|>{\centering\arraybackslash}m{44pt}|>{\centering\arraybackslash}m{176pt}|} \hline
-      \cellcolor[gray]{0.9}\textbf{31:29} & \cellcolor[gray]{0.9}\textbf{28:26} & \cellcolor[gray]{0.9}\textbf{25:24} & \cellcolor[gray]{0.9}\textbf{23:20} & \cellcolor[gray]{0.9}\textbf{19:16} & \cellcolor[gray]{0.9}\textbf{15:0} \\ \hline
-        0 1 0       & X X X         & OP        & WC        & X X X X       & CONSTANTE \\ \hline
+  \renewcommand{\arraystretch}{1.2}
+    \begin{tabular}[pos]{|>{\centering\arraybackslash}m{35pt}|>{\centering\arraybackslash}m{57pt}|>{\centering\arraybackslash}m{46pt}|>{\centering\arraybackslash}m{46pt}|>{\centering\arraybackslash}m{181pt}|} \hline
+      \cellcolor[gray]{0.9}\textbf{31:29} & \cellcolor[gray]{0.9}\textbf{28:24} & \cellcolor[gray]{0.9}\textbf{23:20} & \cellcolor[gray]{0.9}\textbf{19:16} & \cellcolor[gray]{0.9}\textbf{15:0} \\ \hline
+        0 1 0       & OP        & WC        & X X X X      & CONSTANTE \\ \hline
     \end{tabular}
     \caption{Tabela de Formato}
   \end{center}
 \end{table}  
 % fim
+
 % inicio da tabela de operações das instruções com constante
 \FloatBarrier
 \begin{table}[H]
   \begin{center}
-  \renewcommand{\arraystretch}{1.38}
+  \renewcommand{\arraystretch}{1.2}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{80pt}|>{\centering\arraybackslash}m{120pt}|>{\centering\arraybackslash}m{189pt}|} 
       \hline
-      \cellcolor[gray]{0.9}\textbf{OPCT} & \cellcolor[gray]{0.9}\textbf{Mnemônico} & \cellcolor[gray]{0.9}\textbf{Operação} \\ \hline
-        01      & loadlit c, Const16        & C = CONSTANTE \\ \hline
-        10      & lcl c, Const16            & C = Const16|(Cand0xff00) \\ \hline
-        11      & lch c, Const16            & C = (Const16 « 16)|(Cand0x00ff ) \\ \hline
+      \cellcolor[gray]{0.9}\textbf{OPALU} & \cellcolor[gray]{0.9}\textbf{Mnemônico} & \cellcolor[gray]{0.9}\textbf{Operação} \\ \hline
+        01100      & loadlit c, Const16        & C = CONSTANTE \\ \hline
+        01101      & lcl c, Const16            & C = Const16|(C\&0xffff0000) \\ \hline
+        01110      & lch c, Const16            & C = (Const16 « 16)|(C\&0x0000ffff ) \\ \hline
     \end{tabular}
     \caption{Tabela de Instruções com Constante}
   \end{center}
@@ -313,10 +317,8 @@ O elemento que caracteriza esse tipo de instrução é o extensor de sinal respo
 \caption{Datapath Memória}
 \end{figure}
 
-
-As instruções de acesso à memória são Load e Store. Na instrução Load o registrador B (PRB) equivale ao endereço (AD) que será lido da memoria, e a saída é escrita no banco de registradores no endereço especificado na instrução (WC). Na instrução Store os dados são lidos do banco de registradores e escritos na mamória, sendo registrador A (PRA) o dado a ser escrito e o registrador B (PRB) endereço onde será armazenado. \newline
+As instruções de acesso à memória são Load e Store. Na instrução Load o endereço presente no registrador B é lido da memória, e a saída é escrita no banco de registradores no endereço especificado na pelo registrador A. Na instrução Store os dados são lidos do banco de registradores e escritos na memória, sendo registrador A o dado a ser escrito e o registrador B endereço onde será armazenado. \newline
 O sinal que habilita a escrita na memória de dados é o mesmo que habilita a leitura, quando em nível lógico 1 apenas a escrita é permitida, e em 0, apenas a leitura.
-\newline \newline
 As instruções de acesso à memória possuem o seguinte formato:
 
 % inicio da tabela de formato de instruções de acesso à memória
@@ -324,9 +326,15 @@ As instruções de acesso à memória possuem o seguinte formato:
 \begin{table}[H]
   \begin{center}
   \renewcommand{\arraystretch}{1.2}
-    \begin{tabular}[pos]{|>{\centering\arraybackslash}m{32pt}|>{\centering\arraybackslash}m{42pt}|>{\centering\arraybackslash}m{23pt}|>{\centering\arraybackslash}m{42pt}|>{\centering\arraybackslash}m{32pt}|>{\centering\arraybackslash}m{42pt}|>{\centering\arraybackslash}m{127pt}|} \hline
-      \cellcolor[gray]{0.9}\textbf{31:29} & \cellcolor[gray]{0.9}\textbf{28:25} & \cellcolor[gray]{0.9}\textbf{24} & \cellcolor[gray]{0.9}\textbf{23:20} & \cellcolor[gray]{0.9}\textbf{19:16} & \cellcolor[gray]{0.9}\textbf{15:12} & \cellcolor[gray]{0.9}\textbf{11:0} \\ \hline
-      1 0 0         & X X X X       & OP        & WC        & RA        & RB        & X X X X X X X X X X X X \\ \hline
+    \begin{tabular}[pos]{|>{\centering\arraybackslash}m{32pt}|>{\centering\arraybackslash}m{42pt}|>{\centering\arraybackslash}m{22pt}|>{\centering\arraybackslash}m{42pt}|>{\centering\arraybackslash}m{42pt}|>{\centering\arraybackslash}m{42pt}|>{\centering\arraybackslash}m{127pt}|} \hline
+      \cellcolor[gray]{0.9}\textbf{31:29} & 
+      \cellcolor[gray]{0.9}\textbf{28:25} & 
+      \cellcolor[gray]{0.9}\textbf{24} & 
+      \cellcolor[gray]{0.9}\textbf{23:20} & 
+      \cellcolor[gray]{0.9}\textbf{19:16} & 
+      \cellcolor[gray]{0.9}\textbf{15:12} & 
+      \cellcolor[gray]{0.9}\textbf{11:0} \\ \hline
+      1 0 0         & X X X X &OP & WC        & RA        & RB        & X X X X X X X X X X X X \\ \hline
     \end{tabular}
     \caption{Tabela de Formato}
     \end{center}
@@ -338,7 +346,7 @@ As instruções de acesso à memória possuem o seguinte formato:
 \begin{table}[H]
   \begin{center}
   \renewcommand{\arraystretch}{1.2}
-    \begin{tabular}[pos]{|>{\centering\arraybackslash}m{89pt}|>{\centering\arraybackslash}m{150pt}|>{\centering\arraybackslash}m{150pt}|} \hline
+    \begin{tabular}[pos]{|>{\centering\arraybackslash}m{89pt}|>{\centering\arraybackslash}m{160pt}|>{\centering\arraybackslash}m{150pt}|} \hline
       \cellcolor[gray]{0.9}\textbf{OPM} & \cellcolor[gray]{0.9}\textbf{Mnemônico} & \cellcolor[gray]{0.9}\textbf{Operação} \\ \hline
         0       & load c, a         & C = Mem[A] \\ \hline
         1       & store a, b        & Mem[A] = B \\ \hline
@@ -355,9 +363,10 @@ As instruções de acesso à memória possuem o seguinte formato:
 \includegraphics[width=\textwidth]{./pictures/DatapathDES.pdf}
 \caption{Datapath Desvio Condicional}
 \end{figure}
+
 O módulo que caracteriza essa instrução é o testador de flags (TF) que, a partir de uma condição, determina se um salto será ou não realizado.
-As instruções de desvio condicional e incondicional realizam um salto para um endereço absoluto da memória de instruções, informado pelo campo DESTINO. Este endereçamento pode ser de até 2\^{}12bits. Isso por conta da quantidade de bits reservados para o DESTINO. Caso se deseje fazer um salto para um endereço maior que 12 bits, deve-se usar as operações de LCL e LCH para carregar o endereço em um registrador e fazer um salto por registrador especificado na sessão 4.5.
-Os saltos com DESTINO são absolutos, o montador ao ler um LABEL ele define o seu valor absoluto na memoria de instruções (MI), essa decisão retira a responsibilidade da ALU calcular o novo destino.
+As instruções de desvio condicional e incondicional realizam um salto para um endereço absoluto da memória de instruções, informado pelo campo DESTINO. Este endereçamento pode ser de até 2\^{}12 bits. Em caso de endereços maior que 12 bits, deve-se utilizar as instruções lcl e lch para carregar o endereço do Label de destino em um registrador. Em seguida, deve-se realizar um desvio por registrador (especificado na sessão 4.5), utilizando como parâmetro este registrador.
+Esta decisão de utilziar endereçamento absoluto retira da ALU a responsabilidade de calcular o novo destino.
 \newline
 Tais instruções possuem o formato descrito abaixo na tabela:
 % inicio da tabela de formato de instruções de desvio
@@ -366,7 +375,7 @@ Tais instruções possuem o formato descrito abaixo na tabela:
   \begin{center}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{33pt}|>{\centering\arraybackslash}m{28pt}|>{\centering\arraybackslash}m{33pt}|>{\centering\arraybackslash}m{105pt}|>{\centering\arraybackslash}m{33pt}|>{\centering\arraybackslash}m{120pt}|} \hline
       \cellcolor[gray]{0.9}\textbf{31:29} & \cellcolor[gray]{0.9}\textbf{28:27} & \cellcolor[gray]{0.9}\textbf{26:24} & \cellcolor[gray]{0.9}\textbf{23:15} & \cellcolor[gray]{0.9}\textbf{14:12} & \cellcolor[gray]{0.9}\textbf{11:0} \\ \hline
-        1 0 1       & X X       & OP        & X X X X X X X X X X      & COND       & DESTINO \\ \hline
+        000       & X X       & OPTF       & X X X X X X X X X      & COND       & DESTINO \\ \hline
     \end{tabular}
     \caption{Tabela de Formato}
   \end{center}
@@ -379,9 +388,9 @@ Tais instruções possuem o formato descrito abaixo na tabela:
   \begin{center}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{50pt}|>{\centering\arraybackslash}m{130pt}|>{\centering\arraybackslash}m{209pt}|} \hline
       \cellcolor[gray]{0.9}\textbf{OPD} & \cellcolor[gray]{0.9}\textbf{Mnemônico} & \cellcolor[gray]{0.9}\textbf{Operação} \\ \hline
-        00      & j DESTINO             & PC = DESTINO \\ \hline
-        01      & jt.cond DESTINO       & PC = DESTINO se COND for verdadeira \\ \hline
-        10      & jf.cond DESTINO       & PC = DESTINO se COND for falsa \\ \hline
+        000      & jf.cond DESTINO            & Jump False \\ \hline
+        001      & jt.cond DESTINO       & Jump True \\ \hline
+        010      & j DESTINO       & Jump Incondicional \\ \hline
     \end{tabular}
     \caption{Tabela de Instruções de Desvio}
   \end{center}
@@ -396,12 +405,12 @@ As instruções de desvio condicional devem testar as condições apresentadas n
   \begin{center}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{70pt}|>{\centering\arraybackslash}m{130pt}|>{\centering\arraybackslash}m{189pt}|} \hline
       \cellcolor[gray]{0.9}\textbf{COND} & \cellcolor[gray]{0.9}\textbf{Mnemônico} & \cellcolor[gray]{0.9}\textbf{Condição}  \\ \hline
-        001         & neg           & Resultado da ULA negativo \\ \hline
-        010         & zero          & Resultado da ULA zero \\ \hline
-        100         & carry         & Carry da ULA \\ \hline
-        101         & negzero       & Resultado da ULA negativo ou zero \\ \hline
-        110         & true          & TRUE \\ \hline
-        111         & overflow      & Resultado da ULA overflow \\ \hline
+        000         & true          & TRUE \\ \hline
+        001         & neg           & Resultado da ALU negativo \\ \hline
+        010         & zero          & Resultado da ALU zero \\ \hline
+        100         & carry         & Carry da ALU \\ \hline
+        101         & negzero       & Resultado da ALU negativo ou zero \\ \hline
+        111         & overflow      & Resultado da ALU overflow \\ \hline
     \end{tabular}
     \caption{Tabela de Condições}
   \end{center}
@@ -415,7 +424,7 @@ As instruções de desvio condicional devem testar as condições apresentadas n
 \includegraphics[width=\textwidth]{./pictures/DatapathDER.pdf}
 \caption{Datapath Desvio por Registrador}
 \end{figure}
-São duas as instruções de desvio por registrador, jump and link e jump register. Na instrução de jump and link, o valor de PC+1 deve ser armazenado no registrador r7 (definido pela unidade de controle) e o conteúdo do registrador RB armazenado em PC. Já no caso da instrução jump register, a única operação a ser feita é armazenar o conteúdo do registrador RB no PC.\newline
+São duas as instruções de desvio por registrador, jump and link e jump register. Na instrução de jump and link, o valor de PC+1 deve ser armazenado no registrador r15 (definido pela unidade de controle) e o conteúdo do registrador RB armazenado em PC. Já no caso da instrução jump register, a única operação a ser feita é armazenar o conteúdo do registrador RB no PC.\newline
 
 As instruções de desvio por registrador possuem o seguinte formato:
 
@@ -424,9 +433,9 @@ As instruções de desvio por registrador possuem o seguinte formato:
 \begin{table}[H]
   \begin{center}
   \renewcommand{\arraystretch}{1.46}
-    \begin{tabular}[pos]{|>{\centering\arraybackslash}m{33pt}|>{\centering\arraybackslash}m{44pt}|>{\centering\arraybackslash}m{29pt}|>{\centering\arraybackslash}m{90pt}|>{\centering\arraybackslash}m{44pt}|>{\centering\arraybackslash}m{112pt}|} \hline
-      \cellcolor[gray]{0.9}\textbf{31:29} & \cellcolor[gray]{0.9}\textbf{28:25} & \cellcolor[gray]{0.9}\textbf{24} & \cellcolor[gray]{0.9}\textbf{23:16} & \cellcolor[gray]{0.9}\textbf{15:12} & \cellcolor[gray]{0.9}\textbf{11:0} \\ \hline
-        1 1 0       & X X X X       & OP        & X X X X X X X X       & RB        & X X X X X X X X X X \\ \hline
+    \begin{tabular}[pos]{|>{\centering\arraybackslash}m{31pt}|>{\centering\arraybackslash}m{32pt}|>{\centering\arraybackslash}m{29pt}|>{\centering\arraybackslash}m{90pt}|>{\centering\arraybackslash}m{32pt}|>{\centering\arraybackslash}m{127pt}|} \hline
+      \cellcolor[gray]{0.9}\textbf{31:29} & \cellcolor[gray]{0.9}\textbf{28:27} & \cellcolor[gray]{0.9}\textbf{26:24} & \cellcolor[gray]{0.9}\textbf{23:16} & \cellcolor[gray]{0.9}\textbf{15:12} & \cellcolor[gray]{0.9}\textbf{11:0} \\ \hline
+        1 1 0       & X X       & OPDR       & X X X X X X X X       & RB        & X X X X X X X X X X X X \\ \hline
     \end{tabular}
     \caption{Tabela de Formato}
   \end{center}
@@ -440,8 +449,8 @@ As instruções de desvio por registrador possuem o seguinte formato:
   \renewcommand{\arraystretch}{1.46}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{89pt}|>{\centering\arraybackslash}m{150pt}|>{\centering\arraybackslash}m{150pt}|} \hline
       \cellcolor[gray]{0.9}\textbf{OPDR} & \cellcolor[gray]{0.9}\textbf{Mnemônico} & \cellcolor[gray]{0.9}\textbf{Operação} \\ \hline
-        0       & jal b         & PC = RB e r7 = PC+1 \\ \hline
-        1       & jr b          & PC = RB \\ \hline
+        011       & jal b         & Jump and Link \\ \hline
+        100       & jr b          & Jump Register \\ \hline
     \end{tabular}
     \caption{Tabela de Instruções de Desvio por Registrador}
   \end{center}
@@ -480,7 +489,7 @@ O HALT possui o formato seguinte:
 % fim
 
 \subsection{NOP}
-Nessa instrução todos os sinais de controle são zerados, desta forma nada é registrado na memoria ou no banco de registradores. A NOP possui o formato seguinte:
+Nessa instrução todos os sinais de controle são zerados, desta forma nada é registrado na memória ou no banco de registradores. A NOP possui o formato seguinte:
 
 % inicio da tabela de formato do NOP
 \FloatBarrier
@@ -497,9 +506,9 @@ Nessa instrução todos os sinais de controle são zerados, desta forma nada é 
 
 \newpage
 \section{Descrição dos Componentes}
-Durante algumas discussões foi discutido quais  componentes constituiriam o processador. A partir de análises das instruções foram listados os componentes a seguir:
-\subsection{Contador de Programa}
-O Contador de Programa (CP) é o registrador que armazena o endereço da próxima instrução a ser executada. Ele é atualizado assim que a instrução atual é finalizada.
+Durante algumas discussões foi decidido quais  componentes constituiriam o processador. A partir de análises das instruções foram listados os componentes a seguir:
+\subsection{Contador de Programa (Program Counter)}
+O Contador de Programa (PC) é o registrador que armazena o endereço da próxima instrução a ser executada. Ele é atualizado assim que a instrução atual é finalizada.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.25\textwidth]{./pictures/PC.PNG}
@@ -510,15 +519,16 @@ O Contador de Programa (CP) é o registrador que armazena o endereço da próxim
 \FloatBarrier
 \begin{table}[H]
   \begin{center}
-  \renewcommand{\arraystretch}{1.4}
+  \renewcommand{\arraystretch}{1.15}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{50pt}|>{\centering\arraybackslash}m{60pt}|>{\centering\arraybackslash}m{70pt}|>{\centering\arraybackslash}m{182pt}|} \hline
       \cellcolor[gray]{0.9}\textbf{Nome} & 
       \cellcolor[gray]{0.9}\textbf{Tamanho} & 
       \cellcolor[gray]{0.9}\textbf{Direção} &
       \cellcolor[gray]{0.9}\textbf{Descrição} \\ \hline
-        W\_PC & 1 & Entrada  &  Sinal de controle do PC\\ \hline
-        in\_PC    & 32 & Entrada & Endereço de destino do salto \\ \hline
-        out\_PC     & 32 & Saída   & Saída do PC \\ \hline
+        in\_PC      & 32    & Entrada   & Endereço de destino do salto \\ \hline
+        out\_PC     & 32    & Saída     & Saída do PC \\ \hline
+        W\_PC       & 1     & Entrada   & Sinal de controle do PC\\ \hline
+        RST\_PC     & 1     & Entrada   & Sinal que limpa o pc\\ \hline
     \end{tabular}
     \caption{Tabela de Sinais do PC}
   \end{center}
@@ -538,16 +548,18 @@ Tem como funcionalidade armazenar todas as instruções do programa a ser execut
 \FloatBarrier
 \begin{table}[H]
   \begin{center}
-  \renewcommand{\arraystretch}{1.25}
+  \renewcommand{\arraystretch}{1.1}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{50pt}|>{\centering\arraybackslash}m{60pt}|>{\centering\arraybackslash}m{70pt}|>{\centering\arraybackslash}m{182pt}|} \hline
       \cellcolor[gray]{0.9}\textbf{Nome} & 
       \cellcolor[gray]{0.9}\textbf{Tamanho} & 
       \cellcolor[gray]{0.9}\textbf{Direção} &
       \cellcolor[gray]{0.9}\textbf{Descrição} \\ \hline
-       W\_MI & 1 & Entrada  & Sinal que habilita a leitura \\ \hline
-       RST\_MI & 1 & Entrada  & Sinal que limpa a memória de instruções \\ \hline
-       WI & 32 & Entrada & Endereço de entrada na memória de instrução \\ \hline
-       I & 32 & Saída & Instrução atual \\ \hline
+       RI       & 32 & Entrada & Endereço da instrução a ser lida\\ \hline
+       WI       & 32 & Entrada & Endereço de entrada na memória de instrução \\ \hline
+       I        & 32 & Saída   & Instrução atual \\ \hline
+       W\_MI    & 1 & Entrada  & Sinal que habilita a leitura \\ \hline
+       RST\_MI  & 1 & Entrada  & Sinal que limpa a memória de instruções \\ \hline
+       
     \end{tabular}
     \caption{Tabela de Sinais da Memória de Instruções}
   \end{center}
@@ -567,19 +579,20 @@ O banco de registradores consiste em um bloco formado por 16 registradores de pr
 \FloatBarrier
 \begin{table}[H]
   \begin{center}
-  \renewcommand{\arraystretch}{1.35}
+  \renewcommand{\arraystretch}{1.1}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{50pt}|>{\centering\arraybackslash}m{60pt}|>{\centering\arraybackslash}m{70pt}|>{\centering\arraybackslash}m{182pt}|} \hline
       \cellcolor[gray]{0.9}\textbf{Nome} & 
       \cellcolor[gray]{0.9}\textbf{Tamanho} & 
       \cellcolor[gray]{0.9}\textbf{Direção} &
       \cellcolor[gray]{0.9}\textbf{Descrição} \\ \hline
-       W\_RB & 1 & Entrada & Sinal que habilita a escrita no banco de resgistradores \\ \hline
-       RA & 4 & Entrada  & Endereço do registrador A \\ \hline
-       RB & 4 & Entrada  & Endereço do registrador B \\ \hline
-       RC & 4 & Entrada & Endereço de escrita para o registrador destino \\ \hline
-       WPC & 32 & Entrada & Entrada do dado a ser armazenado no registrador destino \\ \hline
+       RA     & 4   & Entrada   & Endereço do registrador A \\ \hline
+       RB     & 4   & Entrada   & Endereço do registrador B \\ \hline
+       WC     & 4   & Entrada   & Endereço de escrita para o registrador destino \\ \hline
+       WPC    & 32  & Entrada   & Entrada do dado a ser armazenado no registrador destino \\ \hline
        PRA & 32 & Saída & Saída do registrador A \\ \hline
        PRB & 32 & Saída & Saída do registrador B \\ \hline
+       W\_RB & 1 & Entrada & Sinal que habilita a escrita no banco de resgistradores \\ \hline
+       RST\_RB  & 1 & Entrada  & Sinal que limpa a memória de instruções \\ \hline
     \end{tabular}
     \caption{Tabela de Sinais do Banco de Registradores}
   \end{center}
@@ -594,32 +607,32 @@ O extensor de sinal é utilizado para extender o sinal dos bits de entrada nas o
 \includegraphics[width=0.3\textwidth]{./pictures/SE.PNG}
 \caption{Extensor de Sinais}
 \end{figure}
-
 % inicio da tabela
 \FloatBarrier
 \begin{table}[H]
   \begin{center}
+  \renewcommand{\arraystretch}{1.5}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{50pt}|>{\centering\arraybackslash}m{60pt}|>{\centering\arraybackslash}m{70pt}|>{\centering\arraybackslash}m{182pt}|} \hline
       \cellcolor[gray]{0.9}\textbf{Nome} & 
       \cellcolor[gray]{0.9}\textbf{Tamanho} & 
       \cellcolor[gray]{0.9}\textbf{Direção} &
       \cellcolor[gray]{0.9}\textbf{Descrição} \\ \hline
-       OP\_SE & 1  &  Entrada  & Sinal de controle do extensor \\ \hline
        C16 & 16 &  Entrada  & Constante a ser extendida \\ \hline
        C32 & 32 &  Saída  & Constante extendida \\ \hline
+       OP\_SE & 1  &  Entrada  & Sinal de controle do extensor \\ \hline
     \end{tabular}
     \caption{Tabela de Sinais do Extensor de Sinais}
   \end{center}
 \end{table}  
 % fim
-\subsection{Unidade Lógica e Aritmética}
-A ULA é um circuito combinacional responsável por realizar operações aritméticas e lógicas dentro do processador. As operações a serem executadas são determinadas por meio dos sinais de controle e das suas entradas de operação, logo após os dados de entrada são computados e o resultado é obtido na saída do circuito.
-\newline
+\subsection{Unidade Lógica e Aritmética (Arithmetic Logic Unit)}
+A ALU é um circuito combinacional responsável por realizar operações aritméticas e lógicas dentro do processador. As operações a serem executadas são determinadas por meio dos sinais de controle e das suas entradas de operação, logo após os dados de entrada são computados e o resultado é obtido na saída do circuito.
+\newline\newline
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.3\textwidth]{./pictures/ALU.PNG}
-\caption{ULA}
+\caption{Unidade Lógica Aritmética}
 \end{figure}
 \newpage
 
@@ -627,23 +640,24 @@ A ULA é um circuito combinacional responsável por realizar operações aritmé
 \FloatBarrier
 \begin{table}[H]
   \begin{center}
+  \renewcommand{\arraystretch}{1.1}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{50pt}|>{\centering\arraybackslash}m{60pt}|>{\centering\arraybackslash}m{70pt}|>{\centering\arraybackslash}m{182pt}|} \hline
       \cellcolor[gray]{0.9}\textbf{Nome} & 
       \cellcolor[gray]{0.9}\textbf{Tamanho} & 
       \cellcolor[gray]{0.9}\textbf{Direção} &
       \cellcolor[gray]{0.9}\textbf{Descrição} \\ \hline
-       OP\_ALU  &   5  & Entrada   & Código de operação da instrução atual  \\ \hline
         A       &   32 & Entrada   & Operando A \\ \hline
         B       &   32 & Entrada   & Operando B \\ \hline
         C       &   32 & Saída     & Resultado da operação \\ \hline
         F       &   4  & Saída     & Flags  \\ \hline
+        OP\_ALU  &   5  & Entrada   & Código de operação da instrução atual  \\ \hline
     \end{tabular}
-    \caption{Tabela de sinais da ULA}
+    \caption{Tabela de sinais da ALU}
   \end{center}
 \end{table}  
 % fim
 
-\subsection{Memória de Dados}
+\subsection{Memória de Dados (Data Memory)}
 A Memória de dados tem como propósito salvar/ler dados proveniente das instruções de acesso à memória. 
 
 \begin{figure}[H]
@@ -656,17 +670,17 @@ A Memória de dados tem como propósito salvar/ler dados proveniente das instru�
 \FloatBarrier
 \begin{table}[H]
   \begin{center}
-  \renewcommand{\arraystretch}{1.4}
+  \renewcommand{\arraystretch}{1.3}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{50pt}|>{\centering\arraybackslash}m{60pt}|>{\centering\arraybackslash}m{70pt}|>{\centering\arraybackslash}m{182pt}|} \hline
       \cellcolor[gray]{0.9}\textbf{Nome} & 
       \cellcolor[gray]{0.9}\textbf{Tamanho} & 
       \cellcolor[gray]{0.9}\textbf{Direção} &
       \cellcolor[gray]{0.9}\textbf{Descrição} \\ \hline
-       W\_DM & 1 & Entrada   & Sinal que habilita a escrita na memória de dados \\ \hline
-       W\_DM & 1 & Entrada   & Sinal que limpa a memória de dados \\ \hline
-       AD  & 32  & Entrada   & Endereço onde o dado será armazenado \\ \hline
        WP  & 32  & Entrada   & Dado as ser armazenado na memória \\ \hline
+       AD  & 32  & Entrada   & Endereço onde o dado será armazenado \\ \hline
        PR  & 32  & Saída     & Dado que sai da memória e é escrito no registrador \\ \hline
+       W\_DM & 1 & Entrada   & Sinal que habilita a escrita na memória de dados \\ \hline
+       RST\_DM & 1 & Entrada   & Sinal que limpa a memória de dados \\ \hline
     \end{tabular}
     \caption{Tabela de Sinais da Memória de Dados}
   \end{center}
@@ -692,12 +706,13 @@ Responsável por armazenar os estados das flags Overflow, Carry, Sinal e Zero. E
       \cellcolor[gray]{0.9}\textbf{Tamanho} & 
       \cellcolor[gray]{0.9}\textbf{Direção} &
       \cellcolor[gray]{0.9}\textbf{Descrição} \\ \hline
-       W\_RF &   1   & Entrada & Sinal que define quais flags serão atualizada \\ \hline
         O    &   1   & Entrada & Flag de overflow \\ \hline
         S    &   1   & Entrada & Flag de sinal\\ \hline
         C    &   1   & Entrada & Flag de carry\\ \hline
         Z    &   1   & Entrada & Flag de zero \\ \hline
         OSCZ &   4   & Saída   & Flags atualizadas \\ \hline
+        W\_RF &  3   & Entrada & Sinal que define quais flags serão atualizada \\ \hline
+        RST\_RF & 1   & Entrada & Limpa os dados do registrador \\ \hline
     \end{tabular}
     \caption{Tabela de Sinais do Registrador de Flags}
   \end{center}
@@ -716,18 +731,20 @@ Esse módulo combinacional foi criado com o objetivo de decidir se um jump será
 \FloatBarrier
 \begin{table}[H]
   \begin{center}
-  \renewcommand{\arraystretch}{1.2}
+  \renewcommand{\arraystretch}{1.15}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{50pt}|>{\centering\arraybackslash}m{60pt}|>{\centering\arraybackslash}m{70pt}|>{\centering\arraybackslash}m{182pt}|} \hline
       \cellcolor[gray]{0.9}\textbf{Nome} & 
       \cellcolor[gray]{0.9}\textbf{Tamanho} & 
       \cellcolor[gray]{0.9}\textbf{Direção} &
       \cellcolor[gray]{0.9}\textbf{Descrição} \\ \hline
-       OP\_TF & 1  &  Entrada  & Sinal de controle do testador de flags \\ \hline
-        O    &   1   & Entrada & Flag de overflow a ser testada \\ \hline
+       O    &   1   & Entrada & Flag de overflow a ser testada \\ \hline
         S    &   1   & Entrada & Flag de sinal a ser testada\\ \hline
         C    &   1   & Entrada & Flag de carry a ser testada\\ \hline
         Z    &   1   & Entrada & Flag de zero a ser testada \\ \hline
-        S\_MXPC  &   1   & Saída & Sinal que indica se o salto será ou não realizado \\ \hline
+        COND &   3   & Entrada &Condição que será testada \\ \hline
+        S\_MXPC  &   1   & Saída & Sinal que indica se o salto será ou não realizado \\
+        \hline
+        OP\_TF & 1  &  Entrada  & Sinal de controle do testador de flags \\ \hline
     \end{tabular}
     \caption{Tabela de Sinais do Testador de Flags}
   \end{center}
@@ -739,8 +756,7 @@ Esta unidade é responsável por gerar todos os sinais que controlam o fluxo das
 
 A unidade de controle é implementada no modelo hardwired, que tem como sua característica principal uma máquina de estado finita (FSM), que seus estados são definidos pelos estágios do processador (IF,ID,EX/MEM,WB). A cada estado todos os sinais de controle são redefinidos afim de controla todos os elementos para realizar a tarefa desejada.
 
-Esse modelo de implementação tem melhor desempenho em relação ao modelo microprogramada, pois a microprogramada é composta por uma memoria de microprograma, o que lhe da a capacidade de reprograma-la sem precisar reestruturar o circuito. Por outro lado projetar uma unidade de controle hardwired é mais dificil que microprogramada. Porém em geral no modelo RISC, como formato de instrução é mais simples, utiliza-se o modelo hardwired.
-\newline
+Esse modelo de implementação tem melhor desempenho em relação ao modelo microprogramada, pois a microprogramada é composta por uma memoria de microprograma, o que lhe da a capacidade de reprograma-la sem precisar reestruturar o circuito. Por outro lado projetar uma unidade de controle hardwired é mais dificil que microprogramada. Porém em geral no modelo RISC, como formato de instrução é mais simples, utiliza-se o modelo hardwired.[
 
 % inicio da tabela
 \begin{center}
@@ -756,7 +772,7 @@ Esse modelo de implementação tem melhor desempenho em relação ao modelo micr
     OP\_ALU       &  5   & Saída   & Código de operação da instrução atual \\ \hline
     OP\_SE        &  2   & Saída   & Sinal de controle do extensor de sinais \\ \hline
     OP\_TF        &  3   & Saída   & Sinal que indica se o jump é true ou false \\ \hline
-    W\_CP         &  1   & Saída   & Sinal de controle do PC \\ \hline
+    W\_PC         &  1   & Saída   & Sinal de controle do PC \\ \hline
     W\_RB         &  1   & Saída   & Sinal que habilita a escrita no banco de registradores \\ \hline
     W\_DM         &  1   & Saída   & Sinal que habilita a escrita na memória de dados \\ \hline
     W\_RF         &  1   & Saída   & Sinal que habilita o registrador de flags \\ \hline
