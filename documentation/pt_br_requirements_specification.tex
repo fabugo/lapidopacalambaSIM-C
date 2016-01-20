@@ -37,7 +37,8 @@
       \hline
       21/12/2015 & Concepção e estruturação do Documento & Patricia Gomes \\ \hline      
       21/12/2015 & Finalização do Documento & Patricia Gomes \\ \hline      
-      21/12/2015 & Revisão do Documento & Fábio Barros \\ \hline   
+      21/12/2015 & Revisão do Documento & Fábio Barros \\ \hline 
+      20/01/2016 & Correções no Documento & Patricia Gomes \\ \hline
     \end{tabular}
   \end{table}
 
@@ -100,42 +101,42 @@
      % \requirement{name}{description}
       \requirement
       {Criação de uma Unidade de Lógica e Aritmética}
-      {Para que o processador atenda ao requisito de ser capaz de executar 42 instruções, é necessário construir uma unidade responsável por executar as operações de lógica e aritmética(ULA). A ULA deve ser capaz de realizar as operações com dois dois operandos de 32 bits. A mesma deve possuir duas saídas, uma para apresentar o resultado que também será de 32 bits, e outra para apresentar as flags atualizadas de acordo com a operação realizada. Além disso, a ULA deve possuir um sinal de controle responsável por indicar a mesma o código da operação, ou seja, qual operação ela deverá executar no momento.}
+      {Para que o processador atenda ao requisito de ser capaz de executar 42 instruções, é necessário construir uma unidade responsável por executar as operações de lógica e aritmética(ULA). A ULA deve ser capaz de realizar as operações com dois operandos de 32 bits. A mesma deve possuir duas saídas, uma para apresentar o resultado que também será de 32 bits, e outra para apresentar as flags atualizadas de acordo com a operação realizada. Além disso, a ULA deve possuir um sinal de controle responsável por indicar a mesma o código da operação, ou seja, qual operação ela deverá executar no momento.}
       {Importante}
       
        \requirement
       {Criação de um Extensor de sinais}
-      {Para viabilizar as operações com constantes deve ser implementado um extensor de sinais. O mesmo deve possuir entrada de 16 bits e saída de 32 bits. Para realizar a extensão dos sinais, o extensor deve inserir zeros à esquerda do sinal.}
+      {Para viabilizar as operações com constantes e de saltos deve ser implementado um extensor de sinais. O mesmo deve ser capaz de extender 12 ou 16 bits para 32 bits conforme o sinal de controle enviado para o extensor. Para realizar a extensão dos sinais, o extensor deve replicar o bit de sinal.}
       {Importante}
       
        \requirement
       {Criação de um registrador de flags}
-      {Deve ser criado um registrador de flags de forma a armazenar as flags atualizadas de acordo com a operação da ULA.}
+      {Deve ser criado um registrador de flags de forma a armazenar as flags atualizadas de acordo com a operação da ULA. A ULA possui uma saída de flags e para essa saída devem  ser enviadas as flags atualizadas na mesma. Um sinal de controle é enviado para permitir que a saída da ULA com as flags atualizadas sejam armazenadas no registrador de flags.}
       {Importante}
       
     \requirement
       {Atualizar Flags}
-      {A medida que uma operação é realizada algumas flags deverão ser atualizadas. A atualização dessas flags se dará de acordo com a operação realizada pela ULA. As Flags a serem atualizadas são: Overflow, Sinal, Carry e Zero.}
+      {A medida que uma operação é realizada algumas flags deverão ser atualizadas. A atualização dessas flags se dará de acordo com a operação realizada pela ULA. As Flags a serem atualizadas são: Overflow, Sinal, Carry e Zero. A flag de sinal é atualizada se o resultado da operação for negativo. Se o resultado for igual a 0, deve-se atualizar a flag zero. No caso da flag de overflow, a mesma deve ser atualizada se o sinal do resultado for diferente do sinal dos operandos.   }
       {Importante}
    
       \requirement
       {Criação de um testador de flags}
-      {Para ser possível a realização de desvios condicionais deve ser implementado um módulo testador de flags que terá como função analisar uma condição e decidir se um jump condicional será ou não realizado.}
+      {Para ser possível a realização de desvios condicionais deve ser implementado um módulo testador de flags que terá como função analisar uma condição e decidir se um jump condicional será ou não realizado. As condições a serem analisadas são apresentadas no documento de arquitetura. Se a condição for satisfeita e for enviando um sinal de jump false o salto não deverá ser tomado, logo para que um salto seja executado,  a condição deve ser verdadeira e o sinal de jump deve ser true, ou a condição deve ser falsa e o sinal de jump deve ser false. }
       {Importante}
       
        \requirement
       {Criação de uma memória de dados}
-      {Deverá ser desenvolvida uma memória responsável por salvar/ler dados proveniente das instruções de acesso à memória.}
+      {Deverá ser desenvolvida uma memória responsável por salvar/ler dados do banco de registradores de acordo com as instruções de acesso à memória.  }
       {Importante}
       
        \requirement
       {Criação de um banco de registradores}
-      {O banco de registradores deve possuir como entrada os endereços dos registradores fonte o endereço do registrador de destino, uma entrada para o dado a ser armazenado. Deve possuir como saída os dados contidos nos registradores fonte.}
+      {O banco de registradores deve possuir 16 registradores com capacidade de armazenamento de 32 bits. O banco deve ter como entrada os endereços dos registradores fonte, o endereço do registrador destino, e uma entrada para o dado a ser armazenado. E deve possuir como saída os dados contidos nos registradores fonte.}
       {Importante}
       
        \requirement
       {Criação de uma memória de instrução}
-      {Todas as instruções devem ser armazenadas na memória de instrução. Esse módulo deve possuir como entrada o valor da saída do contador de programas (PC).}
+      {Todas as instruções devem ser armazenadas na memória uma memória específica para armazenar as instruções que deverão ser realizadas pelo processador.}
       {Importante}
     
       \end{functional}
@@ -200,7 +201,7 @@
       
       \requirement
       {Operação que passa o operando B}
-      {A Unidade Lógica e Aritmética recebe um operando inicialmente armazenado no banco de registradores e o envia para saída. Esta operação não deve atualizar nenhuma flag.}
+      {A Unidade Lógica e Aritmética recebe um operando inicialmente armazenado no banco de registradores e o envia para saída. Esta operação deve atualizar as flags de sinal e zero.}
       {Importante}
       
       \requirement
@@ -240,7 +241,7 @@
       
        \requirement
       {Operação or com o primeiro operando negado}
-      {A Unidade Lógica e Aritmética recebe dois operandos inicialmente armazenados no banco de registradores, transforma o primeiro operando em negativo usando o complemento a 2 e sem seguida executa uma or entre os  operandos. Esta operação deve atualizar as flags de sinal e zero.}
+      {A Unidade Lógica e Aritmética recebe dois operandos inicialmente armazenados no banco de registradores, transforma o primeiro operando em negativo usando o complemento a 2 e em seguida executa uma or entre os  operandos. Esta operação deve atualizar as flags de sinal e zero.}
       {Importante}
       
        \requirement
@@ -265,12 +266,7 @@
       
       \requirement
       {Operação loadlit}
-      {A Unidade Lógica e Aritmética recebe o valor contido em um registrador do banco de registradores e o envia para saída.}
-      {Importante}
-      
-      \requirement
-      {Operação loadlit}
-      {Esta operação carrega uma constante de até 16 bits no registrador de destino.}
+      {A Unidade Lógica e Aritmética recebe o valor de uma connstante contido em um registrador do banco de registradores e o envia para saída.}
       {Importante}
       
        \requirement
@@ -295,17 +291,18 @@
       
        \requirement
       {Operação de desvio incondicional}
-      {Deve realizar um salto para um endereço absoluto da memória de instruções, informado pelo campo DESTINO.}
+      {Deve realizar um salto para um endereço de instrução definido na memória de instruções, de forma a permitir a execução da instrução para onde ocorreu o salto. No desvio incondicional o valor de PC deve apontar para a instrução seguinte, esse valor da memória de instruções tem o sinal extendido e o resultado vai para a ula e da ula vai um multiplexador cuja seleção dependerá do módulo responsável por testar as flags. No jump incondicional é enviando um sinal que habilita o jump no testador de flags junto com a condição TRUE da tabela de condições (consta no documento de arquitetura). O testador de Flags envia o sinal de seleção para o mux e o mux manda para sua saída o valor que havia saído da ula e esse valor volta pra PC que indicará qual instrução deverá ser realizada.}
       {Importante}
       
        \requirement
       {Operação de desvios condicionais}
-      {Deve realizar um salto para um endereço absoluto da memória de instruções, informado pelo campo DESTINO a partir de sinais que indicam se o jump é true ou false e dos testes de condições de flags. Tais condições podem ser observadas no documento de arquitetura.}
+      {Deve realizar um salto para um endereço de instrução definido na memória de instruções, de forma a permitir a execução da instrução para onde ocorreu o salto. No desvio incondicional o valor de PC deve apontar para a instrução seguinte, esse valor da memória de instruções tem o sinal extendido e o resultado vai para a ula e da ula vai um multiplexador cuja seleção dependerá do módulo responsável por testar as flags. Se a condição de flags for verdadeira e o jump for true, ou se a condição for falsa e o jump for false, o multiplaxador manda para sua saída o valor que havia saído da ula e esse valor volta pra PC que insicará qual instrução deverá ser realizada.
+.}
       {Importante}
       
       \requirement
       {Operação de desvios tipo and link}
-      {O valor de PC+1 deve ser armazenado no registrador r7 (definido pela unidade de controle) e o conteúdo do registrador RB armazenado em PC.}
+      {O desvio do tipo jump and link é um desvio incondicional onde o valor de PC+1 deve ser armazenado no registrador r15 e o conteúdo do registrador RB armazenado em PC. Esse tipo de jump permite que o valor que PC tinha antes do desvio seja recuperado, logo, após o salto, PC volta a apontar para a mesma instrução que apontava antes do salto.}
       {Importante}
       
        \requirement

@@ -53,7 +53,8 @@
   19/12/2015 &  Criação do capítulo Requisitos do Processador  & Patricia Gomes \\ \hline 
   20/12/2015 &  Finalização do documento & Fábio Barros, Matheus Borges e Patricia Gomes\\ \hline
   20/12/2015 &  Revisão do documento & Fábio Barros e Matheus Borges \\ \hline
-  15/01/2016 &  Correções do documento & Patricia Gomes \\ \hline 
+  15/01/2016 &  Alterações no documento & Patricia Gomes \\ \hline 
+  20/01/2016 &  Correções do documento & Patricia Gomes \\ \hline 
   
 
 \end{longtable}
@@ -65,7 +66,7 @@
 \subsection{Objetivo} 
 O processador pode ser definido como o cérebro do computador, é ele o responsável por realizar todas as instruções dentro do computador como operações de lógicas e cálculos. Além disso ele é responsável pela tomada de decisões do sistema.
 
-O objetivo deste documento é definir as especificações do processador desenvolvido. As seções a seguir definem os parâmetros de implementação que compõem os requisitos gerais do processador. Tais requisitos incluem: arquitetura do conjunto de instruções, definições de entrada e saída e a arquitetura geral do processador. 
+O objetivo deste documento de arquitetura é definir as especificações do processador desenvolvido. O documento de arquitetura é importante por permitir que outras pessoas possam utilizá-lo para construir um sistema a partir dele com sucesso. O mesmo  define os parâmetros de implementação que compõem os requisitos do processador implementado, tais requisitos incluem a arquitetura do conjunto de instruções, definições de entrada e saída e a arquitetura geral do processador. 
 
 \subsection{Organização do Documento} 
 \textbf{Sessão 2:} Apresenta uma visão geral da arquitetura e dos principais requisitos. \newline
@@ -253,7 +254,7 @@ As instruções de lógica e aritmética possuem o seguinte formato:
         10000   & zeros c           & C = 0                                 & Z \\ \hline
         10001   & and c, a, b       & C = A\&B                              & S\ \ \ \ Z \\ \hline
         10010   & andnota c,a,b     & C = !A\&B                             & S\ \ \ \ Z \\ \hline
-        10011   & passb c, b        & C = B                                 & \\ \hline
+        10011   & passb c, b        & C = B                                 & S\ \ \ \ Z \\ \hline
         10100   & andnotb c, a, b   & C = A\&!B                             & S\ \ \ \ Z \\ \hline
         10101   & passa, c, a       & C = A                                 & S\ \ \ \ Z \\ \hline
         10110   & xor c, a, b       & C = A\^{}B                            & S\ \ \ \ Z \\ \hline
@@ -600,7 +601,7 @@ O banco de registradores consiste em um bloco formado por 16 registradores de pr
 % fim
 
 \subsection{Extensor de Sinal}
-O extensor de sinal é utilizado para extender o sinal dos bits de entrada nas operações com constantes e de desvio.
+O extensor de sinal é utilizado para extender o sinal dos bits de entrada nas operações com constantes e operações de desvio.
 \newline\newline
 \begin{figure}[H]
 \centering
@@ -617,8 +618,9 @@ O extensor de sinal é utilizado para extender o sinal dos bits de entrada nas o
       \cellcolor[gray]{0.9}\textbf{Tamanho} & 
       \cellcolor[gray]{0.9}\textbf{Direção} &
       \cellcolor[gray]{0.9}\textbf{Descrição} \\ \hline
-       C16 & 16 &  Entrada  & Constante a ser extendida \\ \hline
-       C32 & 32 &  Saída  & Constante extendida \\ \hline
+       InSE & 16 &  Entrada  & Constante a ser extendida \\ \hline
+       InSE & 12 &  Entrada  & Constante a ser extendida \\ \hline
+       OutSE & 32 &  Saída  & Constante extendida \\ \hline
        OP\_SE & 1  &  Entrada  & Sinal de controle do extensor \\ \hline
     \end{tabular}
     \caption{Tabela de Sinais do Extensor de Sinais}
@@ -768,16 +770,16 @@ Esse modelo de implementação tem melhor desempenho em relação ao modelo micr
 	\hline \endlastfoot
 	
 	
-    TYPE\_OP     &  8  & Entrada & Instrução atual \\ \hline
+    TYPE\_OP      &  8  & Entrada & Instrução atual \\ \hline
     OP\_ALU       &  5   & Saída   & Código de operação da instrução atual \\ \hline
-    OP\_SE        &  2   & Saída   & Sinal de controle do extensor de sinais \\ \hline
+    OP\_SE        &  1   & Saída   & Sinal de controle do extensor de sinais. Sendo 0 extende de 12 para 32, sendo 1 extende de 16 para 32 \\ \hline
     OP\_TF        &  3   & Saída   & Sinal que indica se o jump é true ou false \\ \hline
     W\_PC         &  1   & Saída   & Sinal de controle do PC \\ \hline
     W\_RB         &  1   & Saída   & Sinal que habilita a escrita no banco de registradores \\ \hline
     W\_DM         &  1   & Saída   & Sinal que habilita a escrita na memória de dados \\ \hline
     W\_RF         &  1   & Saída   & Sinal que habilita o registrador de flags \\ \hline
-    S\_MXSE       &  1   & Saída   & Sinal que controla o multiplexador MXSE \\ \hline
-    S\_MXRB       &  1   & Saída   & Sinal que controla o multiplexador MXRB \\ \hline
+    S\_MXSE       &  1   & Saída   & Sinal que controla o multiplexador MXSE. Sendo 1, habilita para a saída do mux o valor de saída do SE, sendo 0, habilita para a saída do mux o valor do registrador B do banco de registradores.   \\ \hline
+    S\_MXRB       &  2   & Saída   & Sinal que controla o multiplexador MXRB. Sendo 11, habilita para a saída do mux o valor da saída da ULA, sendo 10, habilita para a saída a saída da memória de dados e sendo 01, habilita para a saída do mux o valor de PC.  \\ \hline
     
     \caption{Tabela de Sinais da Unidade de Controle}
 \end{longtable}
