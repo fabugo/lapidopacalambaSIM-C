@@ -9,7 +9,7 @@ void ALU_start(){
 
 void OP_ALU(char operation)){
     if(strEquals(operation,"00000")){
-        
+        result[33] = sum(input_A,input_B);
     }else if(strEquals(operation,"00001")){
 
     }else if(strEquals(operation,"00011")){
