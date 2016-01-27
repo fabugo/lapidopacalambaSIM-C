@@ -27,6 +27,6 @@ void TF_start();
 	verdadeira se a condição for verdadeira. Se 'value' for 0, a saída será verdadeira se a
 	condição for falsa
 */
-void OP_TF(int value);
+void OP_TF(char *value);
 
 #endif

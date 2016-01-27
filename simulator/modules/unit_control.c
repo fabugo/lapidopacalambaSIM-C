@@ -4,10 +4,22 @@ UC uc;
 
 void print();
 
-void UC_start() {}
+void IF();
+void ID();
+void EX();
+void WB();
+
+void UC_start(){
+    uc.TYPE_OP = (char*) &mi.output;
+    strcpy(uc.OP_ALU, "00000");
+    strcpy(uc.OP_TF, "111");
+    uc.W_RB = 0;
+    uc.W_DM = 0;
+    uc.W_RF = 0;
+}
 
 void UC_run(){
-    print();
+    
     int state = 0;
     while(1){
         switch (state) {
@@ -31,16 +43,6 @@ void UC_run(){
     }
 }
 
-void UC_start(){
-    uc.TYPE_OP = (char*) &mi.output;
-    strcpy(uc.OP_ALU, "00000");
-    strcpy(uc.OP_TF, "111");
-    uc.W_RB = 0;
-    uc.W_DM = 0;
-    uc.W_RF = 0;
-    uc.W_MI = 0;
-}
-
 void IF(){
     W_MI(1);
 }
@@ -50,8 +52,8 @@ void ID(){
     if(strEquals(type,"001")){//ULA OP
         W_RB(0);//register fetch
 
-        uc.OP_ALU = substring(uc.TYPE_OP,3,7);
-        uc.OP_TF = "111";
+        strcpy(uc.OP_ALU, substring(uc.TYPE_OP,3,7));
+        strcpy(uc.OP_TF, "111");
         uc.W_RB = 1;
         uc.W_DM = 0;
 
@@ -71,23 +73,22 @@ void ID(){
     }else if(strEquals(type,"010")){//CONS OP
         OP_SE(1);
 
-        uc.OP_ALU = substring(uc.TYPE_OP,3,7);
-        uc.OP_TF = "111";
+        strcpy(uc.OP_ALU, substring(uc.TYPE_OP,3,7));
+        strcpy(uc.OP_TF, "111");
         uc.W_RB = 1;
         uc.W_DM = 0;
         uc.W_RF = 0;
     }else if(strEquals(type,"100")){//MEM OP
         W_RB(0);
 
-        uc.OP_TF = "111";
+        strcpy(uc.OP_TF, "111");
         uc.W_RB = (uc.TYPE_OP[7] == '0') ? 1 : 0; //load ativa o rb
         uc.W_DM = (uc.TYPE_OP[7] == '1') ? 1 : 0; //store ativa o dm
         uc.W_RF = 0;
     }else if(strEquals(type,"000")){//DES
         OP_SE(0);
 
-        strcpy(uc.OP_ALU, "10011");
-        uc.OP_TF = substring(uc.TYPE_OP,5,7);
+        strcpy(uc.OP_TF, substring(uc.TYPE_OP,5,7));
         uc.W_RB = 0;
         uc.W_DM = 0;
         uc.W_RF = 0;
@@ -95,7 +96,7 @@ void ID(){
         W_RB(0);
 
         strcpy(uc.OP_ALU, "10011");
-        uc.OP_TF = substring(uc.TYPE_OP,5,7);
+        strcpy(uc.OP_TF, substring(uc.TYPE_OP,5,7));
 
         uc.W_RB = (uc.OP_TF[0] == '1')
         ? 0  //jal

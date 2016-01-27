@@ -40,5 +40,9 @@ int main(int argc, char *argv[]) {
 	}
 	/*********************************************************/
 
+	char result;
+	result = 'a' & '1';
+	printf("%c", result);
+
 	UC_run();
 }
