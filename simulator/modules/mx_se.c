@@ -1,6 +1,6 @@
 #include "mx_se.h"
 MX_SE mx_se;
-void MX_PC_start() {
+void MX_SE_start() {
 	strcpy(mx_se.output, ZERO);
 }
 void SET(int value) {

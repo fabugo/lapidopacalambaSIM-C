@@ -9,6 +9,6 @@ struct MX_SE {
 };
 typedef struct MX_SE MX_SE;
 extern MX_SE mx_se;
-void MX_PC_start();
+void MX_SE_start();
 void SET(int value);
 #endif

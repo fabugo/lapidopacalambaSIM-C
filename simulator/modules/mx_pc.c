@@ -5,7 +5,7 @@ void MX_PC_start() {
 }
 void SET(int value) {
 	if(value) {
-		strcpy(mx_pc.output, mx_pc.input_ULA);
+		strcpy(mx_pc.output, mx_pc.input_ALU);
 	}else{
         strcpy(mx_pc.output, mx_pc.input_PC);
     }
