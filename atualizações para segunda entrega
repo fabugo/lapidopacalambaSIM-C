@@ -1,17 +1,3 @@
-
---Resta em: Montador
-Refatoração do nop
-Alterar os codigos das instruções de salto para que o jf.TRUE fique no seguinte formato 00000000000000000000000000000000
-
---Resta em: Montador
-Alterar o formato da operação com constantes e de desvios
-colocar WC em RA lcl lch
-
---Resta em: Montador
-Alterar o registrador de jal para o r15 e informar no documento
-Montador deve colocar o r15 na instrução jal na posicao WC
-
-
 --Resta em: Simulador
 Fazer multiplexadores e adicionar os sinais na unidade de controle
 

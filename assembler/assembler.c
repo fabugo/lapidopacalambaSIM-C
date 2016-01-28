@@ -271,13 +271,13 @@ void replaceLabelsAndVariables() {
 char *getParam(char *instr, int param) {
     int first = indexOf(instr, ','), last = lastIndexOf(instr, ','), space = indexOf(instr, ' ');
     char *temp;
-    if(param == 1) {
+    if(param == 1) { //Entre o espaço e a primeira virgula
         temp = substring(instr, space+1, first-1);
-    } else if(param == 2) {
+    } else if(param == 2) { //Entre a primeira e a ultima virgula
         temp = substring(instr, first+1, last-1);
-    } else if(param == 3) {
+    } else if(param == 3) { //Após a ultima virgula
         temp = strOffset(instr, last+1);
-    } else {
+    } else { //Após o espaço
         temp = strOffset(instr, space+1);
     }
 
@@ -302,114 +302,152 @@ char *getInstrBits(char *instr) {
 
     //Instruções Lógicas e Aritméticas
     if(startWith(instr, "add ")) {
+        //001 00000 ssss ssss ssss 000000000000
         sprintf(temp, "00100000%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "addinc ")) {
+        //001 00001 ssss ssss ssss 000000000000
         sprintf(temp, "00100001%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "inca ")) {
+        //001 00011 ssss ssss 0000 000000000000
         sprintf(temp, "00100011%s%s0000000000000000", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "subdec ")) {
+        //001 00100 ssss ssss ssss 000000000000
         sprintf(temp, "00100100%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "sub ")) {
+        //001 00101 ssss ssss ssss 000000000000
         sprintf(temp, "00100101%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "deca ")) {
+        //001 00110 ssss ssss 0000 000000000000
         sprintf(temp, "00100110%s%s0000000000000000", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "lsl ")) {
+        //001 01000 ssss ssss 0000 000000000000
         sprintf(temp, "00101000%s%s0000000000000000", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "asr ")) {
+        //001 01001 ssss ssss 0000 000000000000
         sprintf(temp, "00101001%s%s0000000000000000", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "zeros ")) {
+        //001 10000 ssss 0000 0000 000000000000
         sprintf(temp, "00110000%s00000000000000000000", getParam(instr, 0));
     } else if(startWith(instr, "and ")) {
+        //001 10001 ssss ssss ssss 000000000000
         sprintf(temp, "00110001%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "andnota ")) {
+        //001 10010 ssss ssss ssss 000000000000
         sprintf(temp, "00110010%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "passb ")) {
+        //001 10011 ssss 0000 ssss 000000000000
         sprintf(temp, "00110011%s0000%s000000000000", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "andnotb ")) {
+        //001 10100 ssss ssss ssss 000000000000
         sprintf(temp, "00110100%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "passa ")) {
+        //001 10101 ssss ssss 0000 000000000000
         sprintf(temp, "00110101%s%s0000000000000000", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "xor ")) {
+        //001 10110 ssss ssss ssss 000000000000
         sprintf(temp, "00110110%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "or ")) {
+        //001 10111 ssss ssss ssss 000000000000
         sprintf(temp, "00110111%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "nand ")) {
+        //001 11000 ssss ssss ssss 000000000000
         sprintf(temp, "00111000%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "xnor ")) {
+        //001 11001 ssss ssss ssss 000000000000
         sprintf(temp, "00111001%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "passnota ")) {
+        //001 11010 ssss ssss 0000 000000000000
         sprintf(temp, "00111010%s%s0000000000000000", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "ornota ")) {
+        //001 11011 ssss ssss ssss 000000000000
         sprintf(temp, "00111011%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "passnotb ")) {
+        //001 11100 ssss 0000 ssss 000000000000
         sprintf(temp, "00111100%s0000%s000000000000", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "ornotb ")) {
+        //001 11101 ssss ssss ssss 000000000000
         sprintf(temp, "00111101%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "nor ")) {
+        //001 11110 ssss ssss ssss 000000000000
         sprintf(temp, "00111110%s%s%s000000000000", getParam(instr, 1), getParam(instr, 2), getParam(instr, 3));
     } else if(startWith(instr, "ones ")) {
+        //001 11111 ssss 0000 0000 000000000000
         sprintf(temp, "00111111%s00000000000000000000", getParam(instr, 0));
     
     //Instruções com Constante
     } else if(startWith(instr, "loadlit ")) {
-        sprintf(temp, "01000010%s0000%s", getParam(instr, 1), getParam(instr, 3));
+        //010 01100 ssss 0000 ssssssssssssssss
+        sprintf(temp, "01001100%s0000%s", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "lcl ")) {
-        sprintf(temp, "01000001%s0000%s", getParam(instr, 1), getParam(instr, 3));
+        //010 01101 ssss ssss ssssssssssssssss
+        sprintf(temp, "01001101%s%s%s", getParam(instr, 1), getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "lch ")) {
-        sprintf(temp, "01000011%s0000%s", getParam(instr, 1), getParam(instr, 3));
+        //010 01110 ssss ssss ssssssssssssssss
+        sprintf(temp, "01001110%s%s%s", getParam(instr, 1), getParam(instr, 1), getParam(instr, 3));
 
     //Instruções de Memória
     } else if(startWith(instr, "load ")) {
+        //100 0000 0 ssss ssss 0000 000000000000
         sprintf(temp, "10000000%s%s0000000000000000", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "store ")) {
+        //100 0000 1 ssss 0000 ssss 000000000000
         sprintf(temp, "100000010000%s%s000000000000", getParam(instr, 1), getParam(instr, 3));
+        sprintf(temp, "10000001%s0000%s000000000000", getParam(instr, 1), getParam(instr, 3));
 
     //Instruções de Desvio
     } else if(startWith(instr, "j ")) {
-        sprintf(temp, "10100000000000000000%s", strOffset(getParam(instr, 0), 4));
-    } else if(startWith(instr, "jt.")) {
-        char *cond = substring(instr, 3, indexOf(instr, ' ') - 1);
-        int c;
-        if(strEquals(cond, "neg")) {
-            c = 1;
-        } else if(strEquals(cond, "zero")) {
-            c = 10;
-        } else if(strEquals(cond, "carry")) {
-            c = 100;
-        } else if(strEquals(cond, "negzero")) {
-            c = 101;
-        } else if(strEquals(cond, "true")) {
-            c = 110;
-        } else if(strEquals(cond, "overflow")) {
-            c = 111;
-        }
-        sprintf(temp, "10100010000000000%03d%s", c, strOffset(getParam(instr, 0), 4));
+        //000 00 010 000000000 000 ssssssssssss
+        sprintf(temp, "00000010000000000000%s", strOffset(getParam(instr, 0), 4));
     } else if(startWith(instr, "jf.")) {
+        //000 00 000 000000000 sss ssssssssssss
         char *cond = substring(instr, 3, indexOf(instr, ' ') - 1);
-        int c;
-        if(strEquals(cond, "neg")) {
-            c = 1;
+        char c[4];
+        if(strEquals(cond, "true")) {
+            strcpy(c, "000");
+        } else if(strEquals(cond, "neg")) {
+            strcpy(c, "001");
         } else if(strEquals(cond, "zero")) {
-            c = 10;
-        } else if(strEquals(cond, "carru")) {
-            c = 100;
+            strcpy(c, "010");
+        } else if(strEquals(cond, "carry")) {
+            strcpy(c, "100");
         } else if(strEquals(cond, "negzero")) {
-            c = 101;
-        } else if(strEquals(cond, "true")) {
-            c = 110;
+            strcpy(c, "101");
         } else if(strEquals(cond, "overflow")) {
-            c = 111;
+            strcpy(c, "111");
         }
-        sprintf(temp, "10100100000000000%03d%s", c, strOffset(getParam(instr, 0), 4));
+        sprintf(temp, "00000000000000000%s%s", c, strOffset(getParam(instr, 0), 4));
+    } else if(startWith(instr, "jt.")) {
+        //000 00 001 000000000 sss ssssssssssss
+        char *cond = substring(instr, 3, indexOf(instr, ' ') - 1);
+        char c[4];
+        if(strEquals(cond, "true")) {
+            strcpy(c, "000");
+        } else if(strEquals(cond, "neg")) {
+            strcpy(c, "001");
+        } else if(strEquals(cond, "zero")) {
+            strcpy(c, "010");
+        } else if(strEquals(cond, "carry")) {
+            strcpy(c, "100");
+        } else if(strEquals(cond, "negzero")) {
+            strcpy(c, "101");
+        } else if(strEquals(cond, "overflow")) {
+            strcpy(c, "111");
+        }
+        sprintf(temp, "00000001000000000%s%s", c, strOffset(getParam(instr, 0), 4));
     
     //Instruções de Desvio por Registrador
     } else if(startWith(instr, "jal ")) {
-        sprintf(temp, "1100000000000000%s000000000000", getParam(instr, 0));
+        //           r15  
+        //111 00 011 1111 0000 ssss 000000000000
+        sprintf(temp, "1100001111110000%s000000000000", getParam(instr, 0));
     } else if(startWith(instr, "jr ")) {
-        sprintf(temp, "1100000100000000%s000000000000", getParam(instr, 0));
+        //111 00 100 0000 0000 ssss 000000000000
+        sprintf(temp, "1100010000000000%s000000000000", getParam(instr, 0));
 
     //Instrução nop
     } else if(strEquals(instr, "nop")) {
+        //jf.TRUE 0
+        //000 00 000 000000000 000 000000000000
         sprintf(temp, "%032d", 0);
 
     } else {
