@@ -1,12 +1,13 @@
 #include "mx_pc.h"
+
 MX_PC mx_pc;
-void MX_PC_start() {
-	strcpy(mx_pc.output, ZERO);
-}
-void SET(int value) {
-	if(value) {
+
+void S_MXPC(char value) {
+	if(value == '0') {
+		//Seleciona a entrada 'mx_pc.input_ALU' para a saída 'mx_pc.output'
 		strcpy(mx_pc.output, mx_pc.input_ALU);
-	}else{
+	} else if(value == '1') {
+		//Seleciona a entrada 'mx_pc.input_PC'  para a saída 'mx_pc.output'
         strcpy(mx_pc.output, mx_pc.input_PC);
     }
 }

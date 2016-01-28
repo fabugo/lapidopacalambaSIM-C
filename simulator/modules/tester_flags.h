@@ -7,20 +7,18 @@
 
 #include "../../lib/string.h"
 
-#include "register_flags.h"
 #include "memory_instruction.h"
+#include "register_flags.h"
 
 struct TESTER_FLAGS {
-	int *input_flags; //O, S, C, Z
-    char *cond; //Flags que serão atualizadas
-    int output; //Saída do teste, 1-verdadeiro, 0-falso
+	char *input_flags; 	//OSCZ: Ponteiro para os sinais de saída OSCZ do registrador de flags
+	char *cond;			//COND: Ponteiro para o sinal de saída I[14:12] da memória de instruções
+
+    char output; 		//Saída do teste, 1-verdadeiro, 0-falso
 };
 typedef struct TESTER_FLAGS TF;
 
 extern TF tf;
-
-//Função para inicializar a struct tf
-void TF_start();
 
 /*
 	Função que representa o sinal OP_TF da unidade de controle. Se 'value' for 1, a saída será
@@ -28,5 +26,11 @@ void TF_start();
 	condição for falsa
 */
 void OP_TF(char *value);
+
+/*
+	Função que reseta á memória de dados através do sinal RST_TF da unidade de controle.
+	Se 'value' for 1, a saída será zerada
+*/
+void RST_TF(char value);
 
 #endif

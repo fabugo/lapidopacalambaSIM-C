@@ -2,20 +2,16 @@
 
 PC pc;
 
-void PC_start() {
-	strcpy(pc.output, ZERO);
-
-	RST_PC(1);
-}
-
-void W_PC(int value) {
-	if(value) {
+void W_PC(char value) {
+	if(value == '1') {
+		//Copia para a saída 'pc.output' o valor da entrada 'pc.input'
 		strcpy(pc.output, pc.input);
 	}
 }
 
-void RST_PC(int value) {
-	if(value) {
+void RST_PC(char value) {
+	if(value == '1') {
+		//Zera a saída 'pc.output'
 		strcpy(pc.output, ZERO);
 	}
 }

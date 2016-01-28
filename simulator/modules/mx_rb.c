@@ -1,14 +1,16 @@
 #include "mx_rb.h"
+
 MX_RB mx_rb;
-void MX_RB_start() {
-	strcpy(mx_se.output, ZERO);
-}
-void SET(int value) {
-	if(value) {
-		strcpy(mx_rb.output, mx_rb.input_ALU);
-	}else if (value == 2){
-        strcpy(mx_rb.output, mx_rb.input_MEM);
-    }else{
+
+void MX_RB_SET(char *value) {
+	if(strEquals(value, "00")) {
+		//Seleciona a entrada 'mx_rb.input_PC' para a saída 'mx_se.output'
         strcpy(mx_rb.output, mx_rb.input_PC);
+	} else if(strEquals(value, "01")) {
+		//Seleciona a entrada 'mx_rb.input_DM' para a saída 'mx_se.output'
+        strcpy(mx_rb.output, mx_rb.input_DM);
+    } else if(strEquals(value, "10")) {
+    	//Seleciona a entrada 'mx_rb.input_ALU' para a saída 'mx_se.output'
+		strcpy(mx_rb.output, mx_rb.input_ALU);
     }
 }
