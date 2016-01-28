@@ -1,12 +1,12 @@
 #include "mx_pc.h"
 MX_PC mx_pc;
-void PC_start() {
+void MX_PC_start() {
 	strcpy(mx_pc.output, ZERO);
 }
-void W_PC(int value) {
+void SET(int value) {
 	if(value) {
-		strcpy(pc.output, pc.input_ULA);
+		strcpy(mx_pc.output, mx_pc.input_ULA);
 	}else{
-        strcpy(pc.output, pc.input_PC);
+        strcpy(mx_pc.output, mx_pc.input_PC);
     }
 }
