@@ -8,7 +8,7 @@ struct MX_SE {
     char output[33];
 };
 typedef struct MX_SE MX_SE;
-extern MX_SE MX_SE;
+extern MX_SE mx_se;
 void MX_PC_start();
 void SET(int value);
 #endif
