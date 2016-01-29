@@ -10,10 +10,6 @@
 #include "../defs.h"
 #include "../../lib/string.h"
 
-#include "alu.h"
-#include "data_memory.h"
-#include "program_counter.h"
-
 struct MX_RB {
     char *input_PC;	//Ponteiro para o sinal de saída do contador de programa
     char *input_DM;	//Ponteiro para o sinal de saída PR da memória de dados

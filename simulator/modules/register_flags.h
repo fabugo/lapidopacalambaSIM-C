@@ -7,8 +7,6 @@
 
 #include "../../lib/string.h"
 
-#include "alu.h"
-
 struct REGISTER_FLAGS {
 	char *input_flags;		//O, S, C, Z: Ponteiro para os sinais de saída de flags
 							//da unidade lógica e aritmética

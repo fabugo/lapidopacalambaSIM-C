@@ -9,8 +9,6 @@
 
 #include "../defs.h"
 
-#include "mx_pc.h"
-
 struct PROGRAM_COUNTER {
     char *input;	//Ponteiro para o sinal de saída do multiplexador MX_PC
     

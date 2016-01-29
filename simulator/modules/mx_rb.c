@@ -2,7 +2,7 @@
 
 MX_RB mx_rb;
 
-void MX_RB_SET(char *value) {
+void S_MXRB(char *value) {
 	if(strEquals(value, "00")) {
 		//Seleciona a entrada 'mx_rb.input_PC' para a saída 'mx_se.output'
         strcpy(mx_rb.output, mx_rb.input_PC);

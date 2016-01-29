@@ -1,4 +1,3 @@
 - Ajustar run da unidade de controle com os novos multiplexadores
-- Ajustar processor.c para iniciar os metodos start corretamente
 - flag overflow da ula
 - Finalizar o print da unidade de controle

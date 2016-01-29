@@ -16,6 +16,8 @@ LOOP: add r4,r2,r1		;Armazena em r4 a soma dos dois ultimos elementos
 	j LOOP				;Se r0 não for 0, ele pula para o inicio do loop
 FIM: store r5,r4		;Armazena no endereço presente em 'r5' o valor presente em 'r4'
 
+HALT: j HALT
+
 .dseg
 POS:	.word 10
 .end

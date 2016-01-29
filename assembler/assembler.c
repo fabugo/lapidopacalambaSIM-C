@@ -217,12 +217,12 @@ void joinSegs() {
 
         Label *jumper = jumpers;
         while(jumper != NULL) {
-            jumper->address += increment;
+            jumper->address += increment+1;
             jumper = jumper->next;
         }
 
         while((instr = instr->next) != NULL) {
-            instr->address += increment;
+            instr->address += increment+1;
         }
     } else {
         dsegInstr = psegInstr;
@@ -390,9 +390,8 @@ char *getInstrBits(char *instr) {
         //100 0000 0 ssss ssss 0000 000000000000
         sprintf(temp, "10000000%s%s0000000000000000", getParam(instr, 1), getParam(instr, 3));
     } else if(startWith(instr, "store ")) {
-        //100 0000 1 ssss 0000 ssss 000000000000
-        sprintf(temp, "100000010000%s%s000000000000", getParam(instr, 1), getParam(instr, 3));
-        sprintf(temp, "10000001%s0000%s000000000000", getParam(instr, 1), getParam(instr, 3));
+        //100 0000 1  0000 ssss ssss 000000000000
+        sprintf(temp, "100000010000%s%s000000000000", getParam(instr, 3), getParam(instr, 1));
 
     //Instruções de Desvio
     } else if(startWith(instr, "j ")) {

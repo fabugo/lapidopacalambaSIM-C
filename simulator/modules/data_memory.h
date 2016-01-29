@@ -10,8 +10,6 @@
 #include "../defs.h"
 #include "../../lib/string.h"
 
-#include "register_bank.h"
-
 struct DATA_MEMORY {
     char *input;			//WP: Ponteiro para o sinal de saída PRA do banco de registradores
     						//Dado a ser escrito

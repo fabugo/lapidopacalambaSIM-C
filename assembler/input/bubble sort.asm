@@ -54,7 +54,7 @@ LOOP2:  inca r3,r3
 		inca r6,r6
 		store r6,r4
 
-EXIT:   j EXIT
+HALT: j HALT
 
 .dseg
 

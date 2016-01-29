@@ -7,14 +7,9 @@
 
 #include <string.h>
 
-#include "../defs.h"
-
-#include "alu.h"
-#include "program_counter.h"
-
 struct MX_PC {
     char *input_ALU; 	//Ponteiro para o sinal de saída C da unidade lógica e aritmética
-    char *input_PC; 	//Ponteiro para o sinal de saída do contador de programa
+    char *input_ADD; 	//Ponteiro para o sinal de saída do contador de programa
 
     char output[33];	//Saída selecionada pelo sinal S_MXPC
 };

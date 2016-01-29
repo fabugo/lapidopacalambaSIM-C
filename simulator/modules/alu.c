@@ -61,7 +61,9 @@ void OP_ALU(char *operation) {
 
     } else if(strEquals(operation, "01000")) {
     //lsl c, a <=> c = << a
-        strcpy(alu.output, strcat(substring(alu.input_A, 1, 31), "0"));
+        char *shifted = malloc(32);
+        sprintf(shifted, "%s0", substring(alu.input_A, 1, 31));
+        strcpy(alu.output, shifted);
         
         alu.flags[1] = alu.output[0];
         alu.flags[2] = alu.input_A[0]; //carry
@@ -69,7 +71,9 @@ void OP_ALU(char *operation) {
 
     } else if(strEquals(operation, "01001")) {
     //asr c, a <=> c = >> a
-        strcpy(alu.output, strcat(substring(alu.input_A, 0, 0), substring(alu.input_A, 0, 30)));
+        char *shifted = malloc(32);
+        sprintf(shifted, "%s%s", substring(alu.input_A, 0, 0), substring(alu.input_A, 0, 30));
+        strcpy(alu.output, shifted);
         
         alu.flags[1] = alu.output[0];
         alu.flags[2] = alu.input_A[31]; //carry
@@ -192,7 +196,11 @@ void OP_ALU(char *operation) {
     } else if(strEquals(operation, "01110")) {
     //lch c, Const <=> c = (Const16 « 16) | (C&0xffff0000)
     //o 'C' de (C&0xffff0000) é posto em input_A pelo assembler
-        strcpy(alu.output, or(strcat(substring(alu.input_B, 0, 15), "0000000000000000"), and(alu.input_A, "00000000000000001111111111111111")));
+        char *Const16_16 = malloc(32);
+        sprintf(Const16_16, "%s0000000000000000", substring(alu.input_B, 0, 15));
+        char *Ce0xffff0000 = and(alu.input_A, "00000000000000001111111111111111");
+
+        strcpy(alu.output, or(Const16_16, Ce0xffff0000));
     }
 }
 
@@ -265,30 +273,22 @@ char fullSubtractor(char carryIn, char a, char b, char *carryOut) {
             *carryOut = '0';
             return '0';
         } else {
-            if(a == '0') {
-                *carryOut = '1';
-            } else {
-                *carryOut = '0';
-            }
+            *carryOut = b;
             return '1';
         }
     } else {
-        if(a != b) {
-            *carryOut = '0';
-            return '0';
-        } else {
-            if(a == '0') {
-                *carryOut = '0';
-            } else {
-                *carryOut = '1';
-            }
+        if(a == b) {
+            *carryOut = '1';
             return '1';
+        } else {
+            *carryOut = b;
+            return '0';
         }
     }
 }
 
 /*
-    Função que representa um subtrator completo. Retorna o resultado
+    Função que representa um somador completo. Retorna o resultado
     de 'a' + 'b' e atribui o carry, quando houver, em 'carryOut'
 */
 char fullAdder(char carryIn, char a, char b, char *carryOut) {
@@ -297,11 +297,7 @@ char fullAdder(char carryIn, char a, char b, char *carryOut) {
             *carryOut = '0';
             return '1';
         } else {
-            if(a == '0') {//a ou b ja q sao iguais
-                *carryOut = '0';
-            } else {//a ou b ja q sao iguais
-                *carryOut = '1';
-            }
+            *carryOut = b;
             return '0';
         }
     } else {
@@ -309,11 +305,7 @@ char fullAdder(char carryIn, char a, char b, char *carryOut) {
             *carryOut = '1';
             return '0';
         } else {
-            if(a == '0') {//a ou b ja q sao iguais
-                *carryOut = '0';
-            } else {//a ou b ja q sao iguais
-                *carryOut = '1';
-            }
+            *carryOut = b;
             return '1';
         }
     }

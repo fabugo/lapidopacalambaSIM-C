@@ -9,9 +9,6 @@
 
 #include "../defs.h"
 
-#include "register_bank.h"
-#include "signal_extender.h"
-
 struct MX_SE {
     char *input_RB;	//Ponteiro para o sinal de saída PRB do banco de registradores
     char *input_SE;	//Ponteiro para o sinal de saída do extensor de sinal

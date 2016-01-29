@@ -5,14 +5,12 @@
 #ifndef ALU_H
 #define ALU_H
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "../defs.h"
 #include "../../lib/string.h"
-
-#include "register_bank.h"
-#include "mx_se.h"
 
 struct ALU {
     char *input_A; 	//A: Ponteiro para o sinal de saída PRA do banco de registradores

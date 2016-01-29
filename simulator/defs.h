@@ -7,9 +7,9 @@
 
 #define ZERO		"00000000000000000000000000000000"
 
-#define MI_SIZE		1000	//Tamanho da memória de instrução
+#define MI_SIZE		101	//Tamanho da memória de instrução
 
-#define DM_SIZE		1000	//Tamanho da memória de dados
+#define DM_SIZE		16	//Tamanho da memória de dados
 
 #define RB_SIZE		16		//Quantidade de registradores
 

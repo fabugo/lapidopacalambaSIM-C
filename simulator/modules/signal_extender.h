@@ -10,8 +10,6 @@
 #include "../defs.h"
 #include "../../lib/string.h"
 
-#include "memory_instruction.h"
-
 struct SIGNAL_EXTENDER {
     char *input;	//Ponteiro para o sinal de saída I[0:15]/[0:11] da memória de instruções
 

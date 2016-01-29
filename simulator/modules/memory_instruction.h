@@ -10,8 +10,6 @@
 #include "../defs.h"
 #include "../../lib/string.h"
 
-#include "program_counter.h"
-
 struct MEMORY_INSTRUCTION {
 	char *input; 					//RI: Ponteiro para o sinal da saída do contador de programa
 

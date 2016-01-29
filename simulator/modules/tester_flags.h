@@ -7,8 +7,7 @@
 
 #include "../../lib/string.h"
 
-#include "memory_instruction.h"
-#include "register_flags.h"
+#include "mx_pc.h"
 
 struct TESTER_FLAGS {
 	char *input_flags; 	//OSCZ: Ponteiro para os sinais de saída OSCZ do registrador de flags

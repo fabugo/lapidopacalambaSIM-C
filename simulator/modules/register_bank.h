@@ -10,9 +10,6 @@
 #include "../defs.h"
 #include "../../lib/string.h"
 
-#include "memory_instruction.h"
-#include "mx_rb.h"
-
 struct REGISTER_BANK {
     char *input_RA; //RA: Ponteiro para o sinal de saída I[19:16] da memória de instruções
                     //Endereço para o registrador A a ser lido

@@ -31,6 +31,7 @@ Instr *read(char path[]) {
         int instrCount = 0; //Contagem utilizada para endereçar as instruções
         char *content;
         while((content = nextInstruction()) != NULL) { //Enquanto a leitura não chegar ao fim do arquivo
+            if(strEquals(content, "\n")) continue; //Ignora o \n;
             if(current == NULL) { //Se for a primeira instrução lida
                 //Cria a primeira estrutura 'Instr'
                 first->address = instrCount;

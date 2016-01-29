@@ -21,6 +21,7 @@
 #include "modules/mx_pc.h"
 #include "modules/mx_rb.h"
 #include "modules/program_counter.h"
+#include "modules/add.h"
 
 int main(int argc, char *argv[]) {
 	/***********Zera todas os dados dos componentes***********/
@@ -40,9 +41,10 @@ int main(int argc, char *argv[]) {
 	strcpy(mx_pc.output, ZERO);	//MX_PC
 	strcpy(mx_rb.output, ZERO);	//MX_RB
 	RST_PC('1');				//PROGRAM COUNTER
+	strcpy(add.output, ZERO);	//MX_RB
 	/*********************************************************/
 
-	/********Inicializa os componentes do processador*********/
+	/***Liga as saídas dos componentes à entradas de outros*****/
 	mi.input = (char*) &pc.output;				//MEMORY INSTRUCTION
 	uc.TYPE_OP = (char*) &mi.output;			//UNIT CONTROL
     rbank.input_RA = (char*) &mi.output;		//REGISTER BANK
@@ -60,22 +62,27 @@ int main(int argc, char *argv[]) {
 	tf.input_flags = (char*) &rf.output_flags;
 	tf.cond = (char*) &mi.output;				//TESTER FLAGS
 	mx_pc.input_ALU = (char*) &alu.output;		//MX_PC
-	mx_pc.input_PC = (char*) &pc.output;
-	mx_rb.input_PC = (char*) &pc.output;		//MX_RB
+	mx_pc.input_ADD = (char*) &add.output;
+	mx_rb.input_PC = (char*) &mx_pc.output;		//MX_RB
 	mx_rb.input_DM = (char*) &dm.output;
 	mx_rb.input_ALU = (char*) &alu.output;
 	pc.input = (char*) &mx_pc.output;			//PROGRAM COUNTER
+	add.input = (char*) &pc.output;				//ADD
 	/*********************************************************/
 
-	/******Carrega as instruções na memória de instrução******/
-	Instr *instr = read("input"); //Lê o arquivo de entrada
-	int x;
-	for(x = 0; x < MI_SIZE && instr != NULL; x++) {
-	//Percorre instrução a instrução copiando-as para a memória de instruções
-		strcpy(mi.instruction[x], instr->content);
-		instr = instr->next;
-	}
-	/*********************************************************/
+	if(argc > 1) {
+        /******Carrega as instruções na memória de instrução******/
+		Instr *instr = read(argv[1]); //Lê o arquivo de entrada
+		if(instr != NULL) {
+			int x;
+			for(x = 0; x < MI_SIZE && instr != NULL; x++) {
+			//Percorre instrução a instrução copiando-as para a memória de instruções
+				strcpy(mi.instruction[x], instr->content);
+				instr = instr->next;
+			}
+			/*********************************************************/
 
-	UC_run();
+			UC_run();
+		}
+    }
 }

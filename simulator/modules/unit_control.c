@@ -13,31 +13,27 @@ void WB();
 
 //Função não existente em um processador real, mas aqui é usada. Ela imprime na tela
 //o estado atual de todo o processador.
-void print(int state);
+void print();
 
 void UC_run() {
     int state = 0;
-    print(-1);
+    print();
     while(1) {
         switch (state) {
             case 0:
                 IF();
-                print(state);
                 state = 1;
             break;
             case 1:
                 ID();
-                print(state);
                 state = 2;
             break;
             case 2:
                 EX();
-                print(state);
                 state = 3;
             break;
             case 3:
                 WB();
-                print(state);
                 state = 0;
             break;
         }
@@ -46,17 +42,19 @@ void UC_run() {
 
 void IF() {
     W_MI('1');
+    ADD_PC('1');
 }
 
 void ID() {
     char *type = (char*) substring(uc.TYPE_OP,0,2);
     if(strEquals(type,"001")) {         //ULA OP
         W_RB('0');//register fetch
-
         strcpy(uc.OP_ALU, substring(uc.TYPE_OP,3,7));
         strcpy(uc.OP_TF, "111");
         uc.W_RB = '1';
         uc.W_DM = '0';
+        uc.S_MXSE = '0';
+        strcpy(uc.S_MXRB, "10");
 
         // Define o sinal que define quais flags serão atualizadas
         if(strEquals(uc.OP_ALU, "10011")        //passb
@@ -72,82 +70,88 @@ void ID() {
             strcpy(uc.W_RF, "010"); // Atualiza S Z
 
     } else if(strEquals(type,"010")) {  //CONS OP
+        W_RB('0');
         OP_SE('1');
-
         strcpy(uc.OP_ALU, substring(uc.TYPE_OP, 3, 7));
         strcpy(uc.OP_TF, "111");
         uc.W_RB = '1';
         uc.W_DM = '0';
         strcpy(uc.W_RF, "000");
+        uc.S_MXSE = '1';
+        strcpy(uc.S_MXRB, "10");
     } else if(strEquals(type,"100")) {  //MEMORY OP
         W_RB('0');
-
         strcpy(uc.OP_TF, "111");
         uc.W_RB = (uc.TYPE_OP[7] == '0') ? '1' : '0'; //load ativa o rb
-        uc.W_DM = (uc.TYPE_OP[7] == '1') ? '1' : '0'; //store ativa o dm
+        uc.W_DM = uc.TYPE_OP[7]; //0 - leitura, 1 - escrita
         strcpy(uc.W_RF, "000");
+        uc.S_MXSE = '0';
+        strcpy(uc.S_MXRB, "01");
     } else if(strEquals(type,"000")) {  //JUMPER OP
         OP_SE('0');
-
+        strcpy(uc.OP_ALU, "10011"); //passb
         strcpy(uc.OP_TF, substring(uc.TYPE_OP, 5, 7));
         uc.W_RB = '0';
         uc.W_DM = '0';
+        uc.S_MXSE = '1';
         strcpy(uc.W_RF, "000");
     } else if(strEquals(type,"110")) {  //JUMPER REGISTER OP
         W_RB('0');
-
-        strcpy(uc.OP_ALU, "10011");
+        strcpy(uc.OP_ALU, "10011"); //passb
         strcpy(uc.OP_TF, substring(uc.TYPE_OP, 5, 7));
-
         uc.W_RB = (strEquals(uc.OP_TF, "001")) ? '1' : '0'
         ? '0'  //jal
         : '1'; //jr
-
         uc.W_DM = '0';
         strcpy(uc.W_RF, "000");
+        strcpy(uc.S_MXRB, "00");
     }
 }
 
 void EX() {
+    S_MXSE(uc.S_MXSE);
     OP_ALU(uc.OP_ALU);
     W_DM(uc.W_DM);
     OP_TF(uc.OP_TF);
 }
 
 void WB() {
+    S_MXRB(uc.S_MXRB);
+    S_MXPC(tf.output);
     W_RF(uc.W_RF);
     W_RB(uc.W_RB);
+    print();
     W_PC('1');
 }
 
-void print(int state) {
+void print() {
     system("cls");
 
-    printf("======================================== || ======================================== ||\n");
-    printf("------------------ PC ------------------ || ------------------ RB ------------------ ||\n");
-    printf("======================================== || ======================================== ||\n");
-    printf("in    : %s || R0    : %s ||\n", pc.input, rbank.registers[0]);
-    printf("out   : %s || R1    : %s ||\n", pc.output, rbank.registers[1]);
-    printf("                                         || R2    : %s ||\n", rbank.registers[2]);
-    printf("======================================== || R3    : %s ||\n", rbank.registers[3]);
-    printf("------------------ MI ------------------ || R4    : %s ||\n", rbank.registers[4]);
-    printf("======================================== || R5    : %s ||\n", rbank.registers[5]);
-    printf("in  RI: %s || R6    : %s ||\n", mi.input, rbank.registers[6]);
-    printf("out  I: %s || R7    : %s ||\n", mi.output, rbank.registers[7]);
-    printf("                                         || R8    : %s ||\n", rbank.registers[8]);
-    printf("======================================== || R9    : %s ||\n", rbank.registers[9]);
-    printf("------------------ DM ------------------ || R10   : %s ||\n", rbank.registers[10]);
-    printf("======================================== || R11   : %s ||\n", rbank.registers[11]);
-    printf("in WP : %s || R12   : %s ||\n", dm.input, rbank.registers[12]);
-    printf("in AD : %s || R13   : %s ||\n", dm.address, rbank.registers[13]);
-    printf("out PR: %s || R14   : %s ||\n", dm.output, rbank.registers[14]);
-    printf("                                         || R15   : %s ||\n", rbank.registers[15]);
-    printf("======================================== || in RA : %s                             ||\n", substring(rbank.input_RA, 12, 15));
-    printf("------------------ SE ------------------ || in RB : %s                             ||\n", substring(rbank.input_RB, 16, 19));
-    printf("======================================== || in WC : %s                             ||\n", substring(rbank.input_WC, 8, 11));
+    printf("======================================== || ======================================== || ======================================== ||\n");
+    printf("------------------ PC ------------------ || ------------------ RB ------------------ || ------------------ DM ------------------ ||\n");
+    printf("======================================== || ======================================== || ======================================== ||\n");
+    printf("in    : %s || R0    : %s || 0     : %s ||\n", pc.input, rbank.registers[0], dm.data[0]);
+    printf("out   : %s || R1    : %s || 1     : %s ||\n", pc.output, rbank.registers[1], dm.data[1]);
+    printf("                                         || R2    : %s || 2     : %s ||\n", rbank.registers[2], dm.data[2]);
+    printf("======================================== || R3    : %s || 3     : %s ||\n", rbank.registers[3], dm.data[2]);
+    printf("------------------ MI ------------------ || R4    : %s || 4     : %s ||\n", rbank.registers[4], dm.data[4]);
+    printf("======================================== || R5    : %s || 5     : %s ||\n", rbank.registers[5], dm.data[5]);
+    printf("in  RI: %s || R6    : %s || 6     : %s ||\n", mi.input, rbank.registers[6], dm.data[6]);
+    printf("out  I: %s || R7    : %s || 7     : %s ||\n", mi.output, rbank.registers[7], dm.data[7]);
+    printf("                                         || R8    : %s || 8     : %s ||\n", rbank.registers[8], dm.data[8]);
+    printf("                                         || R9    : %s || 9     : %s ||\n", rbank.registers[9], dm.data[9]);
+    printf("                                         || R10   : %s || 10    : %s ||\n", rbank.registers[10], dm.data[10]);
+    printf("                                         || R11   : %s || 11    : %s ||\n", rbank.registers[11], dm.data[11]);
+    printf("                                         || R12   : %s || 12    : %s ||\n", rbank.registers[12], dm.data[12]);
+    printf("                                         || R13   : %s || 13    : %s ||\n", rbank.registers[13], dm.data[13]);
+    printf("                                         || R14   : %s || 14    : %s ||\n", rbank.registers[14], dm.data[14]);
+    printf("                                         || R15   : %s || 15    : %s ||\n", rbank.registers[15], dm.data[15]);
+    printf("======================================== || in RA : %s                             || in WP : %s ||\n", substring(rbank.input_RA, 12, 15), dm.input);
+    printf("------------------ SE ------------------ || in RB : %s                             || in AD : %s ||\n", substring(rbank.input_RB, 16, 19), dm.address);
+    printf("======================================== || in WC : %s                             || out PR: %s ||\n", substring(rbank.input_WC, 8, 11), dm.output);
     printf("in    : %s || ou WPC: %s ||\n", se.input, rbank.input_WPC);
-    printf("out   : %s || ou PRA   : %s ||\n", se.output, rbank.output_PRA);
-    printf("                                         || PRB   : %s ||\n", rbank.output_PRB);
+    printf("out   : %s || ou PRA: %s ||\n", se.output, rbank.output_PRA);
+    printf("                                         || ou PRB: %s ||\n", rbank.output_PRB);
     /*IMPRIMIR A MEMÓRIA DE INSTRUÇÕES EM ARQUIVO*/
     /*IMPRIMIR A MEMÓRIA DE DADOS EM ARQUIVO*/
     printf("\n");
@@ -169,11 +173,10 @@ void print(int state) {
     printf("----------------- MX_PC ---------------- || ----------------- MX_RB ---------------- || ----------------- MX_SE ----------------\n");
     printf("======================================== || ======================================== || ========================================\n");
     printf("in ALU: %s || in PC : %s || in RB : %s\n", mx_pc.input_ALU, mx_rb.input_PC, mx_se.input_RB);
-    printf("in PC : %s || in DM : %s || in SE : %s\n", mx_pc.input_PC, mx_rb.input_DM, mx_se.input_SE);
+    printf("in PC : %s || in DM : %s || in SE : %s\n", mx_pc.input_ADD, mx_rb.input_DM, mx_se.input_SE);
     printf("out   : %s || in ALU: %s || out   : %s\n", mx_pc.output, mx_rb.input_ALU, mx_se.output);
     printf("                                         || out   : %s ||\n", mx_rb.output);
     printf("\n");
 
-    printf("Execucao da parte: %s\n", ((state == 0) ? "IF" : (state == 1) ? "ID" : (state == 2) ? "EX" : (state == 3) ? "WB" : "INICIANDO"));
     system("pause");
 }

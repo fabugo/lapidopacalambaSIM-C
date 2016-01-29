@@ -56,6 +56,8 @@
 
 	END:	store r4,r5			;Armazena na memória o valor da posicao do elemento
 
+	HALT: j HALT
+
 .dseg
 	VET:	
 			.word 7
