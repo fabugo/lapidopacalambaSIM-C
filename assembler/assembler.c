@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
     int x;
     for(x = 1; x < argc; x++) {
         outputPath = malloc(50);
-        sprintf(outputPath, "output/program_%d", x);
+        sprintf(outputPath, "../simulator/input/program_%d", x);
         start(argv[x], outputPath);
     }
 

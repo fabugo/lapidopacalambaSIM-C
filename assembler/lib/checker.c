@@ -101,6 +101,8 @@ void getVariables(Line *line) {
 	while(line != NULL && !strEquals(line->text, ".dseg"))
 		line = line->next;
 
+	if(line == NULL) return; //Não tem .dseg
+
 	while((line = line->next) != NULL && (line->text[0] != '.' || startWith(line->text, ".word"))) {
 		int index = indexOf(line->text, ':');
 		if(index > -1) {
