@@ -63,14 +63,14 @@ HALT: j HALT
 
 VET:
     	.word   10
-            .word   7
-            .word   5
-            .word   -2
             .word   1
-            .word   -1
-            .word   15
+            .word   5
             .word   8
-            .word   10
             .word   3
+            .word   7
+            .word   9
+            .word   4
             .word   6
+            .word   0
+            .word   2
 .end
