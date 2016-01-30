@@ -21,39 +21,40 @@
     load r1,r0					;'r1' recebe a primeira posicao do vetor que contém o número de elementos
     inca r0,r0					;Incrementa r0 para o primeiro elemento a ser ordenado
 
-    passa r2, r1				;r2		x = n
-    							;r3		y
+    passa r1, r1				;r1		x = n
+    deca r1, r1                 ;r1     x = n-1
+    							;r2		y
+    							;r3		temp
     							;r4		temp
     							;r5		temp
     							;r6		temp
-    							;r8		temp
-	zeros r8					;r8	= 0
+	zeros r6					;r6	= 0
 
-    FOR1:	sub r4, r8, r2
-    		jf.neg HALT			;Se x <= 0, finaliza. Se x > 0, executa FOR2
+    FOR1:	sub r3, r1, r6
+    		jt.negzero HALT			;Se x <= 0, finaliza. Se x > 0, executa FOR2
 
-    		zeros r3			;y = 0
-    FOR2:	sub r4, r3, r2
-    		jf.neg EFOR1		;Se y >= x, pula p FOR1
+    		zeros r2			;y = 0
+    FOR2:	sub r3, r1, r2
+    		jt.negzero EFOR1		;Se y >= x, pula p FOR1
 
-    		passa r4, r0		;r4 = &vet[0]
-    		add r4, r4, r3		;r4 = &vet[y]
-    		load r5, r4			;r5 = vet[y]
-    		inca r4, r4			;r4 = &vet[y+1]
-    		load r6, r4			;r6 = vet[y+1]
-    		sub r7, r6, r5		;r7 = vet[y+1] - vet[y]
+    		passa r3, r0		;r3 = &vet[0]
+    		add r3, r3, r2		;r3 = &vet[y]
+    		load r4, r3			;r4 = vet[y]
+    		inca r3, r3			;r3 = &vet[y+1]
+    		load r5, r3			;r5 = vet[y+1]
+    		sub r7, r5, r4		;r7 = vet[y+1] - vet[y]
     		jt.neg SWAP			;vet[y] > vet[y+1]
     		nop
 
-    EFOR2:	inca r3, r3
+    EFOR2:	inca r2, r2
     		j FOR2
 
-    SWAP:	store r4, r5
-    		deca r4, r4
-    		store r4, r6
+    SWAP:	store r3, r4
+    		deca r3, r3
+    		store r3, r5
     		j EFOR2
 
-    EFOR1:	deca r2, r2
+    EFOR1:	deca r1, r1
     		j FOR1
 
 HALT: j HALT
@@ -64,12 +65,12 @@ VET:
     	.word   10
             .word   7
             .word   5
-            .word   2
+            .word   -2
             .word   1
             .word   -1
-            .word   0
+            .word   15
             .word   8
-            .word   4
+            .word   10
             .word   3
             .word   6
 .end
