@@ -237,14 +237,17 @@ void replaceLabelsAndVariables() {
     
     while(jumper != NULL) {
         instr = psegInstr;
+        
         while(instr != NULL) {
+            char *name = malloc(64);
+            sprintf(name, " %s", jumper->name);
+
             if((startWith(instr->content, "lcl ") || startWith(instr->content, "lch ") || startWith(instr->content, "loadlit ")
                 || startWith(instr->content, "j ") || startWith(instr->content, "jt.") || startWith(instr->content, "jf."))
-                && contains(instr->content, jumper->name)) {
-
+                && contains(instr->content, name)) {
                 char *temp = malloc(11);
-                sprintf(temp, "%d", jumper->address);
-                instr->content = replaceAll(instr->content, jumper->name, temp);
+                sprintf(temp, " %d", jumper->address);
+                instr->content = replaceAll(instr->content, name, temp);
             }
             instr = instr->next;
         }
