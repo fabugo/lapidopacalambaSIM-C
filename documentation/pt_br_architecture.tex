@@ -54,7 +54,7 @@
   20/12/2015 &  Finalização do documento & Fábio Barros, Matheus Borges e Patricia Gomes\\ \hline
   20/12/2015 &  Revisão do documento & Fábio Barros e Matheus Borges \\ \hline
   15/01/2016 &  Alterações no documento & Patricia Gomes \\ \hline 
-  20/01/2016 &  Correções do documento & Patricia Gomes \\ \hline 
+  29/01/2016 &  Correções do documento & Patricia Gomes \\ \hline 
   
 
 \end{longtable}
@@ -69,10 +69,11 @@ O processador pode ser definido como o cérebro do computador, é ele o respons�
 O objetivo deste documento de arquitetura é definir as especificações do processador desenvolvido. O documento de arquitetura é importante por permitir que outras pessoas possam utilizá-lo para construir um sistema a partir dele com sucesso. O mesmo  define os parâmetros de implementação que compõem os requisitos do processador implementado, tais requisitos incluem a arquitetura do conjunto de instruções, definições de entrada e saída e a arquitetura geral do processador. 
 
 \subsection{Organização do Documento} 
-\textbf{Sessão 2:} Apresenta uma visão geral da arquitetura e dos principais requisitos. \newline
-\textbf{Sessão 3:} Especifica o conjunto de instruções do processador. \newline
-\textbf{Sessão 4:} Especifica os elementos que compõem o sistema.\newline
-\textbf{Sessão 5:} Descreve o montador. \newline
+\textbf{Sessão 2:} Apresenta uma definição de requisitos funcionais e não funcionais. \newline
+\textbf{Sessão 3:} Apresenta a visão geral da arquitetura. \newline
+\textbf{Sessão 4:} Especifica o conjunto de instruções do processador. \newline
+\textbf{Sessão 5:} Especifica os elementos que compõem o sistema.\newline
+\textbf{Sessão 6:} Descreve o montador. \newline
 
 % inicio da tabela de acronimos e abreviacoes do documento
 \subsection{Acrônimos e Abreviações}
@@ -97,7 +98,6 @@ O objetivo deste documento de arquitetura é definir as especificações do proc
     RA      & Read A - Ler A\\ \hline
     RB      & Read B - Ler B\\ \hline
     WC      & Write C - Escreve C\\ \hline
-    CONTROL & Unidade de Controle\\ \hline
     COND    & Condição\\ \hline
     Const16 & Constante de 16 bits \\ \hline
     MI     & Memory Instruction (Memória de Instruções)\\ \hline
@@ -165,12 +165,13 @@ Os requisitos funcionais e não-funcionais são listados nas tabelas abaixo resp
     \end{center}
 \end{table}  
 
-Os requisitos foram atendidos, de forma que as instruções, apresentadas nas sessões seguintes, foram sugeridas a partir dos documentos de testes que foi entregue pelos solicitantes. A operação que cada instrução realiza é descrita em tabelas ao lado da intrução. 
+Os requisitos foram atendidos, de forma que as instruções, apresentadas nas sessões seguintes, foram sugeridas a partir dos documentos de testes que foi entregue pelos solicitantes. A operação que cada instrução realiza é descrita ao lado da instrução. 
 \end{comment}
 \newpage
 \section{Visão Geral da Arquitetura}
-Este documento descreve um processador µRISC adaptado à 32 bits. Esse processador possui 16 registradores de proposito geral e composta por um conjunto de 42 instruções. \newline
-Para uma instrução ser executada são necessários quatro ciclos. Esses ciclos são denominados IF, ID, EX/MEN e WB, como apresentado na figura abaixo. No primeiro ciclo (IF),  a próxima instrução a ser executada, definida pelo contador de programa (PC), é lida da memória de instruções (MI). No segundo ciclo (ID), a instrução é identificada e os operandos são lidos do banco de registradores ou, em caso de operações com constantes, manipulado pelo extensor de sinal (SE). No terceiro ciclo (EX/MEM), a instrução é executa pela unidade lógica aritmética (ALU) ou pela memória, em caso de operações de armazenamento ou leitura. No quarto ciclo (WB), os resultados são escritos no banco de registradores.
+Este documento descreve um processador µRISC adaptado à 32 bits. Esse processador possui 16 registradores de propósito geral e é composto por um conjunto de 42 instruções. 
+
+Para uma instrução ser executada são necessários quatro ciclos. Esses ciclos são denominados IF, ID, EX/MEN e WB, como apresentado na figura abaixo. No primeiro ciclo (IF),  a próxima instrução a ser executada, definida pelo contador de programa (PC), é lida da memória de instruções (MI). No segundo ciclo (ID), a instrução é identificada e os operandos são lidos do banco de registradores ou, em caso de operações com constantes, manipulados pelo extensor de sinal (SE). No terceiro ciclo (EX/MEM), a instrução é executa pela unidade lógica aritmética (ALU) ou pela memória, em caso de operações de armazenamento ou leitura. No quarto ciclo (WB), os resultados são escritos no banco de registradores.
 
 \begin{figure}[H]
 \centering
@@ -187,7 +188,7 @@ Para uma instrução ser executada são necessários quatro ciclos. Esses ciclos
     \item \textbf {Simulador e Montador desenvolvido na linguagem C;}
     \item \textbf {Armazenamento em memória de forma big-endian;}
     \item \textbf {Unidade de controle hardwired;}
-    \item \textbf {Endereçamento por registrador e imediato;}
+    \item \textbf {Endereçamento por registrador e imediato.}
 \end{itemize}
 
 \newpage
@@ -278,7 +279,7 @@ As instruções de lógica e aritmética possuem o seguinte formato:
 \end{figure}
 A Figura 3 apresenta o caminho de dados específico de instruções com constantes, nela é possível observar quais elementos participam da realização destas operações.\newline
 
-O elemento que caracteriza esse tipo de instrução é o extensor de sinal responsável por transformar uma constante de 16 ou 12 bits em 32 bits. O nível lógico do sinal OP\_SE que define se a constante a ser extendida é de tamanho 12 ou 16. Assim é garantido que o restante dos bits não tenha informações erradas que irão ser operadas na unidade lógica e aritimetica (ALU).
+O elemento que caracteriza esse tipo de instrução é o extensor de sinal responsável por transformar uma constante de 16 ou 12 bits em 32 bits. O nível lógico do sinal OP\_SE define se a constante a ser extendida é de tamanho 12 bits no caso de operações de jump ou 16 bits no caso de operações com constante. Assim é garantido que o restante dos bits não tenha informações erradas que irão ser operadas na unidade lógica e aritimetica (ALU).
 
 % inicio da tabela de formato de instruções com constante
 \FloatBarrier
@@ -318,8 +319,10 @@ O elemento que caracteriza esse tipo de instrução é o extensor de sinal respo
 \caption{Datapath Memória}
 \end{figure}
 
-As instruções de acesso à memória são Load e Store. Na instrução Load o endereço presente no registrador B é lido da memória, e a saída é escrita no banco de registradores no endereço especificado na pelo registrador A. Na instrução Store os dados são lidos do banco de registradores e escritos na memória, sendo registrador A o dado a ser escrito e o registrador B endereço onde será armazenado. \newline
+As instruções de acesso à memória são Load e Store. Na instrução Load o endereço presente no registrador B é lido da memória, e a saída é escrita no banco de registradores no endereço especificado na pelo registrador A. Na instrução Store os dados são lidos do banco de registradores e escritos na memória, sendo registrador A o dado a ser escrito e o registrador B o endereço onde será armazenado. 
+
 O sinal que habilita a escrita na memória de dados é o mesmo que habilita a leitura, quando em nível lógico 1 apenas a escrita é permitida, e em 0, apenas a leitura.
+
 As instruções de acesso à memória possuem o seguinte formato:
 
 % inicio da tabela de formato de instruções de acesso à memória
@@ -349,8 +352,8 @@ As instruções de acesso à memória possuem o seguinte formato:
   \renewcommand{\arraystretch}{1.2}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{89pt}|>{\centering\arraybackslash}m{160pt}|>{\centering\arraybackslash}m{150pt}|} \hline
       \cellcolor[gray]{0.9}\textbf{OPM} & \cellcolor[gray]{0.9}\textbf{Mnemônico} & \cellcolor[gray]{0.9}\textbf{Operação} \\ \hline
-        0       & load c, a         & C = Mem[A] \\ \hline
-        1       & store a, b        & Mem[A] = B \\ \hline
+        0       & load c, b         & C = Mem[B] \\ \hline
+        1       & store b, a        & Mem[B] = A \\ \hline
     \end{tabular}
     \caption{Tabela de Instruções de Acesso à Memória}
   \end{center}
@@ -366,9 +369,9 @@ As instruções de acesso à memória possuem o seguinte formato:
 \end{figure}
 
 O módulo que caracteriza essa instrução é o testador de flags (TF) que, a partir de uma condição, determina se um salto será ou não realizado.
-As instruções de desvio condicional e incondicional realizam um salto para um endereço absoluto da memória de instruções, informado pelo campo DESTINO. Este endereçamento pode ser de até 2\^{}12 bits. Em caso de endereços maior que 12 bits, deve-se utilizar as instruções lcl e lch para carregar o endereço do Label de destino em um registrador. Em seguida, deve-se realizar um desvio por registrador (especificado na sessão 4.5), utilizando como parâmetro este registrador.
-Esta decisão de utilziar endereçamento absoluto retira da ALU a responsabilidade de calcular o novo destino.
-\newline
+
+As instruções de desvio condicional e incondicional realizam um salto para um endereço absoluto da memória de instruções, informado pelo campo DESTINO (demonstrado na Tabela de Formato). Este endereçamento pode ser de até 2\^{}12 bits. Em caso de endereços maior que 12 bits, deve-se utilizar as instruções lcl e lch para carregar o endereço do Label de destino em um registrador. Em seguida, deve-se realizar um desvio por registrador (especificado na sessão 4.5), utilizando como parâmetro este registrador. Esta decisão de utilziar endereçamento absoluto retira da ALU a responsabilidade de calcular o novo destino.
+
 Tais instruções possuem o formato descrito abaixo na tabela:
 % inicio da tabela de formato de instruções de desvio
 \FloatBarrier
@@ -388,7 +391,7 @@ Tais instruções possuem o formato descrito abaixo na tabela:
 \begin{table}[H]
   \begin{center}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{50pt}|>{\centering\arraybackslash}m{130pt}|>{\centering\arraybackslash}m{209pt}|} \hline
-      \cellcolor[gray]{0.9}\textbf{OPD} & \cellcolor[gray]{0.9}\textbf{Mnemônico} & \cellcolor[gray]{0.9}\textbf{Operação} \\ \hline
+      \cellcolor[gray]{0.9}\textbf{OPTF} & \cellcolor[gray]{0.9}\textbf{Mnemônico} & \cellcolor[gray]{0.9}\textbf{Operação} \\ \hline
         000      & jf.cond DESTINO            & Jump False \\ \hline
         001      & jt.cond DESTINO       & Jump True \\ \hline
         010      & j DESTINO       & Jump Incondicional \\ \hline
@@ -425,7 +428,7 @@ As instruções de desvio condicional devem testar as condições apresentadas n
 \includegraphics[width=\textwidth]{./pictures/DatapathDER.pdf}
 \caption{Datapath Desvio por Registrador}
 \end{figure}
-São duas as instruções de desvio por registrador, jump and link e jump register. Na instrução de jump and link, o valor de PC+1 deve ser armazenado no registrador r15 (definido pela unidade de controle) e o conteúdo do registrador RB armazenado em PC. Já no caso da instrução jump register, a única operação a ser feita é armazenar o conteúdo do registrador RB no PC.\newline
+São duas as instruções de desvio por registrador, jump and link e jump register. Na instrução de jump and link, o valor de PC+1 deve ser armazenado no registrador r15 (definido pela unidade de controle) e o conteúdo do registrador RB armazenado em PC. Já no caso da instrução jump register, a única operação a ser feita é armazenar o conteúdo do registrador RB em PC.\newline
 
 As instruções de desvio por registrador possuem o seguinte formato:
 
@@ -459,7 +462,7 @@ As instruções de desvio por registrador possuem o seguinte formato:
 % fim
 
 \subsection{HALT}
-A instrução HALT representa uma parada no sistema.\newline
+A instrução HALT representa uma parada no sistema. Nesta instrução é realizado um salto para o endereço atual.
 
 O HALT possui o formato seguinte:
 
@@ -490,7 +493,7 @@ O HALT possui o formato seguinte:
 % fim
 
 \subsection{NOP}
-Nessa instrução todos os sinais de controle são zerados, desta forma nada é registrado na memória ou no banco de registradores. A NOP possui o formato seguinte:
+Nessa instrução todos os sinais de controle são zerados, desta forma nada é registrado na memória ou no banco de registradores. A NOP é realizada executando um jump False com a condição TRUE para o endereço 0, resultando no seguinte formato:
 
 % inicio da tabela de formato do NOP
 \FloatBarrier
@@ -498,7 +501,7 @@ Nessa instrução todos os sinais de controle são zerados, desta forma nada é 
   \begin{center}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{37pt}|>{\centering\arraybackslash}m{365pt}|} \hline
     \cellcolor[gray]{0.9}\textbf{31:29} & \cellcolor[gray]{0.9}\textbf{28:0} \\ \hline
-        0 0 0       &  X X X X X X X X X X X X X X X X X X X X X X X X X X X X X \\ \hline
+        0 0 0       &  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \\ \hline
     \end{tabular}
     \caption{Tabela de Formato}
   \end{center}
@@ -507,7 +510,7 @@ Nessa instrução todos os sinais de controle são zerados, desta forma nada é 
 
 \newpage
 \section{Descrição dos Componentes}
-Durante algumas discussões foi decidido quais  componentes constituiriam o processador. A partir de análises das instruções foram listados os componentes a seguir:
+Durante algumas discussões foi decidido quais  componentes constituiriam o processador. A partir de análises das instruções foram listados os componentes apresentados nas subsessões a seguir:
 \subsection{Contador de Programa (Program Counter)}
 O Contador de Programa (PC) é o registrador que armazena o endereço da próxima instrução a ser executada. Ele é atualizado assim que a instrução atual é finalizada.
 \begin{figure}[H]
@@ -636,7 +639,7 @@ A ALU é um circuito combinacional responsável por realizar operações aritmé
 \includegraphics[width=0.3\textwidth]{./pictures/ALU.PNG}
 \caption{Unidade Lógica Aritmética}
 \end{figure}
-\newpage
+
 
 % inicio da tabela
 \FloatBarrier
@@ -779,7 +782,7 @@ Esse modelo de implementação tem melhor desempenho em relação ao modelo micr
     W\_DM         &  1   & Saída   & Sinal que habilita a escrita na memória de dados \\ \hline
     W\_RF         &  1   & Saída   & Sinal que habilita o registrador de flags \\ \hline
     S\_MXSE       &  1   & Saída   & Sinal que controla o multiplexador MXSE. Sendo 1, habilita para a saída do mux o valor de saída do SE, sendo 0, habilita para a saída do mux o valor do registrador B do banco de registradores.   \\ \hline
-    S\_MXRB       &  2   & Saída   & Sinal que controla o multiplexador MXRB. Sendo 11, habilita para a saída do mux o valor da saída da ULA, sendo 10, habilita para a saída a saída da memória de dados e sendo 01, habilita para a saída do mux o valor de PC.  \\ \hline
+    S\_MXRB       &  2   & Saída   & Sinal que controla o multiplexador MXRB. Sendo 11, habilita para a saída do mux o valor da saída da ULA, sendo 10, habilita para a saída do mux a saída da memória de dados e sendo 01, habilita para a saída do mux o valor de PC.  \\ \hline
     
     \caption{Tabela de Sinais da Unidade de Controle}
 \end{longtable}
@@ -797,12 +800,12 @@ Além das instruções, o código fonte deve/pode conter algumas diretivas impor
 \begin{itemize}
 \item \textbf .module NOME - Indica o início do programa com o nome informado;
 \item \textbf .pseg - Indica o segmento de programa, ou seja, a partir desse ponto devem conter as instruções a serem executadas. Esta diretiva é encerrada após a ocorrência de uma das diretivas seguintes;
-\item \textbf .dseg - Indica o segmento de dados que deve ser usado para declaração de variáveis globais para. Esta diretiva não é obrigatória.
+\item \textbf .dseg - Indica o segmento de dados que deve ser usado para declaração de variáveis globais. Esta diretiva não é obrigatória.
 \item \textbf .end - Indica ao montador o fim do programa. Assim, qualquer instrução subsequente será desconsiderada.
 \end{itemize}
 
-A qualquer momento no código podem ser inseridos comentários. Para isto deve-se inserir o caractere ";", indicando que apartir dali todo o restante da linha é comentário e será desconsiderado pelo montador.
+A qualquer momento no código podem ser inseridos comentários. Para isto deve-se inserir o caractere ";" (ponto e vírgula), indicando que a partir dalí todo o restante da linha é comentário e será desconsiderado pelo montador.
 
-Outro ponto importante de se ressaltar é os labels, usados para indicar um destino de desvios ou uma nova variável. Estes labels devem conter apenas caracteres alfanuméricos. E, para os labels de desvios, devem estar na mesma linha da próxima instrução, para que esta, possa ser interpretada pelo montador.
+Outro ponto importante a ser ressaltado é os labels, usados para indicar um destino de desvios ou uma nova variável. Estes labels devem conter apenas caracteres alfanuméricos. E, para os labels de desvios, devem estar na mesma linha da próxima instrução, para que esta, possa ser interpretada pelo montador.
 
 \end{document}
