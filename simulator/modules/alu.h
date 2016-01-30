@@ -5,8 +5,8 @@
 #ifndef ALU_H
 #define ALU_H
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "../defs.h"

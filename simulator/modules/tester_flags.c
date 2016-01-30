@@ -23,7 +23,7 @@ void OP_TF(char *value) {
 		else if(strEquals(cond, "100")) 	//Condição carry = flag C
 			tf.output = tf.input_flags[2];
 		else if(strEquals(cond, "101")) 	//Condição negzero = flag S e Z
-			tf.output = (tf.input_flags[1] == tf.input_flags[3] && tf.input_flags[1] == '1') ? '1' : '0';
+			tf.output = !(tf.input_flags[1] == tf.input_flags[3] && tf.input_flags[1] == '0') ? '1' : '0';
 		else if(strEquals(cond, "111")) 	//Condição overflow = flag O
 			tf.output = tf.input_flags[0];
 		

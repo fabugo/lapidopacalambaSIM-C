@@ -61,7 +61,7 @@ void OP_ALU(char *operation) {
 
     } else if(strEquals(operation, "01000")) {
     //lsl c, a <=> c = << a
-        char *shifted = malloc(32);
+        char *shifted = malloc(33);
         sprintf(shifted, "%s0", substring(alu.input_A, 1, 31));
         strcpy(alu.output, shifted);
         
@@ -71,7 +71,7 @@ void OP_ALU(char *operation) {
 
     } else if(strEquals(operation, "01001")) {
     //asr c, a <=> c = >> a
-        char *shifted = malloc(32);
+        char *shifted = malloc(33);
         sprintf(shifted, "%s%s", substring(alu.input_A, 0, 0), substring(alu.input_A, 0, 30));
         strcpy(alu.output, shifted);
         
@@ -196,8 +196,12 @@ void OP_ALU(char *operation) {
     } else if(strEquals(operation, "01110")) {
     //lch c, Const <=> c = (Const16 « 16) | (C&0xffff0000)
     //o 'C' de (C&0xffff0000) é posto em input_A pelo assembler
-        char *Const16_16 = malloc(32);
-        sprintf(Const16_16, "%s0000000000000000", substring(alu.input_B, 0, 15));
+        char Const16_16[33] = "00000000000000000000000000000000";
+        int x;
+        for(x = 0; x < 16; x++) {
+            Const16_16[x] = alu.input_B[x];
+        }
+        
         char *Ce0xffff0000 = and(alu.input_A, "00000000000000001111111111111111");
 
         strcpy(alu.output, or(Const16_16, Ce0xffff0000));

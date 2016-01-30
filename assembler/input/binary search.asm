@@ -15,7 +15,7 @@
 	load r2, r0					;Carrega a quantidade de elementos do vetor
 	inca r0, r0 				;Incrementa o vetor para o primeiro elemento a ser ordenado
 	
-	loadlit r4, 100				;Ponteiro para o endereço de memória para a saida
+	loadlit r4, 15				;Ponteiro para o endereço de memória para a saida
 	;r5 registrador temporario
 	;r6 registrador da posicao corrente
 
@@ -61,15 +61,15 @@
 .dseg
 	VET:	
 			.word 7
-			.word 10
-			.word 1
-			.word 2
-			.word 3
-			.word 4
-			.word 5
-			.word 6
-			.word 7
-			.word 8
-			.word 9
-			.word 10
+				.word 10
+				.word 1
+				.word 2
+				.word 3
+				.word 4
+				.word 5
+				.word 6
+				.word 7
+				.word 8
+				.word 9
+				.word 10
 .end

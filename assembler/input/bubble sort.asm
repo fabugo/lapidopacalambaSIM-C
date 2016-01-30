@@ -30,7 +30,7 @@
 		;'r6' registrador temporário para operações
 
 LOOP1:	deca r2,r2				;'r2' inicia na ultima posição do vetor ('r1'-1) e é decrementado até 0
-		jt.zero EXIT  	 		;Se r2 == 0, encerra
+		jt.zero HALT  	 		;Se r2 == 0, encerra
 		nop
 
 LOOP2:  inca r3,r3
