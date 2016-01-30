@@ -7,7 +7,7 @@
 
 #define ZERO		"00000000000000000000000000000000"
 
-#define MI_SIZE		101	//Tamanho da memória de instrução
+#define MI_SIZE		151	//Tamanho da memória de instrução
 
 #define DM_SIZE		16	//Tamanho da memória de dados
 

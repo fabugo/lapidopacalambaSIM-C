@@ -3,7 +3,7 @@
 	lcl	r0, LOWBYTE POS 		
 	lch	r0, HIGHBYTE POS
 	load r0,r0			;Carrega o valor da posição do elemento desejado
-	loadlit r3, 0		;Ponteiro da memoria onde sera armazenado o resultado
+	loadlit r3, 15		;Ponteiro da memoria onde sera armazenado o resultado
 
 	loadlit r1, 0		;Se POS <= 0, encerra
 	add r0, r0, r1
@@ -37,5 +37,5 @@ FIM: store r3,r4		;Armazena no endereço presente em 'r3' o valor presente em 'r
 HALT: j HALT
 
 .dseg
-POS:	.word -1
+POS:	.word 10
 .end

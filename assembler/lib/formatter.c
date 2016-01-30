@@ -225,7 +225,7 @@ int isRegistrator(char *str) {
         || strEquals(str, "r8") || strEquals(str, "r9")
         || strEquals(str, "r10") || strEquals(str, "r11")
         || strEquals(str, "r12") || strEquals(str, "r13")
-        || strEquals(str, "r14") || strEquals(str, "r14"))
+        || strEquals(str, "r14") || strEquals(str, "r15"))
     ? 1 : 0;
 }
 

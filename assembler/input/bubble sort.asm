@@ -16,43 +16,45 @@
 .module bubble
 
 .pseg
-		lcl r0,LOWBYTE VET
-        lch r0,HIGHBYTE VET		;Ponteiro para o início do vetor
-        load r1,r0				;'r1' recebe a primeira posicao do vetor que contém o número de elementos
-        inca r0,r0				;Incrementa r0 para o primeiro elemento a ser ordenado
-        
-        passa r2,r1				;'r2' recebe o tamanho do vetor
-		loadlit r3,-1			;'r3' registrador auxiliar para percorrer o vetor. Na primeira execução
-								;ele terá o valor 0. "inca r3,r3"
-		
-		;'r4' registrador temporário para operações
-		;'r5' registrador temporário para operações
-		;'r6' registrador temporário para operações
+	lcl r0,LOWBYTE VET
+    lch r0,HIGHBYTE VET			;Ponteiro para o início do vetor
+    load r1,r0					;'r1' recebe a primeira posicao do vetor que contém o número de elementos
+    inca r0,r0					;Incrementa r0 para o primeiro elemento a ser ordenado
 
-LOOP1:	deca r2,r2				;'r2' inicia na ultima posição do vetor ('r1'-1) e é decrementado até 0
-		jt.zero HALT  	 		;Se r2 == 0, encerra
-		nop
+    passa r2, r1				;r2		x = n
+    							;r3		y
+    							;r4		temp
+    							;r5		temp
+    							;r6		temp
+    							;r8		temp
+	zeros r8					;r8	= 0
 
-LOOP2:  inca r3,r3
-		sub r4,r2,r3			;Operação para teste com flags		
-		jt.negzero LOOP1		;Se r3 >= r2, volta para o primeiro loop
-		nop
+    FOR1:	sub r4, r8, r2
+    		jf.neg HALT			;Se x <= 0, finaliza. Se x > 0, executa FOR2
 
-		;Se r3 < r2, verifica se vet[r3] > vet['r3'+1]
-		add r6,r0,r3
-		load r4, r6				;'r4' = vet['r3']
-		inca r6,r6
-		load r5,r6				;'r5' = vet['r3'+1]
+    		zeros r3			;y = 0
+    FOR2:	sub r4, r3, r2
+    		jf.neg EFOR1		;Se y >= x, pula p FOR1
 
-		sub r6,r5,r4			;Operação para teste com flags
-		jf.neg LOOP2			;Se r4 <= r5
-		nop
+    		passa r4, r0		;r4 = &vet[0]
+    		add r4, r4, r3		;r4 = &vet[y]
+    		load r5, r4			;r5 = vet[y]
+    		inca r4, r4			;r4 = &vet[y+1]
+    		load r6, r4			;r6 = vet[y+1]
+    		sub r7, r6, r5		;r7 = vet[y+1] - vet[y]
+    		jt.neg SWAP			;vet[y] > vet[y+1]
+    		nop
 
-		;Se r4 > r5, troca as posições dos dois valores no vetor
-		add r6,r0,r3
-		store r6,r5
-		inca r6,r6
-		store r6,r4
+    EFOR2:	inca r3, r3
+    		j FOR2
+
+    SWAP:	store r4, r5
+    		deca r4, r4
+    		store r4, r6
+    		j EFOR2
+
+    EFOR1:	deca r2, r2
+    		j FOR1
 
 HALT: j HALT
 

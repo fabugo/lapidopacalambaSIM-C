@@ -15,7 +15,7 @@ void OP_TF(char *value) {
 	//Começa com 00, jumper condicional. Verifica o tipo (jf ou jt) e a condição
 		char jType = value[2]; //0 - jf, 1 - tf
 		if(strEquals(cond, "000")) 			//Condição true
-			tf.output =  jType;
+			tf.output =  '1';
 		else if(strEquals(cond, "001")) 	//Condição neg = flag S
 			tf.output = tf.input_flags[1];
 		else if(strEquals(cond, "010")) 	//Condição zero = flag Z
@@ -27,8 +27,9 @@ void OP_TF(char *value) {
 		else if(strEquals(cond, "111")) 	//Condição overflow = flag O
 			tf.output = tf.input_flags[0];
 		
-		//inverte o sinal
-		tf.output = (tf.output == '1') ? '0' : '1';
+		//Caso seja jt, inverte o sinal para o MX_PC selecione a saída da ula, caso verdadeiro.
+		if(jType == '1')
+			tf.output = (tf.output == '1') ? '0' : '1';
 	}
 }
 
