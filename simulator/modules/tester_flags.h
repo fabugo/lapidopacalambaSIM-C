@@ -10,7 +10,7 @@
 #include "mx_pc.h"
 
 struct TESTER_FLAGS {
-	char *input_flags; 	//OSCZ: Ponteiro para os sinais de saída OSCZ do registrador de flags
+	char *input_OSCZ; 	//OSCZ: Ponteiro para os sinal de saída OSCZ do registrador de flags
 	char *cond;			//COND: Ponteiro para o sinal de saída I[14:12] da memória de instruções
 
     char output; 		//Saída do teste, 1-verdadeiro, 0-falso

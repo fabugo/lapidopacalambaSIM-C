@@ -17,47 +17,47 @@ char *adder_or_subtractor(int type, char *a, char *b, char *carryOut);
 void OP_ALU(char *operation) {
     if(strEquals(operation, "00000")) {
     //add c, a, b <=> c = a + b
-        strcpy(alu.output, adder_or_subtractor(0, alu.input_A, alu.input_B, &alu.flags[2]));
+        strcpy(alu.output, adder_or_subtractor(0, alu.input_A, alu.input_B, &alu.OSCZ[2]));
         
-        alu.flags[1] = alu.output[0];
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "00001")) {
     //addi c, a, b <=> c = a + b + 1
-        strcpy(alu.output, adder_or_subtractor(0, alu.input_A, alu.input_B, &alu.flags[2]));
-        strcpy(alu.output, adder_or_subtractor(0, alu.output, "00000000000000000000000000000001", &alu.flags[2]));
+        strcpy(alu.output, adder_or_subtractor(0, alu.input_A, alu.input_B, &alu.OSCZ[2]));
+        strcpy(alu.output, adder_or_subtractor(0, alu.output, "00000000000000000000000000000001", &alu.OSCZ[2]));
         
-        alu.flags[1] = alu.output[0];
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "00011")) {
     //inca c, a <=> c = a + 1
-        strcpy(alu.output, adder_or_subtractor(0, alu.input_A, "00000000000000000000000000000001", &alu.flags[2]));
+        strcpy(alu.output, adder_or_subtractor(0, alu.input_A, "00000000000000000000000000000001", &alu.OSCZ[2]));
         
-        alu.flags[1] = alu.output[0];
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "00100")) {
     //subdec c, a, b <=> c = a - b - 1
-        strcpy(alu.output, adder_or_subtractor(1, alu.input_A, alu.input_B, &alu.flags[2]));
-        strcpy(alu.output, adder_or_subtractor(1, alu.output, "00000000000000000000000000000001", &alu.flags[2]));
+        strcpy(alu.output, adder_or_subtractor(1, alu.input_A, alu.input_B, &alu.OSCZ[2]));
+        strcpy(alu.output, adder_or_subtractor(1, alu.output, "00000000000000000000000000000001", &alu.OSCZ[2]));
         
-        alu.flags[1] = alu.output[0];
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "00101")) {
     //sub c, a, b <=> c = a - b
-        strcpy(alu.output, adder_or_subtractor(1, alu.input_A, alu.input_B, &alu.flags[2]));
+        strcpy(alu.output, adder_or_subtractor(1, alu.input_A, alu.input_B, &alu.OSCZ[2]));
         
-        alu.flags[1] = alu.output[0];
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "00110")) {
     //deca c, a <=> c = a - 1
-        strcpy(alu.output, adder_or_subtractor(1, alu.input_A, "00000000000000000000000000000001", &alu.flags[2]));
+        strcpy(alu.output, adder_or_subtractor(1, alu.input_A, "00000000000000000000000000000001", &alu.OSCZ[2]));
         
-        alu.flags[1] = alu.output[0];
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "01000")) {
     //lsl c, a <=> c = << a
@@ -65,9 +65,9 @@ void OP_ALU(char *operation) {
         sprintf(shifted, "%s0", substring(alu.input_A, 1, 31));
         strcpy(alu.output, shifted);
         
-        alu.flags[1] = alu.output[0];
-        alu.flags[2] = alu.input_A[0]; //carry
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[2] = alu.input_A[0]; //carry
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "01001")) {
     //asr c, a <=> c = >> a
@@ -75,110 +75,113 @@ void OP_ALU(char *operation) {
         sprintf(shifted, "%s%s", substring(alu.input_A, 0, 0), substring(alu.input_A, 0, 30));
         strcpy(alu.output, shifted);
         
-        alu.flags[1] = alu.output[0];
-        alu.flags[2] = alu.input_A[31]; //carry
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[2] = alu.input_A[31]; //carry
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "10000")) {
     //zeros c <=> c = 0
         strcpy(alu.output, ZERO);
         
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "10001")) {
     //and c, a, b <=> c = a & b
         strcpy(alu.output, and(alu.input_A, alu.input_B));
         
-        alu.flags[1] = alu.output[0];
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "10010")) {
     //andnota c, a, b <=> c = !a & b
         strcpy(alu.output, and(not(alu.input_A), alu.input_B));
         
-        alu.flags[1] = alu.output[0];
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "10011")) {
     //passb c, b <=> c = b
         strcpy(alu.output, alu.input_B);
 
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+
     } else if(strEquals(operation, "10100")) {
     //andnotb c, a, b <=> c = a & !b
         strcpy(alu.output, and(alu.input_A, not(alu.input_B)));
         
-        alu.flags[1] = alu.output[0];
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "10101")) {
     //passa c, a <=> c = a
         strcpy(alu.output, alu.input_A);
         
-        alu.flags[1] = alu.output[0];
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "10110")) {
     //xor c, a, b <=> c = a xor b
         strcpy(alu.output, xor(alu.input_A, alu.input_B));
         
-        alu.flags[1] = alu.output[0];
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "10111")) {
     //or c, a, b <=> c = a | b
         strcpy(alu.output, or(alu.input_A, alu.input_B));
         
-        alu.flags[1] = alu.output[0];
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "11000")) {
     //nand c, a, b <=> c = !(a & b)
         strcpy(alu.output, not(and(alu.input_A, alu.input_B)));
         
-        alu.flags[1] = alu.output[0];
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "11001")) {
     //xnor c, a, b <=> c = !(a xor b)
         strcpy(alu.output, not(xor(alu.input_A, alu.input_B)));
         
-        alu.flags[1] = alu.output[0];
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "11010")) {
     //passnota c, a <=> c = !a
         strcpy(alu.output, not(alu.input_A));
         
-        alu.flags[1] = alu.output[0];
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "11011")) {
     //ornota c, a, b <=> c = !a | b
         strcpy(alu.output, or(not(alu.input_A), alu.input_B));
         
-        alu.flags[1] = alu.output[0];
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "11100")) {
     //passnotb c, b <=> c = !b
         strcpy(alu.output, not(alu.input_B));
         
-        alu.flags[1] = alu.output[0];
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "11101")) {
     //ornotb c, a, b <=> c = a | !b
         strcpy(alu.output, or(alu.input_A, not(alu.input_B)));
         
-        alu.flags[1] = alu.output[0];
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "11110")) {
     //nor c, a, b <=> c = !(a | b)
         strcpy(alu.output, not(or(alu.input_A, alu.input_B)));
         
-        alu.flags[1] = alu.output[0];
-        alu.flags[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
+        alu.OSCZ[1] = alu.output[0];
+        alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "11111")) {
     //ones c <=> c = 1
@@ -212,10 +215,10 @@ void RST_ALU(char value) {
     if(value == '1') {
         strcpy(alu.output, ZERO); //Zera a saída 'alu.output'
         //Zera as flags
-        alu.flags[0] = '0';
-        alu.flags[1] = '0';
-        alu.flags[2] = '0';
-        alu.flags[3] = '0';
+        alu.OSCZ[0] = '0';
+        alu.OSCZ[1] = '0';
+        alu.OSCZ[2] = '0';
+        alu.OSCZ[3] = '0';
     }
 }
 

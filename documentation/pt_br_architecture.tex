@@ -9,7 +9,7 @@
 \usepackage{tikz}
 \usepackage[utf8]{inputenc} 
 \usepackage[portuguese]{babel} % Uncomment for portuguese
-\usepackage{siunitx
+\usepackage{siunitx}
 \usepackage{pdflscape}
 \usepackage{verbatim}
 
@@ -55,6 +55,8 @@
   20/12/2015 &  Revisão do documento & Fábio Barros e Matheus Borges \\ \hline
   15/01/2016 &  Alterações no documento & Patricia Gomes \\ \hline 
   29/01/2016 &  Correções do documento & Patricia Gomes \\ \hline 
+  30/01/2016 &  Revisão das tabelas de instruções & Matheus Borges \\ \hline 
+  31/01/2016 &  Revisão da formatação do documento & Matheus Borges \\ \hline 
   
 
 \end{longtable}
@@ -230,7 +232,7 @@ As instruções de lógica e aritmética possuem o seguinte formato:
         \begin{tabular}[pos]{|>{\centering\arraybackslash}m{33pt}|>{\centering\arraybackslash}m{55pt}|>{\centering\arraybackslash}m{44pt}|>{\centering\arraybackslash}m{44pt}|>{\centering\arraybackslash}m{44pt}|>{\centering\arraybackslash}m{132pt}|} 
           \hline
           \cellcolor[gray]{0.9}\textbf{31:29} & \cellcolor[gray]{0.9}\textbf{28:24} & \cellcolor[gray]{0.9}\textbf{23:20} & \cellcolor[gray]{0.9}\textbf{19:16} & \cellcolor[gray]{0.9}\textbf{15:12} & \cellcolor[gray]{0.9}\textbf{11:0} \\ \hline
-            0 0 1   & OP    & WC    & RA    & RB    &   X X X X X X X X X X X X \\ \hline
+            0 0 1   & OP\_ALU    & WC    & RA    & RB    &   X X X X X X X X X X X X \\ \hline
         \end{tabular}
         \caption{Tabela de Formato}
     \end{center}
@@ -239,7 +241,7 @@ As instruções de lógica e aritmética possuem o seguinte formato:
 % inicio da tabela de operações das instruções de lógica e aritmética
 \begin{center}
 \begin{longtable}[pos]{|>{\centering\arraybackslash}m{50pt}|>{\raggedright\arraybackslash}m{80pt}|>{\raggedright\arraybackslash}m{147pt}|>{\raggedleft\arraybackslash}m{100pt}|} \hline
-	\cellcolor[gray]{0.9}\textbf{OPALU} & \centering \cellcolor[gray]{0.9}\textbf{Mnemônico} & \centering \cellcolor[gray]{0.9}\textbf{Operação} & \centering \cellcolor[gray]{0.9}\textbf{Flags Atualizadas}\tabularnewline \hline \endfirsthead \hline
+	\cellcolor[gray]{0.9}\textbf{OP\_ALU} & \centering \cellcolor[gray]{0.9}\textbf{Mnemônico} & \centering \cellcolor[gray]{0.9}\textbf{Operação} & \centering \cellcolor[gray]{0.9}\textbf{Flags Atualizadas}\tabularnewline \hline \endfirsthead \hline
 	\multicolumn{4}{|c|}{{\bfseries \textbf{continuação da tabela anterior}}} \\ \hline
 	\cellcolor[gray]{0.9}\textbf{OPALU} & \centering \cellcolor[gray]{0.9}\textbf{Mnemônico} & \centering \cellcolor[gray]{0.9}\textbf{Operação} & \centering \cellcolor[gray]{0.9}\textbf{Flags Atualizadas}\tabularnewline \hline \endhead
 	\multicolumn{4}{|c|}{{\textbf{continua na próxima página}}} \\ \hline \endfoot
@@ -286,9 +288,9 @@ O elemento que caracteriza esse tipo de instrução é o extensor de sinal respo
 \begin{table}[H]
   \begin{center}
   \renewcommand{\arraystretch}{1.2}
-    \begin{tabular}[pos]{|>{\centering\arraybackslash}m{35pt}|>{\centering\arraybackslash}m{57pt}|>{\centering\arraybackslash}m{46pt}|>{\centering\arraybackslash}m{46pt}|>{\centering\arraybackslash}m{181pt}|} \hline
+    \begin{tabular}[pos]{|>{\centering\arraybackslash}m{35pt}|>{\centering\arraybackslash}m{57pt}|>{\centering\arraybackslash}m{46pt}|>{\centering\arraybackslash}m{46pt}|>{\centering\arraybackslash}m{180pt}|} \hline
       \cellcolor[gray]{0.9}\textbf{31:29} & \cellcolor[gray]{0.9}\textbf{28:24} & \cellcolor[gray]{0.9}\textbf{23:20} & \cellcolor[gray]{0.9}\textbf{19:16} & \cellcolor[gray]{0.9}\textbf{15:0} \\ \hline
-        0 1 0       & OP        & WC        & X X X X      & CONSTANTE \\ \hline
+        0 1 0       & OP\_ALU        & WC        & X X X X      & CONSTANTE \\ \hline
     \end{tabular}
     \caption{Tabela de Formato}
   \end{center}
@@ -302,7 +304,7 @@ O elemento que caracteriza esse tipo de instrução é o extensor de sinal respo
   \renewcommand{\arraystretch}{1.2}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{80pt}|>{\centering\arraybackslash}m{120pt}|>{\centering\arraybackslash}m{189pt}|} 
       \hline
-      \cellcolor[gray]{0.9}\textbf{OPALU} & \cellcolor[gray]{0.9}\textbf{Mnemônico} & \cellcolor[gray]{0.9}\textbf{Operação} \\ \hline
+      \cellcolor[gray]{0.9}\textbf{OP\_ALU} & \cellcolor[gray]{0.9}\textbf{Mnemônico} & \cellcolor[gray]{0.9}\textbf{Operação} \\ \hline
         01100      & loadlit c, Const16        & C = CONSTANTE \\ \hline
         01101      & lcl c, Const16            & C = Const16|(C\&0xffff0000) \\ \hline
         01110      & lch c, Const16            & C = (Const16 « 16)|(C\&0x0000ffff ) \\ \hline
@@ -330,7 +332,7 @@ As instruções de acesso à memória possuem o seguinte formato:
 \begin{table}[H]
   \begin{center}
   \renewcommand{\arraystretch}{1.2}
-    \begin{tabular}[pos]{|>{\centering\arraybackslash}m{32pt}|>{\centering\arraybackslash}m{42pt}|>{\centering\arraybackslash}m{22pt}|>{\centering\arraybackslash}m{42pt}|>{\centering\arraybackslash}m{42pt}|>{\centering\arraybackslash}m{42pt}|>{\centering\arraybackslash}m{127pt}|} \hline
+    \begin{tabular}[pos]{|>{\centering\arraybackslash}m{30pt}|>{\centering\arraybackslash}m{42pt}|>{\centering\arraybackslash}m{42pt}|>{\centering\arraybackslash}m{35pt}|>{\centering\arraybackslash}m{35pt}|>{\centering\arraybackslash}m{35pt}|>{\centering\arraybackslash}m{121pt}|} \hline
       \cellcolor[gray]{0.9}\textbf{31:29} & 
       \cellcolor[gray]{0.9}\textbf{28:25} & 
       \cellcolor[gray]{0.9}\textbf{24} & 
@@ -338,7 +340,7 @@ As instruções de acesso à memória possuem o seguinte formato:
       \cellcolor[gray]{0.9}\textbf{19:16} & 
       \cellcolor[gray]{0.9}\textbf{15:12} & 
       \cellcolor[gray]{0.9}\textbf{11:0} \\ \hline
-      1 0 0         & X X X X &OP & WC        & RA        & RB        & X X X X X X X X X X X X \\ \hline
+      1 0 0         & X X X X &W\_DM & WC        & RA        & RB        & X X X X X X X X X X X X \\ \hline
     \end{tabular}
     \caption{Tabela de Formato}
     \end{center}
@@ -350,8 +352,8 @@ As instruções de acesso à memória possuem o seguinte formato:
 \begin{table}[H]
   \begin{center}
   \renewcommand{\arraystretch}{1.2}
-    \begin{tabular}[pos]{|>{\centering\arraybackslash}m{89pt}|>{\centering\arraybackslash}m{160pt}|>{\centering\arraybackslash}m{150pt}|} \hline
-      \cellcolor[gray]{0.9}\textbf{OPM} & \cellcolor[gray]{0.9}\textbf{Mnemônico} & \cellcolor[gray]{0.9}\textbf{Operação} \\ \hline
+    \begin{tabular}[pos]{|>{\centering\arraybackslash}m{79pt}|>{\centering\arraybackslash}m{150pt}|>{\centering\arraybackslash}m{160pt}|} \hline
+      \cellcolor[gray]{0.9}\textbf{W\_DM} & \cellcolor[gray]{0.9}\textbf{Mnemônico} & \cellcolor[gray]{0.9}\textbf{Operação} \\ \hline
         0       & load c, b         & C = Mem[B] \\ \hline
         1       & store b, a        & Mem[B] = A \\ \hline
     \end{tabular}
@@ -379,7 +381,7 @@ Tais instruções possuem o formato descrito abaixo na tabela:
   \begin{center}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{33pt}|>{\centering\arraybackslash}m{28pt}|>{\centering\arraybackslash}m{33pt}|>{\centering\arraybackslash}m{105pt}|>{\centering\arraybackslash}m{33pt}|>{\centering\arraybackslash}m{120pt}|} \hline
       \cellcolor[gray]{0.9}\textbf{31:29} & \cellcolor[gray]{0.9}\textbf{28:27} & \cellcolor[gray]{0.9}\textbf{26:24} & \cellcolor[gray]{0.9}\textbf{23:15} & \cellcolor[gray]{0.9}\textbf{14:12} & \cellcolor[gray]{0.9}\textbf{11:0} \\ \hline
-        000       & X X       & OPTF       & X X X X X X X X X      & COND       & DESTINO \\ \hline
+        000       & X X       & OP\_TF       & X X X X X X X X X      & COND       & DESTINO \\ \hline
     \end{tabular}
     \caption{Tabela de Formato}
   \end{center}
@@ -391,7 +393,7 @@ Tais instruções possuem o formato descrito abaixo na tabela:
 \begin{table}[H]
   \begin{center}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{50pt}|>{\centering\arraybackslash}m{130pt}|>{\centering\arraybackslash}m{209pt}|} \hline
-      \cellcolor[gray]{0.9}\textbf{OPTF} & \cellcolor[gray]{0.9}\textbf{Mnemônico} & \cellcolor[gray]{0.9}\textbf{Operação} \\ \hline
+      \cellcolor[gray]{0.9}\textbf{OP\_TF} & \cellcolor[gray]{0.9}\textbf{Mnemônico} & \cellcolor[gray]{0.9}\textbf{Operação} \\ \hline
         000      & jf.cond DESTINO            & Jump False \\ \hline
         001      & jt.cond DESTINO       & Jump True \\ \hline
         010      & j DESTINO       & Jump Incondicional \\ \hline
@@ -439,7 +441,7 @@ As instruções de desvio por registrador possuem o seguinte formato:
   \renewcommand{\arraystretch}{1.46}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{31pt}|>{\centering\arraybackslash}m{32pt}|>{\centering\arraybackslash}m{29pt}|>{\centering\arraybackslash}m{90pt}|>{\centering\arraybackslash}m{32pt}|>{\centering\arraybackslash}m{127pt}|} \hline
       \cellcolor[gray]{0.9}\textbf{31:29} & \cellcolor[gray]{0.9}\textbf{28:27} & \cellcolor[gray]{0.9}\textbf{26:24} & \cellcolor[gray]{0.9}\textbf{23:16} & \cellcolor[gray]{0.9}\textbf{15:12} & \cellcolor[gray]{0.9}\textbf{11:0} \\ \hline
-        1 1 0       & X X       & OPDR       & X X X X X X X X       & RB        & X X X X X X X X X X X X \\ \hline
+        1 1 0       & X X       & OP\_TF       & X X X X X X X X       & RB        & X X X X X X X X X X X X \\ \hline
     \end{tabular}
     \caption{Tabela de Formato}
   \end{center}
@@ -452,7 +454,7 @@ As instruções de desvio por registrador possuem o seguinte formato:
   \begin{center}
   \renewcommand{\arraystretch}{1.46}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{89pt}|>{\centering\arraybackslash}m{150pt}|>{\centering\arraybackslash}m{150pt}|} \hline
-      \cellcolor[gray]{0.9}\textbf{OPDR} & \cellcolor[gray]{0.9}\textbf{Mnemônico} & \cellcolor[gray]{0.9}\textbf{Operação} \\ \hline
+      \cellcolor[gray]{0.9}\textbf{OP\_TF} & \cellcolor[gray]{0.9}\textbf{Mnemônico} & \cellcolor[gray]{0.9}\textbf{Operação} \\ \hline
         011       & jal b         & Jump and Link \\ \hline
         100       & jr b          & Jump Register \\ \hline
     \end{tabular}
@@ -472,7 +474,7 @@ O HALT possui o formato seguinte:
   \begin{center}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{34pt}|>{\centering\arraybackslash}m{30pt}|>{\centering\arraybackslash}m{34pt}|>{\centering\arraybackslash}m{136pt}|>{\centering\arraybackslash}m{130pt}|} \hline
       \cellcolor[gray]{0.9}\textbf{31:29} & \cellcolor[gray]{0.9}\textbf{28:27} & \cellcolor[gray]{0.9}\textbf{26:24} & \cellcolor[gray]{0.9}\textbf{23:12} & \cellcolor[gray]{0.9}\textbf{11:0}  \\ \hline
-        1 0 1       & X X       & 00        & X X X X X X X X X X X X       & L \\ \hline
+        1 0 1       & X X       & 010        & X X X X X X X X X X X X       & DESTINO ATUAL \\ \hline
     \end{tabular}
     \caption{Tabela de Formato}
   \end{center}
@@ -523,7 +525,7 @@ O Contador de Programa (PC) é o registrador que armazena o endereço da próxim
 \FloatBarrier
 \begin{table}[H]
   \begin{center}
-  \renewcommand{\arraystretch}{1.15}
+  \renewcommand{\arraystretch}{1.4}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{50pt}|>{\centering\arraybackslash}m{60pt}|>{\centering\arraybackslash}m{70pt}|>{\centering\arraybackslash}m{182pt}|} \hline
       \cellcolor[gray]{0.9}\textbf{Nome} & 
       \cellcolor[gray]{0.9}\textbf{Tamanho} & 
@@ -621,8 +623,7 @@ O extensor de sinal é utilizado para extender o sinal dos bits de entrada nas o
       \cellcolor[gray]{0.9}\textbf{Tamanho} & 
       \cellcolor[gray]{0.9}\textbf{Direção} &
       \cellcolor[gray]{0.9}\textbf{Descrição} \\ \hline
-       InSE & 16 &  Entrada  & Constante a ser extendida \\ \hline
-       InSE & 12 &  Entrada  & Constante a ser extendida \\ \hline
+       InSE & 12/16 &  Entrada  & Constante a ser extendida \\ \hline
        OutSE & 32 &  Saída  & Constante extendida \\ \hline
        OP\_SE & 1  &  Entrada  & Sinal de controle do extensor \\ \hline
     \end{tabular}
@@ -675,16 +676,16 @@ A Memória de dados tem como propósito salvar/ler dados proveniente das instru�
 \FloatBarrier
 \begin{table}[H]
   \begin{center}
-  \renewcommand{\arraystretch}{1.3}
+  \renewcommand{\arraystretch}{1.15}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{50pt}|>{\centering\arraybackslash}m{60pt}|>{\centering\arraybackslash}m{70pt}|>{\centering\arraybackslash}m{182pt}|} \hline
       \cellcolor[gray]{0.9}\textbf{Nome} & 
       \cellcolor[gray]{0.9}\textbf{Tamanho} & 
       \cellcolor[gray]{0.9}\textbf{Direção} &
       \cellcolor[gray]{0.9}\textbf{Descrição} \\ \hline
        WP  & 32  & Entrada   & Dado as ser armazenado na memória \\ \hline
-       AD  & 32  & Entrada   & Endereço onde o dado será armazenado \\ \hline
-       PR  & 32  & Saída     & Dado que sai da memória e é escrito no registrador \\ \hline
-       W\_DM & 1 & Entrada   & Sinal que habilita a escrita na memória de dados \\ \hline
+       AD  & 32  & Entrada   & Endereço para armazenamento \\ \hline
+       PR  & 32  & Saída     & Dado lido da memória de dados \\ \hline
+       W\_DM & 1 & Entrada   & Sinal de leitura/escrita na memória de dados \\ \hline
        RST\_DM & 1 & Entrada   & Sinal que limpa a memória de dados \\ \hline
     \end{tabular}
     \caption{Tabela de Sinais da Memória de Dados}
