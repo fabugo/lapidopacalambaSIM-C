@@ -352,8 +352,8 @@ As instruções de acesso à memória possuem o seguinte formato:
   \renewcommand{\arraystretch}{1.2}
     \begin{tabular}[pos]{|>{\centering\arraybackslash}m{89pt}|>{\centering\arraybackslash}m{160pt}|>{\centering\arraybackslash}m{150pt}|} \hline
       \cellcolor[gray]{0.9}\textbf{OPM} & \cellcolor[gray]{0.9}\textbf{Mnemônico} & \cellcolor[gray]{0.9}\textbf{Operação} \\ \hline
-        0       & load c, b         & C = Mem[B] \\ \hline
-        1       & store b, a        & Mem[B] = A \\ \hline
+        0       & load c, a         & C = Mem[A] \\ \hline
+        1       & store a, b        & Mem[A] = B \\ \hline
     \end{tabular}
     \caption{Tabela de Instruções de Acesso à Memória}
   \end{center}
