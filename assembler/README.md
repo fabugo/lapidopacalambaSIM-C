@@ -18,7 +18,7 @@ Além disso, o assembler também utiliza uma outra biblioteca auxiliar, a string
 Dentro da pasta input há 11 arquivos de testes. São eles:
 	* teste1, teste2 e teste3 - testes disponibilizado pelos professores;
 	* binary search, bubble sort e fibonacci - testes solicitados pelos professores;
-	* op desvio, op const_desvio_reg_, op lofica_aritmetica, op memoria - Testes extras para testar cada conjunto de instruções separadamante.
+	* op desvio, op const_desvio_reg, op logica_aritmetica, op memoria - Testes extras para testar cada conjunto de instruções separadamante.
 
 
 ##Compilando

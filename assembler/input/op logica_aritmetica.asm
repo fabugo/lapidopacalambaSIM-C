@@ -33,7 +33,6 @@
 			subdec r9, r3, r1
 			jf.zero FAIL
 
-			j END
 			lsl r0, r0
 			asr r0, r0
 			and r0, r1, r2
@@ -49,7 +48,8 @@
 			passnotb r0, r1
 			ornotb r0, r1, r2
 			nor r0, r1, r2
-			ones r0, r1, r2
+			ones r0
+			j END
 
 
 	FAIL: j FAIL					;Se cair nesse halt (Instrução 30), não funciona corretamente

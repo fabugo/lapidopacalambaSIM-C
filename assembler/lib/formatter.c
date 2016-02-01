@@ -36,7 +36,8 @@ int formatInstructions(Line *line) {
             
             while((aux = aux->next) != NULL && aux->text[0] != '.') {
                 if(!validate(aux->text)) {
-                    printf("[F][ERRO] Erro encontrado na linha %d. Instrucao invalida: \"%s\"\n", aux->number, aux->text);
+                    printf("[F][ERRO] Erro encontrado na linha %d. Instrucao invalida: ", aux->number);
+                    printf("%s\n", aux->text);
                     return 0;
                 }
             }
@@ -67,18 +68,21 @@ int formatInstructions(Line *line) {
 
                         while(startWith((aux = aux->next)->text, ".word ")) {
                             if(!isConstant(strOffset(aux->text, 6))) {
-                                printf("[F][ERRO] Erro encontrado na linha %d. Instrucao invalida: \"%s\"\n", aux->number, aux->text);
+                                printf("[F][ERRO] Erro encontrado na linha %d. Instrucao invalida: ", aux->number);
+                    printf("%s\n", aux->text);
                                 return 0;
                             }
                         }
                     } else {
-                        printf("[F][ERRO] Erro encontrado na linha %d. Instrucao invalida: \"%s\"\n", aux->number, aux->text);
+                        printf("[F][ERRO] Erro encontrado na linha %d. Instrucao invalida: ", aux->number);
+                    printf("%s\n", aux->text);
                         return 0;
                     }
                 } else if(strEquals(aux->text, ".end")) {
                     break;
                 } else {
-                    printf("[F][ERRO] Erro encontrado na linha %d. Instrucao invalida: \"%s\"\n", aux->number, aux->text);
+                    printf("[F][ERRO] Erro encontrado na linha %d. Instrucao invalida: ", aux->number);
+                    printf("%s\n", aux->text);
                     return 0;
                 }
             }
@@ -136,8 +140,8 @@ int validateClean(char *instr) {
     if(startWith(instr, "add ") || startWith(instr, "addinc ") || startWith(instr, "subdec ")
             || startWith(instr, "sub ") || startWith(instr, "and ") || startWith(instr, "andnota ")
             || startWith(instr, "andnotb ") || startWith(instr, "xor ") || startWith(instr, "or ")
-            || startWith(instr, "nand ") || startWith(instr, "xnor ") || startWith(instr, "ornata ")
-            || startWith(instr, "ornotb ")) {
+            || startWith(instr, "nand ") || startWith(instr, "xnor ") || startWith(instr, "ornota ")
+            || startWith(instr, "ornotb ") || startWith(instr, "nor ")) {
 
         removeAll(instr, space + 1, strlen(instr), ' ');
         char *params = strOffset(instr, space + 1);

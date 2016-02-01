@@ -129,7 +129,7 @@ void WB() {
 int count = 0;
 
 void print() {
-    if(count != 0 && !(count > 0)) { //Condições para imprimir
+    if(count != 0 && !(count > 7000)) { //Condições para imprimir
         count++;
         return;
     }
