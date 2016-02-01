@@ -17,44 +17,44 @@ char *adder_or_subtractor(int type, char *a, char *b, char *carryOut,char *overF
 void OP_ALU(char *operation) {
     if(strEquals(operation, "00000")) {
     //add c, a, b <=> c = a + b
-        strcpy(alu.output, adder_or_subtractor(0, alu.input_A, alu.input_B, &alu.OSCZ[2],alu.OSCZ[0]));
+        strcpy(alu.output, adder_or_subtractor(0, alu.input_A, alu.input_B, &alu.OSCZ[2], &alu.OSCZ[0]));
 
         alu.OSCZ[1] = alu.output[0];
         alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "00001")) {
     //addi c, a, b <=> c = a + b + 1
-        strcpy(alu.output, adder_or_subtractor(0, alu.input_A, alu.input_B, &alu.OSCZ[2],alu.OSCZ[0]));
-        strcpy(alu.output, adder_or_subtractor(0, alu.output, "00000000000000000000000000000001", &alu.OSCZ[2],alu.OSCZ[0]));
+        strcpy(alu.output, adder_or_subtractor(0, alu.input_A, alu.input_B, &alu.OSCZ[2], &alu.OSCZ[0]));
+        strcpy(alu.output, adder_or_subtractor(0, alu.output, "00000000000000000000000000000001", &alu.OSCZ[2], &alu.OSCZ[0]));
 
         alu.OSCZ[1] = alu.output[0];
         alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "00011")) {
     //inca c, a <=> c = a + 1
-        strcpy(alu.output, adder_or_subtractor(0, alu.input_A, "00000000000000000000000000000001", &alu.OSCZ[2],alu.OSCZ[0]));
+        strcpy(alu.output, adder_or_subtractor(0, alu.input_A, "00000000000000000000000000000001", &alu.OSCZ[2], &alu.OSCZ[0]));
 
         alu.OSCZ[1] = alu.output[0];
         alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "00100")) {
     //subdec c, a, b <=> c = a - b - 1
-        strcpy(alu.output, adder_or_subtractor(1, alu.input_A, alu.input_B, &alu.OSCZ[2],alu.OSCZ[0]));
-        strcpy(alu.output, adder_or_subtractor(1, alu.output, "00000000000000000000000000000001", &alu.OSCZ[2],alu.OSCZ[0]));
+        strcpy(alu.output, adder_or_subtractor(1, alu.input_A, alu.input_B, &alu.OSCZ[2], &alu.OSCZ[0]));
+        strcpy(alu.output, adder_or_subtractor(1, alu.output, "00000000000000000000000000000001", &alu.OSCZ[2], &alu.OSCZ[0]));
 
         alu.OSCZ[1] = alu.output[0];
         alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "00101")) {
     //sub c, a, b <=> c = a - b
-        strcpy(alu.output, adder_or_subtractor(1, alu.input_A, alu.input_B, &alu.OSCZ[2],alu.OSCZ[0]));
+        strcpy(alu.output, adder_or_subtractor(1, alu.input_A, alu.input_B, &alu.OSCZ[2], &alu.OSCZ[0]));
 
         alu.OSCZ[1] = alu.output[0];
         alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
 
     } else if(strEquals(operation, "00110")) {
     //deca c, a <=> c = a - 1
-        strcpy(alu.output, adder_or_subtractor(1, alu.input_A, "00000000000000000000000000000001", &alu.OSCZ[2],alu.OSCZ[0]));
+        strcpy(alu.output, adder_or_subtractor(1, alu.input_A, "00000000000000000000000000000001", &alu.OSCZ[2], &alu.OSCZ[0]));
 
         alu.OSCZ[1] = alu.output[0];
         alu.OSCZ[3] = (strEquals(alu.output, ZERO)) ? '1' : '0';
@@ -329,8 +329,10 @@ char *adder_or_subtractor(int type, char *a, char *b, char *carryOut, char *over
         } else {
             result[i]=fullAdder(carryIn,a[i],b[i],&cOut);
         }
-        if((carryIn =! cOut && !i)
+        if(carryIn =! cOut && !i) //!i = último bit
             *overFlow = '1';
+        else if(!i)
+            *overFlow = '0';
         carryIn = cOut;
     }
 

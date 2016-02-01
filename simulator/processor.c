@@ -82,7 +82,21 @@ int main(int argc, char *argv[]) {
 			}
 			/*********************************************************/
 
-			UC_run();
+			/*int vet[10] = {1,2,3,4,5,6,7,8,9,10};
+			int start = 0, end = 9, element = 9, meio;
+			*/UC_run();/*
+			while(start <= end) {
+				meio = (start + end)/2;
+				if(vet[meio] == element) {
+					printf("TRUE\n");
+					break;
+				} else if(vet[meio] < element) {
+					start = meio + 1;
+				} else if(vet[meio] > element) {
+					end = meio -1;
+				}
+			}
+			printf("END\n");*/
 		}
     }
 }

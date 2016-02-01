@@ -31,11 +31,18 @@ Label *jumpers = NULL, *variables = NULL;
 Instruction *psegInstr = NULL, *dsegInstr = NULL;
 
 int main(int argc, char *argv[]) {
-    char *outputPath;
+    char *outputPath, *outputName;
     int x;
     for(x = 1; x < argc; x++) {
         outputPath = malloc(50);
-        sprintf(outputPath, "../simulator/input/program_%d", x);
+        if(indexOf(argv[x], '\\') > 0) {
+            outputName = substring(argv[x], lastIndexOf(argv[x], '\\'), strlen(argv[x])-5);
+        } else if(indexOf(argv[x], '/') > 0) {
+            outputName = substring(argv[x], lastIndexOf(argv[x], '/'), strlen(argv[x])-5);
+        } else {
+            outputName = substring(argv[x], 0, strlen(argv[x])-5);
+        }
+        sprintf(outputPath, "../simulator/input/%s", outputName);
         start(argv[x], outputPath);
     }
 

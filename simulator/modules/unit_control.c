@@ -21,18 +21,22 @@ void UC_run() {
     while(1) {
         switch (state) {
             case 0:
+                print();
                 IF();
                 state = 1;
             break;
             case 1:
+                print();
                 ID();
                 state = 2;
             break;
             case 2:
+                print();
                 EX();
                 state = 3;
             break;
             case 3:
+                print();
                 WB();
                 state = 0;
             break;
@@ -99,10 +103,11 @@ void ID() {
         W_RB('0');
         strcpy(uc.OP_ALU, "10011"); //passb
         strcpy(uc.OP_TF, substring(uc.TYPE_OP, 5, 7));
-        uc.W_RB = (strEquals(uc.OP_TF, "001")) ? '1' : '0'
-        ? '0'  //jal
-        : '1'; //jr
+        uc.W_RB = (strEquals(uc.OP_TF, "011"))
+                                            ? '1'  //jal
+                                            : '0'; //jr
         uc.W_DM = '0';
+        uc.S_MXSE = '0';
         strcpy(uc.W_RF, "000");
         strcpy(uc.S_MXRB, "00");
     }
@@ -127,7 +132,7 @@ void WB() {
 int count = 0;
 
 void print() {
-    if(count != 0 && !(count > 1000)) { //Condições para imprimir
+    if(count != 0 && !(count > 0)) { //Condições para imprimir
         count++;
         return;
     }
@@ -157,7 +162,7 @@ void print() {
     printf("======================================== || in RA : %32s || in WP : %32s ||\n", substring(rbank.input_RA, 12, 15), dm.input);
     printf("------------------ SE ------------------ || in RB : %32s || in AD : %32s ||\n", substring(rbank.input_RB, 16, 19), dm.address);
     printf("======================================== || in WC : %32s || out PR: %32s ||\n", substring(rbank.input_WC, 8, 11), dm.output);
-    printf("in    : %32s || ou WPC: %32s ||\n", se.input, rbank.input_WPC);
+    printf("in    : %32s || in WPC: %32s ||\n", se.input, rbank.input_WPC);
     printf("out   : %32s || ou PRA: %32s ||\n", se.output, rbank.output_PRA);
     printf("                                         || ou PRB: %32s ||\n", rbank.output_PRB);
     /*IMPRIMIR A MEMÓRIA DE INSTRUÇÕES EM ARQUIVO*/

@@ -1,18 +1,3 @@
-;Implementação do algoritmo bubble sort.
-;Foi baseado na seguinte implementação na linguagem C:
-	;int n = 10;
-	;int vet[] = {10,4,8,7,3,9,5,2,6,1};
-	;int x, y;
-	;for(x = n; x > 0; x--){
-	;	for(y = 0; y < x; y++){
-	;		if(vet[y] > vet[y + 1]){
-	;			vet[y] += vet[y+1]; 
-	;			vet[y+1] = vet[y] - vet[y+1];
-	;			vet[y] -= vet[y+1];
-	;		}
-	;	}
-	;}
-
 .module bubble
 
 .pseg
