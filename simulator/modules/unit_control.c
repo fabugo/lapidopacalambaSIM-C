@@ -21,22 +21,18 @@ void UC_run() {
     while(1) {
         switch (state) {
             case 0:
-                print();
                 IF();
                 state = 1;
             break;
             case 1:
-                print();
                 ID();
                 state = 2;
             break;
             case 2:
-                print();
                 EX();
                 state = 3;
             break;
             case 3:
-                print();
                 WB();
                 state = 0;
             break;
@@ -121,6 +117,7 @@ void EX() {
 }
 
 void WB() {
+    S_MXPC('1');
     S_MXRB(uc.S_MXRB);
     S_MXPC(tf.output);
     W_RF(uc.W_RF);
