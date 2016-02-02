@@ -52,7 +52,7 @@
 			j END
 
 
-	FAIL: j FAIL					;Se cair nesse halt (Instrução 30), não funciona corretamente
+	FAIL: j FAIL					;Se cair nesse halt (Instrução 42), não funciona corretamente
 
-	END: j END 						;Se cair nesse halt (Instrução 31) e 'r3 = 0', o teste passou
+	END: j END 						;Se cair nesse halt (Instrução 43), o teste passou
 .end

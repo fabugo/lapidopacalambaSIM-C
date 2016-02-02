@@ -27,7 +27,7 @@
 
 			j END
 
-	FAIL: 	j FAIL					;Se cair nesse halt (Instrução 20), não funciona corretamente
+	FAIL: 	j FAIL					;Se cair nesse halt (Instrução 19), não funciona corretamente
 
-	END: 	j END 					;Se cair nesse halt (Instrução 21) e 'r3 = r4 = r5 = 0', o teste passou
+	END: 	j END 					;Se cair nesse halt (Instrução 20) e 'r3 = r4 = r5 = 0', o teste passou
 .end

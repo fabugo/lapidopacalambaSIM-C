@@ -31,7 +31,7 @@
 			j FIVE
 
 
-	FAIL: 	j FAIL					;Se cair nesse halt (Instrução 21), não funciona corretamente
+	FAIL: 	j FAIL					;Se cair nesse halt (Instrução 23), não funciona corretamente
 
-	END: 	j END 					;Se cair nesse halt (Instrução 25) e 'r0 = r1 = r2 = 0', o teste passou
+	END: 	j END 					;Se cair nesse halt (Instrução 24) e 'r0 = r1 = r2 = 0', o teste passou
 .end
