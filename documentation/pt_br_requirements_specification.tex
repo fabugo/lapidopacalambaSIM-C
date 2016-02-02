@@ -118,7 +118,7 @@
       
     \requirement
       {Atualizar Flags}
-      {A medida que uma operação é realizada algumas flags deverão ser atualizadas. A atualização dessas flags se dará de acordo com a operação realizada pela ULA. As Flags a serem atualizadas são: Overflow, Sinal, Carry e Zero. A flag de sinal é atualizada se o resultado da operação for negativo. Se o resultado for igual a 0, deve-se atualizar a flag zero. No caso da flag de overflow, a mesma deve ser atualizada se o sinal do resultado for diferente do sinal dos operandos.   }
+      {A medida que uma operação é realizada algumas flags deverão ser atualizadas. A atualização dessas flags se dará de acordo com a operação realizada pela ULA. As Flags a serem atualizadas são: Overflow, Sinal, Carry e Zero. A flag de sinal é atualizada se o resultado da operação for negativo. Se o resultado for igual a 0, deve-se atualizar a flag zero. No caso da flag de overflow, a mesma deve ser atualizada se houver carry sobre o bit de sinal. Por fim, a flag de carry deve ser atualizada quando houver um "vai um" após o bit de sinal.  }
       {Importante}
    
       \requirement
@@ -128,7 +128,7 @@
       
        \requirement
       {Criação de uma memória de dados}
-      {Deverá ser desenvolvida uma memória responsável por salvar/ler dados do banco de registradores de acordo com as instruções de acesso à memória.  }
+      {Deverá ser desenvolvida uma memória responsável por salvar/ler dados do banco de registradores de acordo com as instruções de acesso à memória (load e store). Essa memória deve possuir 2\^{}32 endereços e cada endereço armazenar 4Bytes (32bits).}
       {Importante}
       
        \requirement
@@ -138,7 +138,7 @@
       
        \requirement
       {Criação de uma memória de instrução}
-      {Todas as instruções devem ser armazenadas na memória uma memória específica para armazenar as instruções que deverão ser realizadas pelo processador.}
+      {Deve existir uma memória específica para armazenar todas as instruções que deverão ser realizadas pelo processador. Essa memória deve possuir 2\^{}32 endereços e cada endereço armazenar 4Bytes (32bits)}
       {Importante}
     
       \end{functional}
@@ -283,12 +283,12 @@
       
        \requirement
       {Operação load}
-      {o endereço presente no registrador B do banco de registradores deve ser lido da memória, e a saída é escrita no banco de registradores no endereço especificado na pelo registrador A.}
+      {O registrador B é lido do banco de registradores e a saída da memória é escrita no banco de registradores no endereço especificado.}
       {Importante}
       
       \requirement
       {Operação store}
-      {Na instrução Store os dados devem ser lidos do banco de registradores e escritos na memória, sendo registrador A o dado a ser escrito e o registrador B endereço onde será armazenado.}
+      {Na instrução Store os dados devem ser lidos do banco de registradores e escritos na memória, sendo que o registrador A contém o dado a ser escrito e o registrador B o endereço onde será armazenado.}
       {Importante}
       
        \requirement
