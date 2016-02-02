@@ -99,10 +99,11 @@ void ID() {
         W_RB('0');
         strcpy(uc.OP_ALU, "10011"); //passb
         strcpy(uc.OP_TF, substring(uc.TYPE_OP, 5, 7));
-        uc.W_RB = (strEquals(uc.OP_TF, "001")) ? '1' : '0'
-        ? '0'  //jal
-        : '1'; //jr
+        uc.W_RB = (strEquals(uc.OP_TF, "011"))
+                                            ? '1'  //jal
+                                            : '0'; //jr
         uc.W_DM = '0';
+        uc.S_MXSE = '0';
         strcpy(uc.W_RF, "000");
         strcpy(uc.S_MXRB, "00");
     }
@@ -116,6 +117,7 @@ void EX() {
 }
 
 void WB() {
+    S_MXPC('1');
     S_MXRB(uc.S_MXRB);
     S_MXPC(tf.output);
     W_RF(uc.W_RF);
@@ -127,7 +129,7 @@ void WB() {
 int count = 0;
 
 void print() {
-    if(count != 0 && !(count > 0)) { //Condições para imprimir
+    if(count != 0 && !(count > 7000)) { //Condições para imprimir
         count++;
         return;
     }
@@ -157,7 +159,7 @@ void print() {
     printf("======================================== || in RA : %32s || in WP : %32s ||\n", substring(rbank.input_RA, 12, 15), dm.input);
     printf("------------------ SE ------------------ || in RB : %32s || in AD : %32s ||\n", substring(rbank.input_RB, 16, 19), dm.address);
     printf("======================================== || in WC : %32s || out PR: %32s ||\n", substring(rbank.input_WC, 8, 11), dm.output);
-    printf("in    : %32s || ou WPC: %32s ||\n", se.input, rbank.input_WPC);
+    printf("in    : %32s || in WPC: %32s ||\n", se.input, rbank.input_WPC);
     printf("out   : %32s || ou PRA: %32s ||\n", se.output, rbank.output_PRA);
     printf("                                         || ou PRB: %32s ||\n", rbank.output_PRB);
     /*IMPRIMIR A MEMÓRIA DE INSTRUÇÕES EM ARQUIVO*/
@@ -167,14 +169,14 @@ void print() {
     printf("======================================== || ======================================== || ========================================\n");
     printf("------------------ ALU ----------------- || ------------------ RF ------------------ || ------------------ TF ------------------\n");
     printf("======================================== || ======================================== || ========================================\n");
-    printf("in A  : %32s || in O  : %32c || in O  : %32c\n", alu.input_A, rf.input_flags[0], tf.input_flags[0]);
-    printf("in B  : %32s || in S  : %32c || in S  : %32c\n", alu.input_B, rf.input_flags[1], tf.input_flags[1]);
-    printf("out C : %32s || in C  : %32c || in C  : %32c\n", alu.output, rf.input_flags[2], tf.input_flags[2]);
-    printf("flag O: %32c || in Z  : %32c || in Z  : %32c\n", alu.flags[0], rf.input_flags[3], tf.input_flags[3]);
-    printf("flag S: %32c || out O : %32c || COND  : %32s\n", alu.flags[1], rf.output_flags[0], substring(tf.cond, 17, 19));
-    printf("flag C: %32c || out S : %32c || out   : %32c\n", alu.flags[2], rf.output_flags[1], tf.output);
-    printf("flag Z: %32c || out C : %32c ||\n", alu.flags[3], rf.output_flags[2]);
-    printf("                                         || out Z : %32c ||\n", rf.output_flags[3]);
+    printf("in A  : %32s || in O  : %32c || in O  : %32c\n", alu.input_A, rf.input_OSCZ[0], tf.input_OSCZ[0]);
+    printf("in B  : %32s || in S  : %32c || in S  : %32c\n", alu.input_B, rf.input_OSCZ[1], tf.input_OSCZ[1]);
+    printf("out C : %32s || in C  : %32c || in C  : %32c\n", alu.output, rf.input_OSCZ[2], tf.input_OSCZ[2]);
+    printf("flag O: %32c || in Z  : %32c || in Z  : %32c\n", alu.OSCZ[0], rf.input_OSCZ[3], tf.input_OSCZ[3]);
+    printf("flag S: %32c || out O : %32c || COND  : %32s\n", alu.OSCZ[1], rf.output_OSCZ[0], substring(tf.cond, 17, 19));
+    printf("flag C: %32c || out S : %32c || out   : %32c\n", alu.OSCZ[2], rf.output_OSCZ[1], tf.output);
+    printf("flag Z: %32c || out C : %32c ||\n", alu.OSCZ[3], rf.output_OSCZ[2]);
+    printf("                                         || out Z : %32c ||\n", rf.output_OSCZ[3]);
     printf("\n");
 
     printf("======================================== || ======================================== || ========================================\n");

@@ -17,7 +17,7 @@ struct ALU {
     char *input_B; 	//B: Ponteiro para o sinal de saída do multiplexador MX_SE
 
     char output[33];//C: Saída do resultado da operação feita.
-    char flags[4]; 	//F: Saída para os sinais de flags: O, S, C, Z
+    char OSCZ[4]; 	//F: Saída para as flags
 };
 typedef struct ALU ALU;
 

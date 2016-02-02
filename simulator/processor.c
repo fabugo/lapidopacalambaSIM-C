@@ -58,8 +58,8 @@ int main(int argc, char *argv[]) {
     alu.input_B = (char*) &mx_se.output;
     dm.input = (char*) &rbank.output_PRA;		//DATA MEMORY
 	dm.address = (char*) &rbank.output_PRB;
-	rf.input_flags = (char*) &alu.flags;		//REGISTER FLAGS
-	tf.input_flags = (char*) &rf.output_flags;
+	rf.input_OSCZ = (char*) &alu.OSCZ;		//REGISTER FLAGS
+	tf.input_OSCZ = (char*) &rf.output_OSCZ;
 	tf.cond = (char*) &mi.output;				//TESTER FLAGS
 	mx_pc.input_ALU = (char*) &alu.output;		//MX_PC
 	mx_pc.input_ADD = (char*) &add.output;
@@ -82,7 +82,21 @@ int main(int argc, char *argv[]) {
 			}
 			/*********************************************************/
 
-			UC_run();
+			/*int vet[10] = {1,2,3,4,5,6,7,8,9,10};
+			int start = 0, end = 9, element = 9, meio;
+			*/UC_run();/*
+			while(start <= end) {
+				meio = (start + end)/2;
+				if(vet[meio] == element) {
+					printf("TRUE\n");
+					break;
+				} else if(vet[meio] < element) {
+					start = meio + 1;
+				} else if(vet[meio] > element) {
+					end = meio -1;
+				}
+			}
+			printf("END\n");*/
 		}
     }
 }

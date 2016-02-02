@@ -8,9 +8,9 @@
 #include "../../lib/string.h"
 
 struct REGISTER_FLAGS {
-	char *input_flags;		//O, S, C, Z: Ponteiro para os sinais de saída de flags
+	char *input_OSCZ;		//O, S, C, Z: Ponteiro para os sinais de saída de flags
 							//da unidade lógica e aritmética
-    char output_flags[4];	//Saída das flags atualziadas
+    char output_OSCZ[4];	//Saída das flags atualziadas
 };
 typedef struct REGISTER_FLAGS RF;
 

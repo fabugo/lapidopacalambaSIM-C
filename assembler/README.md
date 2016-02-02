@@ -14,6 +14,12 @@ O código fonte do assembler é composto pelo arquivo principal "assembler.c" e 
 Além disso, o assembler também utiliza uma outra biblioteca auxiliar, a string.h, presente na pasta lib na pasta raiz do projeto. Ela contém métodos para manipulação de strings. 
 
 
+##Testes
+Dentro da pasta input há 11 arquivos de testes. São eles:
+	* teste1, teste2 e teste3 - testes disponibilizado pelos professores;
+	* binary search, bubble sort e fibonacci - testes solicitados pelos professores;
+	* op desvio, op const_desvio_reg, op logica_aritmetica, op memoria - Testes extras para testar cada conjunto de instruções separadamante.
+
 
 ##Compilando
 Para compilar o projeto use o seguinte comando:
@@ -25,7 +31,7 @@ Para executar o projeto apenas chame o arquivo resultante da compilação passan
 
 	assembler input/teste1.asm input/teste2.asm
 
-A saída do programa será dada na pasta output, presente na mesma pasta do assembler (se ela não existir, deve ser criada manualmente) numerando os programas de acordo com a entrada (teste1.asm = program_1; teste2.asm = program_2...). Caso o arquivo já exista, ele será sobrescrito.
+A saída do programa será dada na pasta simulador/input, presente na mesma pasta do raiz "lapidopacalamba". Caso o arquivo já exista, ele será sobrescrito.
 
 ##Compilar e Executar (Windows)
 Caso queria compilar e executar o montador de forma mais rápida, execute o arquvio Executar.bat que contém as instruções que compila o arquivo .c e o executa chamando todos os programas teste da pasta input:
